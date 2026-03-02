@@ -116,8 +116,35 @@ Alt arbeid skal verifiseres av prosjektteamet og gjennom kvalitetssikring (QA) f
 
 Denne seksjonen dokumenterer fremdrifts-baselinen for prosjektet.
 
-## 3.1 Avhengighetsdiagram og Gantt-plan
-Prosjektets tidsplan og fremdrift styres etter det detaljerte Gantt-diagrammet: **'Prosjektplan gant2mars.pdf'**. Vi har avtalt å overholde de anbefalte fristene som lærer har satt opp, slik de er spesifisert i dette diagrammet.
+## 3.1 Detaljert Fremdriftsplan
+
+Prosjektets tidsplan og fremdrift styres etter det detaljerte Gantt-diagrammet: **'Prosjektplan gant2mars.pdf'**. Nedenfor er en oppsummering av aktivitetene og tidslinjen:
+
+| Fase / Aktivitet | Varighet | Start | Slutt |
+| :--- | :--- | :--- | :--- |
+| **Fase 1 – Initiering** | **31 dager** | **12.01.26** | **23.02.26** |
+| Prosjektoppstart | 6 dager | 12.01.26 | 19.01.26 |
+| Utarbeidelse av proposal | 31 dager | 12.01.26 | 23.02.26 |
+| *Godkjent proposal (milepæl)* | 0 dager | 23.02.26 | 23.02.26 |
+| **Fase 2 – Planlegging** | **10 dager** | **24.02.26** | **09.03.26** |
+| Litteraturgjennomgang | 15 dager | 24.02.26 | 16.03.26 |
+| Metode og analyseopplegg | 10 dager | 24.02.26 | 09.03.26 |
+| Arbeidsnedbrytningsstruktur (WBS) | 10 dager | 24.02.26 | 09.03.26 |
+| Gantt-plan | 10 dager | 24.02.26 | 09.03.26 |
+| Datainnhenting | 24 dager | 16.02.26 | 19.03.26 |
+| *Godkjent prosjektplan (milepæl)* | 0 dager | 09.03.26 | 09.03.26 |
+| **Fase 3 – Analyse og modeller** | **35 dager** | **10.03.26** | **27.04.26** |
+| Datavask og strukturering | 21 dager | 16.02.26 | 16.03.26 |
+| Analyse og modellering | 21 dager | 16.03.26 | 13.04.26 |
+| Skriving av diskusjon og metodekapittel | 35 dager | 10.03.26 | 27.04.26 |
+| *Ferdig analyse (milepæl)* | 0 dager | 27.04.26 | 27.04.26 |
+| Peer to peer-review | 5 dager | 27.04.26 | 01.05.26 |
+| **Fase 4 – Rapport og levering** | **47 dager** | **28.04.26** | **01.07.26** |
+| Skriving av konklusjon | 4 dager | 11.05.26 | 14.05.26 |
+| Utarbeidelse av presentasjon | 10 dager | 18.05.26 | 29.05.26 |
+| *Hovedutkast ferdig (milepæl)* | 0 dager | 18.05.26 | 18.05.26 |
+| *Ferdig kvalitetssikret rapport (milepæl)* | 0 dager | 31.05.26 | 31.05.26 |
+| *Gjennomført muntlig eksamen (milepæl)* | 5 dager | 01.06.26 | 05.06.26 |
 
 ## 3.2 Kritisk linje
 Den kritiske linjen drives av datavask, modellutvikling og ferdigstilling av forskningsrapporten. Enhver forsinkelse her vil påvirke sluttdatoen for innlevering.
