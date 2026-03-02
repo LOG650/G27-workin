@@ -56,6 +56,8 @@ Prosjektmålet er å undersøke i hvilken grad tidsserie-baserte prognosemetoder
 ## 2.2 Krav
 Prosjektkravene beskriver hva prosjektet må oppfylle for å nå målet. Dette inkluderer tilgang til anonymiserte data, identifikasjon av variasjonsårsaker og evaluering av modellene ved bruk av MAE og MAPE.
 
+En fullstendig kravliste finnes i vedlegg A, sammen med kravets eier og foreløpig kobling (traceability) til leveranser og testtilfeller.
+
 ## 2.3 Løsning
 Løsningen som skal utvikles er tidsserie-baserte prognosemodeller. Viktige leveranser inkluderer deskriptiv analyse, implementerte modeller og en analyse av prognosebias og effekt av forklaringsvariabler.
 
@@ -105,12 +107,14 @@ Prognoseprosjekt
     └── 1.6.2 Gjennomført muntlig eksamen (milepæl)
 ```
 
+Mer informasjon finnes også i WBS-ordlisten i vedlegg B, som gir beskrivelse, eier og kostnadskonto for hver leveranse.
+
 ## 2.5 Forutsetninger og begrensninger
 - **Data:** Vi har fått data fra REMA for perioden 1. mars 2025 til og med 28. februar 2026. Dette er begrenset til ett år på grunn av skifte av ERP-system hos REMA.
 - **Omfang:** Analysen utføres på daglig nivå for utvalgte kampanjeprodukter ved distribusjonssenteret.
 
 ## 2.6 Omfangsverifikasjon
-Alt arbeid skal verifiseres av prosjektteamet og gjennom kvalitetssikring (QA) for å sikre at leveransene oppfyller kravene.
+Alt arbeid skal verifiseres av prosjektteamet og gjennom kvalitetssikring (QA) for å sikre at leveransene oppfyller kravene. Verifikasjoner kan gjennomføres gjennom inspeksjoner, demonstrasjoner, analyser eller tester, avhengig av hva som er hensiktsmessig.
 
 # 3. Fremdrift
 
@@ -157,19 +161,19 @@ Viktige milepæler inkluderer godkjent prosjektplan, ferdig analyseklar database
 Denne seksjonen beskriver risikostyringsprosessen og gir en kopi av risikoregisteret som baseline.
 
 ## 4.1 Prosess for risikostyring
-Risikoer ble identifisert gjennom sjekklister og konsultasjon med veiledere. Risikoregisteret skal gjennomgås ved slutten av hver mandagsmøte. Tiltak skal iverksettes proaktivt.
+Risikoer ble identifisert gjennom sjekklister og konsultasjon med veiledere. Risikoregisteret skal gjennomgås ved slutten av hver mandagsmøte. Tiltak skal iverksettes proaktivt. Sannsynlighet og tidsestimater for risikoene ble utviklet av prosjektgruppen basert på tidligere erfaring.
 
 ## 4.2 Risikoregister
-[Risikoregisteret viser kjente risikoer som datakvalitet, tidsnød og tekniske utfordringer med modellering.]
+[Risikoregisteret viser kjente risikoer som datakvalitet, tidsnød og tekniske utfordringer med modellering.] Det fullstendige risikoregisteret finnes også i vedlagt dokument.
 
 # 5. Saker
-Kjente problemer som må løses under gjennomføringen inkluderer endelig avklaring av variabler med REMA-kontakt.
+Nødvendige ressurser og fremdrift for å håndtere alle forventede prosjektsaker er bygget inn i baselineplanen. Kjente problemer inkluderer endelig avklaring av variabler med REMA-kontakt.
 
 # 6. Interessenter
-De viktigste interessentene er:
-- Line Lyngsnes Johansen og Amanda Arnesen Almaas (Studenter)
-- To faglærere og én hjelpelærer ved Høgskolen i Molde.
-- Kontaktperson ved REMA 1000 Distribusjon Trondheim.
+Denne seksjonen beskriver de viktigste interessentene for prosjektet. De viktigste interessentene inkluderer:
+- Studentene (Line og Amanda)
+- Faglærere og hjelpelærer ved Høgskolen i Molde
+- Kontaktperson ved REMA 1000 Distribusjon Trondheim
 
 # 7. Ressurser
 
@@ -189,6 +193,8 @@ Studentene er allokert på fulltid til prosjektet. Samarbeidet foregår kontinue
 
 # 8. Kommunikasjon
 
+Denne seksjonen beskriver planlagt formell kommunikasjon etter hvert som prosjektet gjennomføres.
+
 ## 8.1 Møter mellom studentene
 - **Ukentlige møter:** Hver mandag kl. 09:00 for planlegging og status.
 - **Tett samarbeid:** Løpende kontakt gjennom hele uka.
@@ -198,24 +204,51 @@ Studentene er allokert på fulltid til prosjektet. Samarbeidet foregår kontinue
 - Veiledningsmøter skjer etter behov.
 - Faglærer har uttrykt interesse for å delta i møte med sjefen hos REMA for å spisse problemstillingen ytterligere.
 
+## 8.3 Møter i endringskontrollstyret
+Formålet med møter i endringskontrollstyret (CCB) er å gjennomgå alle endringer i omfang, fremdriftsplan eller tidligere baselinede og godkjente leveranser for å sikre at alle mulige konsekvenser identifiseres.
+
 # 9. Kvalitet
-Kvalitet bygges inn i arbeidet gjennom kontinuerlig fagfellevurdering mellom studentene og regelmessig tilbakemelding fra veiledere.
+
+Denne seksjonen beskriver tilnærmingen til kvalitetsstyring gjennom hele prosjektet.
+
+## 9.1 Kvalitetsprinsipper
+Kvalitet bygges inn i arbeidet gjennom kontinuerlig fagfellevurdering mellom studentene og regelmessig tilbakemelding fra veiledere. De fire kvalitetsprinsippene (Planlegging, Gevinst, Kontinuerlig forbedring, Egnet for formålet) ligger til grunn.
+
+## 9.2 Fagfellevurderinger
+Fagfellevurderinger er en av de mest effektive prosessene for å sikre at leveranser har høy kvalitet. Det skal brukes både uformelle og formelle fagfellevurderinger.
+
+### 9.2.1 Uformelle fagfellevurderinger
+Eier av hver leveranse skal sikre at leveransen har vært gjennom en fagfellevurdering før den ferdigstilles. En fagfellevurdering bør inkludere to eller tre fagfeller.
+
+### 9.2.2 Formelle fagfellevurderinger
+Formelle fagfellevurderinger er påkrevd for alle leveranser som har juridiske eller akademiske krav. QA-organisasjonen skal administrere prosessen.
+
+## 9.3 Brukerreviews
+Brukerreviews er inkludert for å sikre at prosjektresultatet er egnet for formålet. Kunden representeres av REMA-kontakten og faglærere.
 
 # 10. Anskaffelser
-Ingen eksterne anskaffelser utover eksisterende programvare (f.eks. Python/R, Excel) og data fra REMA.
+Prosjektet krever for øyeblikket ingen eksterne anskaffelser utover eksisterende programvare (Python/R, Excel) og data fra REMA.
 
 # 11. Endringskontrollprosess
-Vesentlige endringer i omfang eller fremdrift skal vurderes av begge studentene og ved behov godkjennes av veileder.
 
----
+Når denne prosjektplanen er godkjent, skal alle endringer i omfang eller fremdriftsplan gå gjennom den formelle endringskontrollprosessen. En endring må dokumenteres formelt i et endringsforespørselsskjema (vedlegg F).
 
 # Vedlegg
 
 ## Vedlegg A - Kravliste
-[Fullstendig kravliste med eier og sporbarhet.]
+Dette vedlegget gir en oversikt over prosjektkravene, inkludert unik identifikator, type, eier og sporbarhet til leveranser.
 
 ## Vedlegg B - WBS-ordliste
-[Beskrivelse av hvert arbeidselement i WBS.]
+Dette vedlegget gir en WBS-ordliste med mer informasjon om leveransene dokumentert i seksjon 2.4.
 
 ## Vedlegg C - Format for saksliste
-[Mal for oppfølging av saker og risikoer.]
+Dette vedlegget gir malen for prosjektets saksliste som brukes til koordinering av det ukentlige saksstatusmøtet.
+
+## Vedlegg D - Format for månedlig prosjektrapport
+Dette vedlegget gir formatet for én-sides rapporten som skal brukes i de månedlige prosjektgjennomgangene.
+
+## Vedlegg E - Mal for brukerreview
+Dette vedlegget gir malen som brukes i brukerreview-prosessen.
+
+## Vedlegg F - Skjema for endringsforespørsel
+Dette vedlegget gir det formelle skjemaet som brukes for endringsforespørsler.
