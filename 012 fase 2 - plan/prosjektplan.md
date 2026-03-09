@@ -438,6 +438,7 @@ oppsummering av aktivitetene og tidslinjen:
 
   *Ferdig kvalitetssikret       0 dager           31.05.26          31.05.26
   rapport (milepæl)*                                                
+
   *Gjennomført muntlig          5 dager           01.06.26          05.06.26
   eksamen (milepæl)*                                                
 
