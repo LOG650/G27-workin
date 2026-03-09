@@ -174,10 +174,10 @@ er av høy interesse for både REMA 1000 og faglærere for senere bruk.
 
 Prosjektgruppen vurderte to hovedalternativer for oppgaven:
 
-- Alternativ 1: Hvilke faktorer påvirker avviket mellom prognose og
+\- Alternativ 1: Hvilke faktorer påvirker avviket mellom prognose og
   faktisk etterspørsel.
 
-- Alternativ 2: Hvordan historiske bestillingsdata kan brukes til å
+\- Alternativ 2: Hvordan historiske bestillingsdata kan brukes til å
   predikere ukentlig etterspørsel.
 
 Etter diskusjoner med faglærer ble det besluttet å gå for en variant av
@@ -186,10 +186,10 @@ forklaringsvariabler som kampanjer og pris, da vi skal bygge en modell.
 
 ### 1.4.2 Forutsetninger (og begrensninger)
 
-- Data: Vi har fått data fra REMA for perioden 1. mars 2025 til og
+\- Data: Vi har fått data fra REMA for perioden 1. mars 2025 til og
   med 28. febuar 2026. Dette er begrenset til ett år på grunn av skifte
   av ERP-system hos REMA.
-- Omfang: Analysen utføres på daglig nivå for utvalgte kampanjeprodukter
+\- Omfang: Analysen utføres på daglig nivå for utvalgte kampanjeprodukter
   ved distribusjonssenteret.
 
 ### 1.4.3 Gevinster
@@ -278,79 +278,42 @@ og en analyse av prognosebias og effekt av forklaringsvariabler.
 
 ## 2.4 Arbeidsnedbrytningsstruktur (WBS)
 
-Dette prosjektets WBS utgjør den formelle baselinen for hele prosjektets
-omfang.
-
-![](media/image1.png){width="6.541666666666667in"
-height="1.1354166666666667in"}
+Dette prosjektets WBS utgjør den formelle baselinen for hele prosjektets omfang. En visuell fremstilling finnes i Vedlegg C.
 
 LOG 560 Forskningsprosjekt
-
 ├── Prosjektgrunnlag
-
-│ ├── Definert problemstilling
-
-│ ├── Samarbeidsavtale etablert
-
-│ ├── Proposal dokument
-
-│ └── Godkjent proposal (Milepæl)
-
+│   ├── Definert problemstilling
+│   ├── Samarbeidsavtale etablert
+│   ├── Proposal dokument
+│   └── Godkjent proposal (Milepæl)
 ├── Prosjektplanlegging
-
-│ ├── Dokumentert litteraturgjennomgang
-
-│ ├── Metode- og analyseopplegg
-
-│ ├── Arbeidsnedbrytningsstruktur (WBS)
-
-│ ├── Presedensdiagram
-
-│ ├── Fremdriftsplan (Gantt)
-
-│ └── Godkjent prosjektplan (Milepæl)
-
+│   ├── Dokumentert litteraturgjennomgang
+│   ├── Metode- og analyseopplegg
+│   ├── Arbeidsnedbrytningsstruktur (WBS)
+│   ├── Presedensdiagram
+│   ├── Fremdriftsplan (Gantt)
+│   └── Godkjent prosjektplan (Milepæl)
 ├── Datagrunnlag
-
-│ ├── Rådatasett fra REMA
-
-│ ├── Strukturert datasett
-
-│ └── Datadokumentasjon
-
+│   ├── Rådatasett fra REMA
+│   ├── Strukturert datasett
+│   └── Datadokumentasjon
 ├── Analyse/Modellering
-
-│ ├── Analyse av prognoseavvik
-
-│ ├── Prognosepresisjon (MAE/MAPE)
-
-│ ├── Kartlagte etterspørselsmønstre
-
-│ ├── Estimert kampanje- og priseffekt
-
-│ ├── Utviklede prognosemodeller
-
-│ └── Analyse fullført (Milepæl)
-
+│   ├── Analyse av prognoseavvik
+│   ├── Prognosepresisjon (MAE/MAPE)
+│   ├── Kartlagte etterspørselsmønstre
+│   ├── Estimert kampanje- og priseffekt
+│   ├── Utviklede prognosemodeller
+│   └── Analyse fullført (Milepæl)
 ├── Forskningsrapport
-
-│ ├── Innledningskapittel
-
-│ ├── Metodekapittel
-
-│ ├── Resultatkapittel
-
-│ ├── Diskusjon og konklusjon
-
-│ ├── Hovedutkast (Milepæl)
-
-│ └── Endelig forskningsrapport
-
+│   ├── Innledningskapittel
+│   ├── Metodekapittel
+│   ├── Resultatkapittel
+│   ├── Diskusjon og konklusjon
+│   ├── Hovedutkast (Milepæl)
+│   └── Endelig forskningsrapport
 └── Presentasjon
-
-├── Presentasjonsmateriell
-
-└── Gjennomført muntlig eksamen (Milepæl)
+    ├── Presentasjonsmateriell
+    └── Gjennomført muntlig eksamen (Milepæl)
 
 Mer informasjon finnes også i WBS-ordlisten i vedlegg B, som gir
 beskrivelse og eier for hver leveranse.
@@ -407,6 +370,8 @@ Ferdig kvalitetssikret rapport
 → Utarbeide presentasjon
 → Gjennomført muntlig eksamen (Milepæl)
 → SLUTT
+
+En visuell fremstilling av avhengighetsdiagrammet finnes i Vedlegg D.
 
 ## 3.2 Gantt-plan
 
@@ -661,20 +626,25 @@ dokumentert i seksjon
 
 ## Vedlegg C -- WBS
 
-Dette vedlegget er WBS. [C:\\Users\\lj_77\\OneDrive\\Desktop\\WBS
-LOG650.pdf](file:///C:\Users\lj_77\OneDrive\Desktop\WBS%20LOG650.pdf)
+Dette vedlegget er WBS.
+<https://studhimolde-my.sharepoint.com/:w:/g/personal/lijoh4907_himolde_no/IQCHE_rB_vv7S43KlDblLg8rAT3mxW1nIGe-G15TurOK2_Y?e=RsjLsB>
 
-## Vedlegg D - Gantt-diagram
+## Vedlegg D - Avhengighetsdiagram/presedensdiagram
+
+Dette vedlegget er et bilde av avhengighetsdiagrammet.
+<https://studhimolde-my.sharepoint.com/:w:/g/personal/lijoh4907_himolde_no/IQADYbUSWOa7QoMrwMNb4sNrAS4SbY_zAEx8UYEkHsTdzZc?e=v2ZTOA>
+
+## Vedlegg E - Gantt-diagram
 
 Dette vedlegget inneholder fil fra MS Project av Gantt-diagram for
 prosjektet. Det ligger i en separat fil.
 
-## Vedlegg E -- Risikoregister
+## Vedlegg F -- Risikoregister
 
 Fullstendig risikoregister:
 [Risiko.docx](https://studhimolde-my.sharepoint.com/:w:/g/personal/lijoh4907_himolde_no/IQBtr60oYtWUQIzBpraX2GVNAaaPi-H-ulxtFWAACnCS8Vc?e=laoSqj)
 
-## Vedlegg F - Format for saksliste
+## Vedlegg G - Format for saksliste
 
 Dette vedlegget gir malen for prosjektets saksliste som brukes til
 koordinering av det ukentlige saksstatusmøtet. [Vedlegg F - Mal for
