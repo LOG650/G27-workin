@@ -280,40 +280,46 @@ og en analyse av prognosebias og effekt av forklaringsvariabler.
 
 Dette prosjektets WBS utgjør den formelle baselinen for hele prosjektets omfang. En visuell fremstilling finnes i Vedlegg C.
 
-LOG 560 Forskningsprosjekt
-├── Prosjektgrunnlag
-│   ├── Definert problemstilling
-│   ├── Samarbeidsavtale etablert
-│   ├── Proposal dokument
-│   └── Godkjent proposal (Milepæl)
-├── Prosjektplanlegging
-│   ├── Dokumentert litteraturgjennomgang
-│   ├── Metode- og analyseopplegg
-│   ├── Arbeidsnedbrytningsstruktur (WBS)
-│   ├── Presedensdiagram
-│   ├── Fremdriftsplan (Gantt)
-│   └── Godkjent prosjektplan (Milepæl)
-├── Datagrunnlag
-│   ├── Rådatasett fra REMA
-│   ├── Strukturert datasett
-│   └── Datadokumentasjon
-├── Analyse/Modellering
-│   ├── Analyse av prognoseavvik
-│   ├── Prognosepresisjon (MAE/MAPE)
-│   ├── Kartlagte etterspørselsmønstre
-│   ├── Estimert kampanje- og priseffekt
-│   ├── Utviklede prognosemodeller
-│   └── Analyse fullført (Milepæl)
-├── Forskningsrapport
-│   ├── Innledningskapittel
-│   ├── Metodekapittel
-│   ├── Resultatkapittel
-│   ├── Diskusjon og konklusjon
-│   ├── Hovedutkast (Milepæl)
-│   └── Endelig forskningsrapport
-└── Presentasjon
-    ├── Presentasjonsmateriell
-    └── Gjennomført muntlig eksamen (Milepæl)
+### LOG 560 Forskningsprosjekt
+
+- **Prosjektgrunnlag**
+  - Definert problemstilling
+  - Samarbeidsavtale etablert
+  - Proposal dokument
+  - Godkjent proposal *(Milepæl)*
+
+- **Prosjektplanlegging**
+  - Dokumentert litteraturgjennomgang
+  - Metode- og analyseopplegg
+  - Arbeidsnedbrytningsstruktur (WBS)
+  - Presedensdiagram
+  - Fremdriftsplan (Gantt)
+  - Godkjent prosjektplan *(Milepæl)*
+
+- **Datagrunnlag**
+  - Rådatasett fra REMA
+  - Strukturert datasett
+  - Datadokumentasjon
+
+- **Analyse / Modellering**
+  - Analyse av prognoseavvik
+  - Prognosepresisjon (MAE/MAPE)
+  - Kartlagte etterspørselsmønstre
+  - Estimert kampanje- og priseffekt
+  - Utviklede prognosemodeller
+  - Analyse fullført *(Milepæl)*
+
+- **Forskningsrapport**
+  - Innledningskapittel
+  - Metodekapittel
+  - Resultatkapittel
+  - Diskusjon og konklusjon
+  - Hovedutkast *(Milepæl)*
+  - Endelig forskningsrapport
+
+- **Presentasjon**
+  - Presentasjonsmateriell
+  - Gjennomført muntlig eksamen *(Milepæl)*
 
 Mer informasjon finnes også i WBS-ordlisten i vedlegg B, som gir
 beskrivelse og eier for hver leveranse.
@@ -432,7 +438,6 @@ oppsummering av aktivitetene og tidslinjen:
 
   *Ferdig kvalitetssikret       0 dager           31.05.26          31.05.26
   rapport (milepæl)*                                                
-
   *Gjennomført muntlig          5 dager           01.06.26          05.06.26
   eksamen (milepæl)*                                                
   -----------------------------------------------------------------------------------
