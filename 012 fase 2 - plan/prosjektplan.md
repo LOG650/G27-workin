@@ -6,12 +6,13 @@
 
 **2026-03-02**
 
-Utarbeidet av: Line Lyngsnes Johansen og Amanda Arnesen Almaas Logistikk
-(nettbasert), Høgskolen i Molde
+Utarbeidet av:
 
-Prosjektleder: Amanda Almaas Arnesen
+Line Lyngsnes Johansen og Amanda Arnesen Almaas
 
-Autorisert av: \[Sponsor\]
+Logistikk (nettbasert),
+
+Høgskolen i Molde
 
 **\**
 
@@ -19,7 +20,7 @@ Autorisert av: \[Sponsor\]
 
 **Innhold**
 
-[1. Sammendrag [4](#sammendrag)](#sammendrag)
+[1. Sammendrag [4](#sammendrag-1)](#sammendrag-1)
 
 [1.1 Behov [4](#behov)](#behov)
 
@@ -27,108 +28,107 @@ Autorisert av: \[Sponsor\]
 
 [1.3 Kunde [4](#kunde)](#kunde)
 
-[1.4 Forretningscase [4](#forretningscase)](#forretningscase)
+[1.4 Forretningscase [5](#forretningscase)](#forretningscase)
 
-[1.4.1 Alternativer [4](#alternativer)](#alternativer)
+[1.4.1 Alternativer [5](#alternativer)](#alternativer)
 
 [1.4.2 Forutsetninger (og begrensninger)
 [5](#forutsetninger-og-begrensninger)](#forutsetninger-og-begrensninger)
 
 [1.4.3 Gevinster [5](#gevinster)](#gevinster)
 
-[1.4.4 Kostnader [5](#kostnader)](#kostnader)
+[1.4.4 Kostnader [6](#kostnader)](#kostnader)
 
-[1.4.5 Analyse [5](#analyse)](#analyse)
+[1.4.5 Analyse [6](#analyse)](#analyse)
 
-[2. Omfang [6](#omfang)](#omfang)
+[2. Omfang [7](#omfang)](#omfang)
 
-[2.1 Mål [6](#mål)](#mål)
+[2.1 Mål [7](#mål)](#mål)
 
-[2.2 Krav [6](#krav)](#krav)
+[2.2 Krav [7](#krav)](#krav)
 
-[2.3 Løsning [6](#løsning)](#løsning)
+[2.3 Løsning [7](#løsning)](#løsning)
 
 [2.4 Arbeidsnedbrytningsstruktur (WBS)
-[6](#arbeidsnedbrytningsstruktur-wbs)](#arbeidsnedbrytningsstruktur-wbs)
+[8](#arbeidsnedbrytningsstruktur-wbs)](#arbeidsnedbrytningsstruktur-wbs)
 
 [2.5 Omfangsverifikasjon
-[8](#omfangsverifikasjon)](#omfangsverifikasjon)
+[9](#omfangsverifikasjon)](#omfangsverifikasjon)
 
-[3. Fremdrift [8](#omfangsverifikasjon)](#omfangsverifikasjon)
+[3. Fremdrift [9](#fremdrift)](#fremdrift)
 
-[3.1 Detaljert Fremdriftsplan
-[8](#avhengighetsdiagram)](#avhengighetsdiagram)
+[3.1 Avhengighetsdiagram
+[9](#avhengighetsdiagram)](#avhengighetsdiagram)
 
-[3.2 Kritisk linje [10](#section)](#section)
+[3.2 Gantt-plan [9](#gantt-plan)](#gantt-plan)
 
-[3.3 Milepæler [10](#milepæler)](#milepæler)
+[3.3 Kritisk linje [11](#kritisk-linje)](#kritisk-linje)
 
-[4. Risiko [10](#risiko)](#risiko)
+[3.4 Milepæler [11](#milepæler)](#milepæler)
+
+[4. Risiko [12](#risiko)](#risiko)
 
 [4.1 Prosess for risikostyring
-[10](#prosess-for-risikostyring)](#prosess-for-risikostyring)
+[12](#prosess-for-risikostyring)](#prosess-for-risikostyring)
 
-[4.2 Risikoregister [10](#risikoregister)](#risikoregister)
+[4.2 Risikoregister [12](#risikoregister)](#risikoregister)
 
-[5. Saker [11](#saker)](#saker)
+[5. Saker [13](#saker)](#saker)
 
-[6. Interessenter [11](#interessenter)](#interessenter)
+[6. Interessenter [13](#interessenter)](#interessenter)
 
-[7. Ressurser [11](#ressurser)](#ressurser)
+[7. Ressurser [14](#ressurser)](#ressurser)
 
-[7.1 Prosjektteam [11](#prosjektteam)](#prosjektteam)
+[7.1 Prosjektteam [14](#prosjektteam)](#prosjektteam)
 
-[7.2 Ressursbelastning [12](#ressursbelastning)](#ressursbelastning)
+[7.2 Ressursbelastning [14](#ressursbelastning)](#ressursbelastning)
 
-[8. Kommunikasjon [12](#kommunikasjon)](#kommunikasjon)
+[7.3 Kritiske ressurser [15](#kritiske-ressurser)](#kritiske-ressurser)
+
+[8. Kommunikasjon [15](#kommunikasjon)](#kommunikasjon)
 
 [8.1 Møter mellom studentene
-[12](#møter-mellom-studentene)](#møter-mellom-studentene)
+[15](#møter-mellom-studentene)](#møter-mellom-studentene)
 
 [8.2 Møter med veiledere og REMA
-[12](#møter-med-veiledere-og-rema)](#møter-med-veiledere-og-rema)
+[15](#møter-med-veiledere-og-rema)](#møter-med-veiledere-og-rema)
 
 [8.3 Møter i endringskontrollstyret
-[12](#møter-i-endringskontrollstyret)](#møter-i-endringskontrollstyret)
+[16](#møter-i-endringskontrollstyret)](#møter-i-endringskontrollstyret)
 
-[9. Kvalitet [12](#kvalitet)](#kvalitet)
+[9. Kvalitet [16](#kvalitet)](#kvalitet)
 
 [9.1 Fagfellevurderinger
-[13](#fagfellevurderinger)](#fagfellevurderinger)
+[16](#fagfellevurderinger)](#fagfellevurderinger)
 
 [9.1.1 Uformelle fagfellevurderinger
-[13](#uformelle-fagfellevurderinger)](#uformelle-fagfellevurderinger)
+[16](#uformelle-fagfellevurderinger)](#uformelle-fagfellevurderinger)
 
 [9.1.2 Formelle fagfellevurderinger
-[13](#formelle-fagfellevurderinger)](#formelle-fagfellevurderinger)
+[16](#formelle-fagfellevurderinger)](#formelle-fagfellevurderinger)
 
-[9.3 Brukerreview [13](#brukerreviews)](#brukerreviews)
+[10. Anskaffelser [16](#anskaffelser)](#anskaffelser)
 
-[10. Anskaffelser [13](#anskaffelser)](#anskaffelser)
+[11. Endringskontrollprosess [17](#_Toc223953456)](#_Toc223953456)
 
-[11. Endringskontrollprosess
-[13](#endringskontrollprosess)](#endringskontrollprosess)
-
-[Vedlegg [14](#vedlegg)](#vedlegg)
+[Vedlegg [18](#_Toc223953457)](#_Toc223953457)
 
 [Vedlegg A - Kravliste
-[14](#vedlegg-a---kravliste)](#vedlegg-a---kravliste)
+[18](#vedlegg-a---kravliste)](#vedlegg-a---kravliste)
 
 [Vedlegg B - WBS-ordliste
-[14](#vedlegg-b---wbs-ordliste)](#vedlegg-b---wbs-ordliste)
+[18](#vedlegg-b---wbs-ordliste)](#vedlegg-b---wbs-ordliste)
 
-[Vedlegg C - Format for saksliste [14](#vedlegg-c-wbs)](#vedlegg-c-wbs)
+[Vedlegg C -- WBS [18](#vedlegg-c-wbs)](#vedlegg-c-wbs)
 
-[Vedlegg D - Format for månedlig prosjektrapport
-[14](#vedlegg-g---format-for-månedlig-prosjektrapport)](#vedlegg-g---format-for-månedlig-prosjektrapport)
+[Vedlegg D - Gantt-diagram
+[18](#vedlegg-d---gantt-diagram)](#vedlegg-d---gantt-diagram)
 
-[Vedlegg E - Mal for brukerreview
-[14](#vedlegg-h---mal-for-brukerreview)](#vedlegg-h---mal-for-brukerreview)
+[Vedlegg E -- Risikoregister
+[18](#vedlegg-e-risikoregister)](#vedlegg-e-risikoregister)
 
-[Vedlegg F - Skjema for endringsforespørsel
-[14](#vedlegg-i---skjema-for-endringsforespørsel)](#vedlegg-i---skjema-for-endringsforespørsel)
-
-[]{#sammendrag .anchor}
+[Vedlegg F - Format for saksliste
+[18](#vedlegg-f---format-for-saksliste)](#vedlegg-f---format-for-saksliste)
 
 # 1. Sammendrag {#sammendrag-1}
 
@@ -174,10 +174,10 @@ er av høy interesse for både REMA 1000 og faglærere for senere bruk.
 
 Prosjektgruppen vurderte to hovedalternativer for oppgaven:
 
-- **Alternativ 1:** Hvilke faktorer påvirker avviket mellom prognose og
+- Alternativ 1: Hvilke faktorer påvirker avviket mellom prognose og
   faktisk etterspørsel.
 
-- **Alternativ 2:** Hvordan historiske bestillingsdata kan brukes til å
+- Alternativ 2: Hvordan historiske bestillingsdata kan brukes til å
   predikere ukentlig etterspørsel.
 
 Etter diskusjoner med faglærer ble det besluttet å gå for en variant av
@@ -186,11 +186,11 @@ forklaringsvariabler som kampanjer og pris, da vi skal bygge en modell.
 
 ### 1.4.2 Forutsetninger (og begrensninger)
 
-- **Data:** Vi har fått data fra REMA for perioden 1. mars 2025 til og
-  med 28. februar 2026. Dette er begrenset til ett år på grunn av skifte
+- Data: Vi har fått data fra REMA for perioden 1. mars 2025 til og
+  med 28. febuar 2026. Dette er begrenset til ett år på grunn av skifte
   av ERP-system hos REMA.
-- **Omfang:** Analysen utføres på daglig nivå for utvalgte
-  kampanjeprodukter ved distribusjonssenteret.
+- Omfang: Analysen utføres på daglig nivå for utvalgte kampanjeprodukter
+  ved distribusjonssenteret.
 
 ### 1.4.3 Gevinster
 
@@ -259,8 +259,8 @@ ved REMA 1000 Distribusjon Trondheim, med særlig fokus på:
 
 \- Inkludering av prisingdata, kampanjeindikatorer og reklameeffekter.
 
-> \- Analyse av både utgående varestrøm til butikk og inngående
-> varestrøm til senteret (lagerkapasitet).
+\- Analyse av både utgående varestrøm til butikk og inngående
+varestrøm til senteret (lagerkapasitet).
 
 ## 2.2 Krav
 
@@ -279,9 +279,7 @@ og en analyse av prognosebias og effekt av forklaringsvariabler.
 ## 2.4 Arbeidsnedbrytningsstruktur (WBS)
 
 Dette prosjektets WBS utgjør den formelle baselinen for hele prosjektets
-omfang.\
-Her er kobling til prosjektets WBS: [Untitled
-Diagram.drawio.svg](https://studhimolde-my.sharepoint.com/:u:/g/personal/amalm8854_himolde_no/IQCbsNjvYKBwSKhshdAOFYvpARPMuuTgZah7oiuVQnpaWDs?e=CWQw8X)
+omfang.
 
 ![](media/image1.png){width="6.541666666666667in"
 height="1.1354166666666667in"}
@@ -374,9 +372,41 @@ dokumentert, og endelig verifikasjon skjer før innlevering av rapporten.
 
 Denne seksjonen dokumenterer fremdrifts-baselinen for prosjektet.
 
-## 3.1 Avhengighetsdiagram 
-
-![](media/image3.svg){width="6.3in" height="0.6826388888888889in"}
+## 3.1 Avhengighetsdiagram/presedensdiagram 
+START
+→ Prosjektoppstart
+→ Utarbeide proposal
+→ Litteraturgjennomgang
+→ Metode- og analyseopplegg
+→ Godkjent proposal (Milepæl)
+ 
+Godkjent proposal
+→ Lage WBS
+→ Lage presedensdiagram
+→ Lage Gantt-plan
+→ Godkjent prosjektplan (Milepæl)
+ 
+Godkjent prosjektplan
+→ Data innhenting
+→ Datavask og strukturering
+→ Analyse og modellering
+→ Ferdig analyse (Milepæl)
+ 
+Ferdig analyse
+→ Skrive metodekapittel
+→ Skrive resultatkapittel
+→ Skrive diskusjon og konklusjon
+→ Hovedutkast ferdig (Milepæl)
+ 
+Hovedutkast ferdig
+→ Peer-to-peer review
+→ Kvalitetssikring / korrigering
+→ Ferdig kvalitetssikret rapport (Milepæl)
+ 
+Ferdig kvalitetssikret rapport
+→ Utarbeide presentasjon
+→ Gjennomført muntlig eksamen (Milepæl)
+→ SLUTT
 
 ## 3.2 Gantt-plan
 
@@ -438,8 +468,8 @@ oppsummering av aktivitetene og tidslinjen:
   *Ferdig kvalitetssikret       0 dager           31.05.26          31.05.26
   rapport (milepæl)*                                                
 
-  *Gjennomført muntlig eksamen  5 dager           01.06.26          05.06.26
-  (milepæl)*                                                        
+  *Gjennomført muntlig          5 dager           01.06.26          05.06.26
+  eksamen (milepæl)*                                                
   -----------------------------------------------------------------------------------
 
 ## 
@@ -496,26 +526,12 @@ datakvalitet, tilgang til data og tidsbegrensninger i prosjektperioden.
 Risikoregisteret oppdateres ved behov gjennom prosjektperioden. Det
 fullstendige risikoregisteret finnes også i vedlagt dokument.
 
-  ----------------------------------------------------------------------------
-  **Risiko**       **Sannsynlighet**   **Konsekvens**   **Tiltak**
-  ---------------- ------------------- ---------------- ----------------------
-  Manglende eller  Middels             Høy              Datavask og eventuelt
-  dårlig                                                redusere antall
-  datakvalitet                                          produkter
-
-  Forsinket        Lav                 Høy              Justere fremdriftsplan
-  tilgang til data                                      og starte metodearbeid
-                                                        tidligere
-
-  Tekniske         Middels             Middels          Søke veiledning og
-  problemer med                                         bruke enklere modeller
-  modellering                                           
-
-  Tidsnød mot      Middels             Middels          Tydelig
-  slutten av                                            arbeidsfordeling og
-  prosjektet                                            jevn
-                                                        fremdriftsoppfølging
-  ----------------------------------------------------------------------------
+| Risiko | Sannsynlighet | Konsekvens | Tiltak |
+|:-------|:-------------:|:----------:|:-------|
+| Manglende eller dårlig datakvalitet | Middels | Høy | Datavask og eventuelt redusere antall produkter |
+| Forsinket tilgang til data fra REMA | Lav | Høy | Justere fremdriftsplan og starte metodearbeid tidligere |
+| Tekniske problemer med modellering | Middels | Middels | Søke veiledning og bruke enklere modeller ved behov |
+| Tidsnød mot slutten av prosjektet | Middels | Middels | Jevn fremdriftsoppfølging og tydelig arbeidsfordeling |
 
 # 5. Saker
 
@@ -536,9 +552,9 @@ viktigste interessentene inkluderer:
 
 \- Studentene (Line og Amanda)
 
-> \- Faglærere og hjelpelærer ved Høgskolen i Molde
->
-> \- Kontaktperson ved REMA 1000 Distribusjon Trondheim
+\- Faglærere og hjelpelærer ved Høgskolen i Molde
+
+\- Kontaktperson ved REMA 1000 Distribusjon Trondheim
 
 # 7. Ressurser
 
@@ -550,24 +566,12 @@ kreves for å gjennomføre REMA1000-prosjektet. 
 
 Prosjektet gjennomføres av to studenter i tett samarbeid.
 
-  -----------------------------------------------------------------------
-  Navn                    Rolle                   Ansvar
-  ----------------------- ----------------------- -----------------------
-  Amanda Almaas Arnesen   Prosjektleder / Student Overordnet ansvar,
-                                                  koordinering og
-                                                  planlegging.
-
-  Line Lyngsnes Johansen  Student                 Analyse, modellering og
-                                                  rapportskriving.
-
-  Faglærere (2 stk)       Veiledere               Faglig støtte og
-                                                  vurdering.
-
-  Hjelpelærer             Assistent               Teknisk støtte.
-
-  Kontakt REMA 1000       Ekstern kontakt         Tilgang til data og
-                                                  domenekunnskap.
-  -----------------------------------------------------------------------
+| Navn | Rolle | Ansvar |
+|:-----|:----:|:-------|
+| Amanda Almaas Arnesen | Prosjektleder / Student | Overordnet ansvar, koordinering og planlegging |
+| Line Lyngsnes Johansen | Student | Analyse, modellering og rapportskriving |
+| Faglærere (2 stk) | Veiledere | Faglig støtte og vurdering |
+| Hjelpelærer | Assistent | Teknisk støtte |
 
 ## 7.2 Ressursbelastning
 
@@ -635,26 +639,11 @@ metodekapittel, analyse og endelig rapport. Vurderingene gjennomføres
 internt i prosjektgruppen og ved behov i dialog med veileder, for å
 sikre faglig kvalitet og korrekthet.
 
-## 9.1.3 Brukerreviews
-
-Brukerreviews er inkludert for å sikre at prosjektresultatet er egnet
-for formålet. Kunden representeres av REMA-kontakten og faglærere. Peer
-to peer?
-
 # 10. Anskaffelser
 
 Prosjektet krever for øyeblikket ingen eksterne anskaffelser utover
 eksisterende programvare (Python/R, vscode, gemini, MS Project, java,
 word) og data fra REMA.
-
-# 11. Endringskontrollprosess
-
-Når denne prosjektplanen er godkjent, skal alle endringer i omfang eller
-fremdriftsplan gå gjennom den formelle endringskontrollprosessen. En
-endring må dokumenteres formelt i et endringsforespørselsskjema (vedlegg
-I).
-
-[]{#vedlegg .anchor}
 
 # Vedlegg {#vedlegg-1}
 
@@ -678,8 +667,7 @@ LOG650.pdf](file:///C:\Users\lj_77\OneDrive\Desktop\WBS%20LOG650.pdf)
 ## Vedlegg D - Gantt-diagram
 
 Dette vedlegget inneholder fil fra MS Project av Gantt-diagram for
-prosjektet.[C:\\Users\\lj_77\\OneDrive\\Documents\\Prosjektplan
-gant27feb.mpp](file:///C:\Users\lj_77\OneDrive\Documents\Prosjektplan%20gant27feb.mpp)
+prosjektet. Det ligger i en separat fil.
 
 ## Vedlegg E -- Risikoregister
 
@@ -691,17 +679,3 @@ Fullstendig risikoregister:
 Dette vedlegget gir malen for prosjektets saksliste som brukes til
 koordinering av det ukentlige saksstatusmøtet. [Vedlegg F - Mal for
 saksliste.docx](https://studhimolde-my.sharepoint.com/:w:/g/personal/lijoh4907_himolde_no/IQAWQQC8j2XyRJVf7-4L5jZGAfhEuGntD4gR2jQ1DsarICE?e=e9uqqn)
-
-## Vedlegg G - Format for månedlig prosjektrapport
-
-Dette vedlegget gir formatet for én-sides rapporten som skal brukes i de
-månedlige prosjektgjennomgangene.
-
-## Vedlegg H - Mal for brukerreview
-
-Dette vedlegget gir malen som brukes i brukerreview-prosessen.
-
-## Vedlegg I - Skjema for endringsforespørsel
-
-Dette vedlegget gir det formelle skjemaet som brukes for
-endringsforespørsler.
