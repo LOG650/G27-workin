@@ -440,7 +440,6 @@ oppsummering av aktivitetene og tidslinjen:
   rapport (milepæl)*                                                
   *Gjennomført muntlig          5 dager           01.06.26          05.06.26
   eksamen (milepæl)*                                                
-  -----------------------------------------------------------------------------------
 
 ## 
 
