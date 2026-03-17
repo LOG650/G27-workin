@@ -10,7 +10,7 @@ Denne filen oppdateres løpende for å gjenspeile fremdriften i prosjektet baser
 | Dato | Aktivitet | Status | Merknad |
 | :--- | :--- | :--- | :--- |
 | **16.03.26** | ACT-03: Litteraturgjennomgang | 🟡 75% | **Passert frist** |
-| **16.03.26** | ACT-07: Datavask og strukturering | 🟡 50% | **Passert frist (Kritisk linje)** |
+| **16.03.26** | ACT-07: Datavask og strukturering | ✅ 100% | Fullført |
 | **19.03.26** | ACT-06: Datainnhenting fra REMA | 🟡 80% | Pågår |
 | **13.04.26** | ACT-08: Analyse og modellering | 🔵 0% | Starter snart |
 
