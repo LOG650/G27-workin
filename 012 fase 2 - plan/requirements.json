@@ -1,0 +1,98 @@
+{
+  "$schema": "https://raw.githubusercontent.com/iso-29148/requirements-schema/main/schema.json",
+  "requirementsSet": {
+    "id": "RS-LOG650-01",
+    "name": "Kravspesifikasjon for Prognoseprosjekt REMA 1000",
+    "status": "Approved",
+    "baselineDate": "2026-03-17"
+  },
+  "stakeholderNeeds": [
+    {
+      "id": "SN-001",
+      "stakeholder": "REMA 1000 Distribusjon Trondheim",
+      "description": "Behov for dypere innsikt i drivere for etterspørselsvariasjon for å optimalisere distribusjon og lagerstyring."
+    },
+    {
+      "id": "SN-002",
+      "stakeholder": "Høgskolen i Molde",
+      "description": "Behov for akademisk dokumentasjon og anvendelse av kvantitative metoder innen logistikkfaget."
+    },
+    {
+      "id": "SN-003",
+      "stakeholder": "Prosjektteam (Line & Amanda)",
+      "description": "Behov for et objektivt rammeverk for å sammenligne og validere ulike prognosemodellers presisjon."
+    }
+  ],
+  "requirements": [
+    {
+      "requirementId": "REQ-001",
+      "type": "functional",
+      "category": "data",
+      "name": "Datatilgang og anonymisering",
+      "statement": "Prosjektet skal ha tilgang til et komplett og anonymisert historisk datasett på dagsnivå for utvalgte produkter fra REMA 1000 Distribusjon Trondheim.",
+      "priority": "must-have",
+      "status": "approved",
+      "source": "SN-001",
+      "verification": {
+        "method": "inspection",
+        "criteria": "Bekreftet mottak av dagsdata for minimum 12 måneder uten personopplysninger."
+      }
+    },
+    {
+      "requirementId": "REQ-002",
+      "type": "functional",
+      "category": "analyse",
+      "name": "Identifikasjon av variasjonsårsaker",
+      "statement": "Analysen skal identifisere og dokumentere de primære statistiske årsakene til variasjon i daglig etterspørsel for de utvalgte produktene.",
+      "priority": "must-have",
+      "status": "approved",
+      "source": "SN-001",
+      "verification": {
+        "method": "analysis",
+        "criteria": "Resultatkapittelet dokumenterer signifikante drivere for etterspørsel gjennom deskriptiv og inferensiell statistikk."
+      }
+    },
+    {
+      "requirementId": "REQ-003",
+      "type": "non-functional",
+      "category": "modellering",
+      "name": "Presisjonsmåling (MAE/MAPE)",
+      "statement": "Samtlige utviklede prognosemodeller skal evalueres og sammenlignes ved bruk av Mean Absolute Error (MAE) og Mean Absolute Percentage Error (MAPE).",
+      "priority": "must-have",
+      "status": "approved",
+      "source": "SN-003",
+      "verification": {
+        "method": "test",
+        "criteria": "Modellvalidering inneholder beregnede MAE- og MAPE-verdier for alle testede modellvarianter."
+      }
+    },
+    {
+      "requirementId": "REQ-004",
+      "type": "functional",
+      "category": "modellering",
+      "name": "Inkludering av forklaringsvariabler",
+      "statement": "Prognosemodellene skal inkludere prisendringer og kampanjeindikatorer som uavhengige forklaringsvariabler i estimeringen av etterspørsel.",
+      "priority": "must-have",
+      "status": "approved",
+      "source": "SN-001",
+      "verification": {
+        "method": "test",
+        "criteria": "Modellspesifikasjonen og resultatmatrisen viser koeffisienter for både pris og kampanjeeffekt."
+      }
+    },
+    {
+      "requirementId": "REQ-005",
+      "type": "non-functional",
+      "category": "rapport",
+      "name": "Akademisk standard og formalia",
+      "statement": "Den endelige forskningsrapporten skal utformes i tråd med Høgskolen i Moldes standarder for struktur, kildehenvisning (APA) og akademisk formalia.",
+      "priority": "must-have",
+      "status": "approved",
+      "source": "SN-002",
+      "verification": {
+        "method": "review",
+        "criteria": "Rapporten er kontrollert mot HiMolde sin mal for LOG650 og inneholder alle obligatoriske kapitler."
+      }
+    }
+  ]
+}

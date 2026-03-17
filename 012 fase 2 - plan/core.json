@@ -1,0 +1,139 @@
+{
+  "project_metadata": {
+    "project_id": "LOG650-2026-REMA1000",
+    "project_name": "Prognosepresisjon i distribusjonssystemer",
+    "description": "Forskningsprosjekt som undersøker tidsserie-baserte prognosemetoders evne til å predikere daglig etterspørsel for utvalgte produkter ved REMA 1000 Distribusjon Trondheim.",
+    "version": "1.1.0",
+    "status_date": "2026-03-17"
+  },
+  "governance": {
+    "prosjektleder": {
+      "name": "Amanda Arnesen Almaas",
+      "role": "Student / Prosjektleder"
+    },
+    "team": [
+      {
+        "name": "Line Lyngsnes Johansen",
+        "role": "Student / Analyse og modellering"
+      }
+    ],
+    "sponsor": "Høgskolen i Molde",
+    "kunde": "REMA 1000 Distribusjon Trondheim"
+  },
+  "objectives": {
+    "main_objective": "Utvikle og evaluere tidsserie-baserte prognosemodeller for daglig etterspørsel.",
+    "sub_objectives": [
+      "Analysere kampanjebaserte produkter (f.eks. Toro familiepakning lasagne).",
+      "Kvantifisere effekt av pris og kampanjeindikatorer.",
+      "Vurdere både utgående varestrøm til butikk og inngående varestrøm."
+    ],
+    "success_criteria": [
+      "Utviklede modeller med dokumentert prognosepresisjon.",
+      "Identifiserte statistisk signifikante forklaringsvariabler.",
+      "Levert forskningsrapport i henhold til akademiske krav."
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Tidsserie-basert modellering",
+      "Deskriptiv statistikk",
+      "Bias-analyse",
+      "Analyse av kampanje- og priseffekter"
+    ],
+    "out_of_scope": [
+      "Utvikling av kommersielle systemer",
+      "Full lageroptimalisering"
+    ],
+    "key_deliverables": [
+      "Proposal",
+      "Prosjektplan",
+      "Analyse og modeller",
+      "Forskningsrapport",
+      "Presentasjon"
+    ]
+  },
+  "data_and_method": {
+    "data_source": "Historiske data fra REMA 1000 (01.03.25 - 28.02.26).",
+    "granularity": "Daglig nivå (plukket volum, pris, kampanjestart/-slutt).",
+    "metrics": [
+      "MAE (Mean Absolute Error)",
+      "MAPE (Mean Absolute Percentage Error)",
+      "Prognosebias"
+    ],
+    "methods": [
+      "Kvantitativ metode",
+      "Tidsserieanalyse"
+    ]
+  },
+  "phase_model": {
+    "fase_1": {
+      "name": "Initiering",
+      "status": "Ferdigstilt"
+    },
+    "fase_2": {
+      "name": "Planlegging",
+      "status": "Ferdigstilt"
+    },
+    "fase_3": {
+      "name": "Gjennomføring",
+      "status": "Aktiv (Analysefase)"
+    },
+    "fase_4": {
+      "name": "Avslutning",
+      "status": "Planlagt"
+    }
+  },
+  "time_info": {
+    "start_date": "2026-01-12",
+    "end_date": "2026-06-05",
+    "milestones": {
+      "proposal_approved": "2026-02-23",
+      "plan_approved": "2026-03-09",
+      "analysis_complete": "2026-04-27",
+      "draft_complete": "2026-05-18",
+      "final_delivery": "2026-05-31"
+    }
+  },
+  "constraints": {
+    "technical": "Data begrenset til ett år pga. ERP-skifte.",
+    "academic": "Samsvar med HiMolde krav til struktur og formalia.",
+    "time": "Fast innleveringsfrist iht. kursplan LOG650."
+  },
+  "assumptions": [
+    "Tilgang til anonymiserte data fra REMA opprettholdes.",
+    "Datakvalitet er tilstrekkelig for dagsbasert modellering.",
+    "Valgte tidsseriemodeller er egnet for produktkategoriene."
+  ],
+  "dependencies": [
+    "Godkjent proposal som grunnlag for planlegging.",
+    "Godkjent prosjektplan som grunnlag for gjennomføring.",
+    "Peer review av metode og resultatkapittel."
+  ],
+  "stakeholders": [
+    {
+      "role": "Prosjektteam",
+      "entity": "Line og Amanda"
+    },
+    {
+      "role": "Veileder",
+      "entity": "Faglærer/HiMolde"
+    },
+    {
+      "role": "Dataeier",
+      "entity": "REMA 1000 Distribusjon Trondheim"
+    },
+    {
+      "role": "Kvalitetssikring",
+      "entity": "Medstudenter (Peer Review)"
+    }
+  ],
+  "execution_environment": {
+    "tools": [
+      "VS Code",
+      "GitHub",
+      "Markdown (.md) for dokumentasjon"
+    ],
+    "ai_support": "KI benyttes som støtteverktøy i analyseprosessen."
+  },
+  "status_summary": "Fase 1 og 2 er ferdigstilt og godkjent. Prosjektet befinner seg nå i Fase 3 med fokus på datavask og innledende analyse."
+}

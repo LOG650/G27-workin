@@ -1,0 +1,230 @@
+{
+  "$schema": "https://raw.githubusercontent.com/iso-31000/risk-schema/main/schema.json",
+  "riskRegister": {
+    "registerId": "RR-LOG650-2026-01",
+    "projectId": "LOG650-2026-REMA1000",
+    "name": "Risikoregister for Prognoseprosjekt REMA 1000",
+    "version": "1.1.0",
+    "status": "Aktiv",
+    "statusDate": "2026-03-17",
+    "scoringModel": {
+      "probabilityScale": "1-5",
+      "impactScale": "1-5",
+      "thresholds": {
+        "low": "1-4",
+        "medium": "5-9",
+        "high": "10-15",
+        "critical": "16-25"
+      }
+    },
+    "categories": [
+      { "id": "CAT-DATA", "name": "Data" },
+      { "id": "CAT-FREM", "name": "Fremdrift" },
+      { "id": "CAT-METO", "name": "Metode" },
+      { "id": "CAT-TEAM", "name": "Team" }
+    ],
+    "risks": [
+      {
+        "riskId": "R-001",
+        "title": "Mangelfull datakvalitet og støy i rådata",
+        "description": "Historiske data fra REMA 1000 kan inneholde avvik, manglende verdier eller støy knyttet til ERP-skiftet som vanskeliggjør dagsbasert modellering.",
+        "categoryId": "CAT-DATA",
+        "status": "Åpen",
+        "owner": "Line Lyngsnes Johansen",
+        "reviewDate": "2026-03-23",
+        "inherentRisk": {
+          "probability": 3,
+          "impact": 5,
+          "score": 15,
+          "band": "High",
+          "rationale": "Dersom dagsdata er inkonsistente, vil modellene miste prediksjonskraft og validitet."
+        },
+        "residualRisk": {
+          "probability": 2,
+          "impact": 4,
+          "score": 8,
+          "band": "Medium",
+          "rationale": "Grundig datavask og aggregering vil redusere sannsynligheten for feil i analysen."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-001-1",
+              "type": "Action",
+              "description": "Gjennomføre omfattende EDA (Exploratory Data Analysis) for å identifisere outliers og manglende verdier tidlig.",
+              "owner": "Line",
+              "dueDate": "2026-03-19",
+              "status": "In Progress"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-002",
+        "title": "Forsinket datatilgang fra ekstern kilde",
+        "description": "Forsinkelser i uttrekk eller overføring av anonymiserte data fra REMA 1000 Distribusjon Trondheim.",
+        "categoryId": "CAT-DATA",
+        "status": "Åpen",
+        "owner": "Amanda Arnesen Almaas",
+        "reviewDate": "2026-03-23",
+        "inherentRisk": {
+          "probability": 2,
+          "impact": 5,
+          "score": 10,
+          "band": "High",
+          "rationale": "Hele analysefasen er avhengig av datatilgang; forsinkelse her forskyver sluttdato direkte."
+        },
+        "residualRisk": {
+          "probability": 1,
+          "impact": 5,
+          "score": 5,
+          "band": "Medium",
+          "rationale": "Tidlig dialog og etablert kontaktpunkt reduserer sannsynligheten."
+        },
+        "responsePlan": {
+          "strategy": "Avoid",
+          "plans": [
+            {
+              "planId": "P-002-1",
+              "type": "Action",
+              "description": "Opprettholde ukentlig kontakt med dataeier hos REMA for å sikre fremdrift i uttrekk.",
+              "owner": "Amanda",
+              "dueDate": "2026-03-19",
+              "status": "In Progress"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-003",
+        "title": "Manglende modellkonvergens eller tekniske analyseproblemer",
+        "description": "Utfordringer med å tilpasse tidsseriemodeller (f.eks. ARIMA/Prophet) til de spesifikke etterspørselsmønstrene.",
+        "categoryId": "CAT-METO",
+        "status": "Åpen",
+        "owner": "Line Lyngsnes Johansen",
+        "reviewDate": "2026-03-23",
+        "inherentRisk": {
+          "probability": 3,
+          "impact": 3,
+          "score": 9,
+          "band": "Medium",
+          "rationale": "Komplekse mønstre kan kreve mer avansert koding eller statistisk forståelse enn først antatt."
+        },
+        "residualRisk": {
+          "probability": 2,
+          "impact": 3,
+          "score": 6,
+          "band": "Medium",
+          "rationale": "Tilgang til veiledere og KI-verktøy fungerer som sikkerhetsnett."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-003-1",
+              "type": "Action",
+              "description": "Starte med enkle baselinemodeller før avanserte teknikker implementeres.",
+              "owner": "Line",
+              "dueDate": "2026-03-30",
+              "status": "Planned"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-004",
+        "title": "Tidsnød i sluttfasen av prosjektet",
+        "description": "Underestimering av tidsbruk knyttet til rapportskriving og akademisk formatering mot innleveringsfrist.",
+        "categoryId": "CAT-FREM",
+        "status": "Åpen",
+        "owner": "Amanda Arnesen Almaas",
+        "reviewDate": "2026-03-23",
+        "inherentRisk": {
+          "probability": 3,
+          "impact": 4,
+          "score": 12,
+          "band": "High",
+          "rationale": "Akademiske krav til LOG650 er omfattende og krever betydelig tid til revidering."
+        },
+        "residualRisk": {
+          "probability": 2,
+          "impact": 4,
+          "score": 8,
+          "band": "Medium",
+          "rationale": "Stram oppfølging av milepælsplan reduserer faren for skippertak."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-004-1",
+              "type": "Action",
+              "description": "Sette av faste dager til skriving parallelt med analysearbeidet.",
+              "owner": "Begge",
+              "dueDate": "2026-04-13",
+              "status": "Planned"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-005",
+        "title": "Redusert kapasitet i prosjektteamet",
+        "description": "Sykdom eller andre uforutsette hendelser som begrenser teammedlemmenes evne til å bidra i kritiske faser.",
+        "categoryId": "CAT-TEAM",
+        "status": "Åpen",
+        "owner": "Begge",
+        "reviewDate": "2026-03-23",
+        "inherentRisk": {
+          "probability": 2,
+          "impact": 4,
+          "score": 8,
+          "band": "Medium",
+          "rationale": "Et lite team er sårbart for fravær, spesielt på kritisk linje."
+        },
+        "residualRisk": {
+          "probability": 1,
+          "impact": 4,
+          "score": 4,
+          "band": "Low",
+          "rationale": "Kontinuerlig deling av filer i felles mappenstruktur sikrer at begge kan overta oppgaver."
+        },
+        "responsePlan": {
+          "strategy": "Accept",
+          "plans": [
+            {
+              "planId": "P-005-1",
+              "type": "Action",
+              "description": "Sikre at all kode og dokumentasjon er synkronisert og lettforståelig for begge parter.",
+              "owner": "Begge",
+              "dueDate": "2026-03-17",
+              "status": "Ongoing"
+            }
+          ]
+        }
+      }
+    ],
+    "summary": {
+      "totalRisks": 5,
+      "byBand": {
+        "Critical": 0,
+        "High": 3,
+        "Medium": 2,
+        "Low": 0
+      },
+      "byCategory": {
+        "Data": 2,
+        "Fremdrift": 1,
+        "Metode": 1,
+        "Team": 1
+      },
+      "residualByBand": {
+        "Critical": 0,
+        "High": 0,
+        "Medium": 4,
+        "Low": 1
+      }
+    }
+  }
+}
