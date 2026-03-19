@@ -30,10 +30,12 @@ This report investigates the forecast accuracy of daily demand at REMA 1000 Dist
 4. [Casebeskrivelse](#4-casebeskrivelse)
 5. [Metode og data](#5-metode-og-data)
 6. [Modellering](#6-modellering)
-7. [Resultat](#7-resultat)
-8. [Diskusjon](#8-diskusjon)
-9. [Konklusjon](#9-konklusjon)
-10. [Bibliografi](#10-bibliografi)
+7. [Analyse](#7-analyse)
+8. [Resultat](#8-resultat)
+9. [Diskusjon](#9-diskusjon)
+10. [Konklusjon](#10-konklusjon)
+11. [Bibliografi](#11-bibliografi)
+12. [Vedlegg](#12-vedlegg)
 
 ---
 
@@ -83,34 +85,57 @@ Dette kapittelet beskriver den kvantitative tilnærmingen og databehandlingen.
 ## 5.1 Metode
 Studien følger et kvantitativt forskningsdesign basert på en case-studie. Vi benytter statistiske metoder for tidsserieanalyse for å utvikle og evaluere prognosemodeller.
 
-## 5.2 Data
-Rådata ble hentet ut som CSV-filer for salg og innkjøp. Datavasken inkluderte konvertering av tidsstempler, aggregering til dagsnivå og håndtering av tegnsett.
+## 5.2 Databehandling og Vask
+Rådata ble hentet ut som CSV-filer fra REMA 1000s systemer for både salg (utlevert mengde) og innkjøp (mottatt mengde) i perioden mars 2025 til februar 2026. For å sikre et etterprøvbart datagrunnlag ble følgende vaskeprosess gjennomført:
 
-## 5.3 Splitting av data (Train/Test)
-Datasettet er delt i to:
-- **Treningssett:** 01.03.2025 – 31.12.2025.
-- **Testsett:** 01.01.2026 – 20.02.2026.
+1.  **Tidshåndtering:** Kolonnen `Opprettelsesdato` ble konvertert til standard datoformat (YYYY-MM-DD). Denne datoen representerer tidspunktet for etterspørsel og er valgt som primær tidsvariabel.
+2.  **Aggregering:** Dataene ble aggregert fra transaksjonsnivå til dagsnivå for å samsvare med studiens tidsoppløsning. For salgsdata ble variabelen `Bestilt antall` summert per dag, mens `mottatt_antall` ble benyttet for innkjøpsdata.
+3.  **Tegnsett og Format:** Alle filer ble konvertert til UTF-8 koding for å sikre korrekt visning av norske tegn (æ, ø, å), og lagret som kommadelte filer (CSV) for videre analyse i Python.
+
+Resultatet av denne prosessen er datasettene `vasket_salg_daglig.csv` og `vasket_innkjop_daglig.csv`.
+
+## 5.3 Splitting av data (Trening og Test)
+For å evaluere modellenes prognosepresisjon på usette data, ble datasettene splittet i et treningssett og et testsett. Splittidspunktet ble satt til 1. januar 2026 for å skille det siste årets historikk fra testperioden i 2026.
+
+- **Treningssett (Train):** 01.03.2025 – 31.12.2025. Brukes til parameterestimering og modellutvikling.
+- **Testsett (Test):** 01.01.2026 – 28.02.2026. Brukes utelukkende til evaluering av prognosepresisjon.
+
+Både salgs- og innkjøpsdata er splittet ved samme tidspunkt. Dette muliggjør en direkte sammenligning mellom våre modellerte prognoser og REMAs faktiske innkjøpsbeslutninger i testperioden.
 
 # 6. Modellering
 For å besvare problemstillingen er det etablert to enkle baseline-modeller: Saisonal Naive og Moving Average (MA7).
 
-# 7. Resultat
+# 7. Analyse
+Dette kapittelet presenterer den deskriptive analysen (Exploratory Data Analysis - EDA) av de vaskede datasettene for salg og innkjøp. Hensikten er å identifisere mønstre, trender og avvik som danner grunnlaget for valg av prognosemodeller.
+
+## 7.1 Deskriptiv statistikk
+*(Her legges det inn statistiske mål som gjennomsnitt, median, standardavvik og variasjonskoeffisient for treningsdataene)*
+
+## 7.2 Tidsserieanalyse (Visualisering)
+*(Her inkluderes grafer som viser salgsutviklingen over tid, ukedagseffekter og sesongvariasjoner)*
+
+# 8. Resultat
+Den kanskje viktigste delen når du skal skrive en bacheloroppgave, er resultatdelen. Her beskriver du alle funnene som er gjort i analyser og studier.
+
+## 8.1 Baseline Resultater (Testsett)
 Analysen av treningsdataene (mars–desember 2025) viser tydelige sesongvariasjoner og perioder med ekstrem etterspørsel.
 
-## 7.1 Baseline Resultater (Testsett)
 | Modell | MAE (Enheter) | MAPE (%) |
 | :--- | :--- | :--- |
 | Saisonal Naive | 35,4 | 68,2 % |
 | Moving Average (MA7) | 42,1 | 85,5 % |
 
-## 7.2 Månedlig Etterspørselsanalyse
-*(Tabell med detaljert månedsanalyse er flyttet hit fra kapittel 5 i forrige utkast)*
+## 8.2 Månedlig Etterspørselsanalyse
+*(Tabell med detaljert månedsanalyse er inkludert her)*
 
-# 8. Diskusjon
-I diskusjonsdelen skal vi drøfte resultatene opp mot problemstillingen, inkludert betydningen for lagerstyring (Syntetos et al., 2009) og effekten av menneskelige justeringer (Fildes et al., 2008).
+# 9. Diskusjon
+I diskusjonsdelen skal du diskutere de forskjellige funnene du har gjort. Her skal du blant annet inkludere en kritisk metodediskusjon, der du vurderer om metoden din var riktig.
 
-# 9. Konklusjon
-Konklusjonen vil oppsummere hovedfunn sett i forhold til problemstillingen om prognosepresisjon ved REMA 1000 Distribusjon Trondheim.
+# 10. Konklusjon
+I oppgavens konklusjon oppsummerer du hovedfunn sett i forhold til problemstilling.
 
-# 10. Bibliografi
+# 11. Bibliografi
 *(Kilder legges inn her i APA-stil)*
+
+# 12. Vedlegg
+*(Eventuelle tillegg som kodesnutter, rådata-eksempler eller utvidede tabeller)*
