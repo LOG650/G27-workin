@@ -152,9 +152,6 @@ Gjennom en foreløpig deskriptiv analyse av de vaskede salgsdataene er følgende
 3.  **Sesongvariasjon:** Dataene indikerer lavere utlevert volum i fellesferien (juli/august), noe som kan knyttes til endrede handlevaner i sommerferien og redusert aktivitet i regionen.
 
 # 5. Metode og data
-Dette kapittelet beskriver den kvantitative tilnærmingen og databehandlingen.
-
-# 5. Metode og data
 Dette kapittelet beskriver studiens metodiske fundament, datagrunnlaget og prosessene som er benyttet for å transformere rådata til et beslutningsgrunnlag for prognosemodellering.
 
 ## 5.1 Forskningsdesign: Kvantitativ Case-studie
@@ -189,93 +186,86 @@ Datasettet er delt i et treningssett og et testsett (Out-of-sample test). Dette 
 - **Testsett (Test):** 01.01.2026 – 28.02.2026. Brukes utelukkende til evaluering av prognosepresisjon.
 
 # 6. Modellering
-For å besvare problemstillingen er det etablert to enkle baseline-modeller, samt en mer avansert regresjonsmodell som tar hensyn til de operative forholdene beskrevet i case-studien.
+For å besvare problemstillingen er det etablert to enkle baseline-modeller, samt en maskinlæringsmodell som benytter tilgjengelige kalender- og historiske data.
 
 ## 6.1 Baseline-modeller
 Som referansepunkt for evalueringen benyttes to standardmetoder:
-1.  **Saisonal Naive (SN):** Denne modellen antar at etterspørselen for en gitt ukedag er identisk med samme ukedag forrige uke. Dette fanger opp den sterke "mandagseffekten" identifisert i EDA-en.
-2.  **Moving Average (MA7):** Et 7-dagers glidende gjennomsnitt som flater ut daglige svingninger for å identifisere den underliggende trenden.
+1.  **Seasonal Naive (SN):** Denne modellen antar at etterspørselen for en gitt ukedag er identisk med samme ukedag forrige uke. Dette fanger opp den sterke "mandagseffekten" identifisert i EDA-en.
+2.  **SARIMA (Hovedmodell):** En avansert statistisk tidsseriemodell som kombinerer autoregresjon (AR), differensiering (I) og glidende gjennomsnitt (MA), tilpasset både trend og sesongvariasjoner i datasettet.
 
-## 6.2 Avansert Regresjonsmodell (Reg+CD)
-Basert på innsikten om at "Crazy Days"-kampanjer er stramt styrt fra sentralt hold (se kapittel 4.3), har vi utviklet en multivariat regresjonsmodell. Modellen inkluderer følgende uavhengige variabler:
-- **Ukedagsindikatorer:** One-hot encoding av alle sju ukedager for å fange opp systematiske ukentlige variasjoner.
-- **Kampanjeindikator (Crazy Days):** En binær variabel (dummy) som markerer dager der etterspørselen historisk sett har ligget over et definert terskelnivå (100 enheter).
+## 6.2 Random Forest (Benchmark)
+Som en mer avansert sammenligningsmodell benyttes en Random Forest-regressor. Denne maskinlæringsmetoden er valgt for sin evne til å fange opp ikke-lineære mønstre uten å kreve antagelser om dataenes fordeling. Modellen er spesifisert med følgende uavhengige variabler for å unngå data leakage:
+- **Laggede variabler:** Historisk etterspørsel fra t-1, t-7 og t-14 dager tilbake.
+- **Glidende gjennomsnitt:** Et 7-dagers glidende snitt av historisk salg.
+- **Kalenderdata:** One-hot encoding av ukedag for å fange opp systematiske ukentlige svingninger.
 
-Ved å inkludere kampanjevariabelen eksplisitt, søker modellen å skille mellom normal "pull"-etterspørsel og de sentralt styrte volumtoppene.
+Ved å utelate kampanjevariabler eksplisitt, evalueres modellens evne til å predikere etterspørsel utelukkende basert på mønstre i den historiske tidsrekken.
 
 # 7. Analyse
-*(Innholdet i kapittel 7 er uendret)*
+Dette kapittelet presenterer den statistiske evalueringen av modellene, med fokus på segmentert feilanalyse og residualanalyse for å identifisere systematiske avvik.
 
 # 8. Resultat
-Dette kapittelet presenterer en sammenligning av de ulike modellenes evne til å predikere etterspørselen i testperioden (januar–februar 2026).
+Dette kapittelet presenterer resultatene fra evalueringen av de tre prognosemodellene i testperioden januar–februar 2026. Modellene er evaluert uten bruk av kampanjevariabler for å sikre metodisk validitet og unngå "data leakage".
 
 ## 8.1 Sammenligning av prognosepresisjon
-Evalueringen viser at inkludering av kampanjeinformasjon har en betydelig positiv innvirkning på prognosepresisjonen. Resultatene er oppsummert i Tabell 2 og visualisert i Figur 3 og 4.
+Evalueringen indikerer at Random Forest oppnår den laveste gjennomsnittlige feilraten i testperioden, med særlig styrke i segmentet for normale dager. SARIMA fremstår som en robust statistisk hovedmodell, mens Seasonal Naïve benyttes som baseline for å fange opp gjentakende ukentlige sesongmønstre.
 
-**Tabell 2: Evaluering av modeller på testsettet (Jan-Feb 2026)**
+**Tabell 2: Global evaluering av modeller på testsettet (Jan-Feb 2026)**
 
-| Modell | MAE (Enheter) | MAPE (%) |
-| :--- | :--- | :--- |
-| Saisonal Naive (Baseline) | 22,92 | 1043 % |
-| **Regresjon med Crazy Days** | **11,74** | **639 %** |
+| Modell | MAE (Enheter) | MAPE (%) | Bias (Enheter) |
+| :--- | :--- | :--- | :--- |
+| Seasonal Naïve (Baseline) | 21,18 | 1073 % | 0,10 |
+| SARIMA (Hovedmodell) | 19,23 | 396 % | -19,19 |
+| **Random Forest (Benchmark)** | **14,81** | **464 %** | **-3,22** |
 
-![Figur 3 og 4: Modellsammenligning og feilmarginer](figurer/fig3_4_modellsammenligning.png)
+## 8.2 Segmentert feilanalyse og Bias
+For å forstå modellenes begrensninger i perioder med høy etterspørsel, ble testsettet delt inn i "normale dager" og "toppdager". Terskelverdien for en toppdag er beregnet til **51,90 enheter**, tilsvarende 90-persentilen i treningssettet.
 
-**Figur 3 og 4: Faktisk etterspørsel mot prediksjoner, og tilhørende absolutt feil (MAE) per dag.**
+**Tabell 3: Segmentert feilanalyse (MAE og Bias)**
 
-Figur 3 viser hvordan den avanserte regresjonsmodellen (grønn linje) følger de faktiske svingningene i etterspørselen betydelig tettere enn baseline-modellen (rød stiplet linje). Spesielt i perioder med kampanjeaktivitet klarer den nye modellen å fange opp volumhoppene som baselinen overser eller feilberegner basert på historikk uten kampanjekontekst. Figur 4 underbygger dette ved å vise at det akkumulerte arealet for feil (MAE) er markant mindre for den nye modellen gjennom hele testperioden.
+| Segment | Modell | MAE | Bias |
+| :--- | :--- | :--- | :--- |
+| **Normale dager** | Seasonal Naïve | 12,33 | 11,02 |
+| (Salg <= 51,9) | SARIMA | 9,43 | -9,38 |
+| | **Random Forest** | **6,56** | **6,25** |
+| **Toppdager** | Seasonal Naïve | 102,60 | -102,60 |
+| (Salg > 51,9) | SARIMA | 109,44 | -109,44 |
+| | **Random Forest** | **90,75** | **-90,75** |
 
-## 8.2 Analyse av feilmarginer og kampanjeeffekt
-For å forstå hvorfor den nye modellen presterer så mye bedre, er det nødvendig å se på fordelingen av etterspørsel med og uten kampanjevariabelen.
+Resultatene viser en tydelig **negativ bias** for alle modeller på toppdager. Selv om Random Forest er den mest presise modellen på dager med normalt volum, underestimerer den etterspørselen med i gjennomsnitt 90,75 enheter på dager der salget overstiger 90-persentilen.
 
-![Figur 5: Kampanjeeffekt Crazy Days](figurer/fig5_kampanjeeffekt.png)
+## 8.3 Residualanalyse
+Residualanalysen (ACF-plott) av feilene viser at SARIMA og Random Forest har eliminert det meste av autokorrelasjonen i tidsserien. 
 
-**Figur 5: Fordeling av daglig etterspørsel under normal drift kontra "Crazy Days"-kampanjer (Testsett).**
+![Figur 6: ACF-plott av residualer](figurer/fig6_residual_acf.png)
 
-Figur 5 illustrerer tydelig effekten av "Crazy Days"-kampanjene. Mens etterspørselen i normal drift er lav og relativt stabil (med unntak av ukedagseffekter), skifter volumet til et helt annet nivå under kampanje. Boxplot-visualiseringen viser at medianen og kvartilene under kampanje ligger langt over normalnivået, noe som bekrefter at en binær indikator for kampanje er den mest kritiske faktoren for å oppnå høy prognosepresisjon.
+**Figur 6: Autokorrelasjonsfunksjon (ACF) for residualene til de tre testede modellene.**
 
-### Oppsummering av funn:
-1.  **Halvering av feilrate:** Den avanserte regresjonsmodellen oppnår en MAE på 11,74 enheter, noe som er nesten en halvering av feilen sammenlignet med baseline-modellen (22,92). Dette bekrefter at informasjonen om kampanjestatus er den viktigste forklaringsvariabelen for "Lasagne Familiepakning".
-2.  **MAPE-problematikk:** Begge modellene viser ekstremt høye MAPE-verdier. Dette skyldes at testsettet inneholder mange dager med svært lav faktisk etterspørsel (1-5 enheter). Ved så lave volumer vil selv små absolutte avvik (f.eks. å bomme med 5 enheter på et salg av 1) gi enorme prosentvise utslag. Dette underbygger det metodiske valget (se kapittel 5.4) om å bruke MAE som det primære styringsmålet i distribusjonsleddet.
-3.  **Forbedret stabilitet:** Regresjonsmodellen er i stand til å fange opp de sentralt styrte "115-enhets-platåene" i testperioden langt bedre enn de rent historiske metodene, noe som reduserer risikoen for store feilbestillinger under kampanje.
-
+Som vist i Figur 6, fremstår de gjenværende feilene for SARIMA og Random Forest i stor grad som uforutsigbar variasjon (støy), da de fleste laggene ligger innenfor konfidensintervallet. Dette indikerer at modellene utnytter de tilgjengelige historiske dataene og kalenderdataene effektivt. Den systematiske underestimeringen på toppdager (identifisert i bias-analysen) bekrefter imidlertid at informasjonen som kreves for å predikere disse toppene ikke ligger latent i selve salgshistorikken.
 
 # 9. Diskusjon
-Dette kapittelet drøfter studiens funn i lys av den operative konteksten hos REMA 1000 og relevant logistikkteori. Fokus ligger på hvordan innsikt om kampanjemønstre kan transformeres til økt prognosepresisjon og operasjonell verdi.
+Dette kapittelet drøfter funnene knyttet til den systematiske underestimeringen av topper og de operasjonelle konsekvensene dette har for REMA 1000.
 
-## 9.1 Tolkning av modellresultater
-Hovedfunnet i studien er at en enkel regresjonsmodell med kampanjeindikatorer reduserer den gjennomsnittlige prognosefeilen (MAE) med nesten 50 % sammenlignet med tradisjonelle tidsseriemetoder. Dette resultatet er i tråd med Trapero et al. (2015), som påpeker at kampanjer skaper diskontinuerlige hopp i etterspørselen som historisk baserte modeller ikke evner å fange opp.
+## 9.1 Tolkning av modellresultater og Bias
+Hovedfunnet er at Random Forest og SARIMA gir en betydelig forbedring over baseline på normale dager, men at alle modeller svikter ved ekstreme etterspørselsutslag. En bias på -90,75 enheter på toppdager innebærer at modellene in mange tilfeller predikerer en etterspørsel som er vesentlig lavere enn det faktiske behovet.
 
-Bekreftelsen på at REMA 1000 gjennomførte "Crazy Days"-kampanjer i både oktober og i januar/februar-skiftet samsvarer nøyaktig med de periodene der vår avanserte modell utkonkurrerte baselinen. Dette underbygger delproblem 3 (se kapittel 1.2) om at kampanjeaktivitet er den enkeltfaktoren med størst forklaringskraft for dette produktet.
+Denne negative biasen kan tilskrives fraværet av kampanjevariabler i modellene. Siden vi metodisk har valgt å basere oss utelukkende på historisk salg og kalenderdata, har modellene ingen mulighet til å "forutse" når en kampanje inntreffer, selv om de er gode til å fange opp de generelle mønstrene mellom kampanjene.
 
-## 9.2 Utfordringer med volatilitet og "Lumpy Demand"
-Med en variasjonskoeffisient (CV) på 1,49 karakteriseres etterspørselen etter "Lasagne Familiepakning" som svært volatil eller "lumpy". I slike tilfeller vil en Seasonal Naive-modell eller et glidende gjennomsnitt (MA7) ofte over- eller underestimere ekstremverdiene fordi de baserer seg på et uendret mønster fra fortiden. 
-
-Spesielt interessant er observasjonen av "115-enhets-platåene". Som diskutert i kapittel 4.3, er dette sannsynligvis et resultat av sentral allokering og faste kollistørrelser. Dette betyr at dataene i disse periodene ikke reflekterer den faktiske markedsbestemte etterspørselen, men heller REMAs logistiske kapasitet og styringsregler (censored demand). En rent statistisk modell vil ha vanskeligheter med å "forutse" slike tak uten tilgang til den sentrale kampanjekalenderen.
-
-## 9.3 Praktisk relevans for lagerstyring
-Forbedringen i prognosepresisjon (fra 22,92 til 11,74 enheter i MAE) har direkte konsekvenser for lagerstyringen ved REMA 1000 Distribusjon Trondheim. Som påpekt av Seiringer et al. (2024), fungerer sikkerhetslageret som en buffer mot nettopp denne usikkerheten. En halvering av prognosefeilen betyr i teorien at man kan redusere sikkerhetslageret uten å ofre servicegraden til butikkene.
-
-Dette er spesielt kritisk under kampanjer som "Crazy Days", hvor volumene er høye og kapasiteten på lageret og i transporten er under press. Ved å bruke modeller som inkluderer planlagte kampanjedatoer fremfor bare historisk salg, kan REMA 1000 oppnå:
-1.  **Reduserte lagerholdskostnader:** Mindre kapitalbinding i sikkerhetslager for kampanjevarer.
-2.  **Bedre ressursutnyttelse:** Mer nøyaktig planlegging av plukk-kapasitet og transportbehov i topp-periodene.
-3.  **Redusert risiko for leveringssvikt:** Bedre evne til å sikre at allokerte volumer faktisk er tilgjengelige når butikkene trenger dem.
-
-## 9.4 Kritisk metodediskusjon
-Selv om resultatene er lovende, er det viktig å påpeke begrensninger ved studien. Bruk av en binær variabel for kampanje er en forenkling; i virkeligheten påvirkes salget også av prisens størrelse, konkurrerende produkter og værforhold (Arunraj & Ahrens, 2015). Dessuten er analysen begrenset til ett produkt. For en fullskala implementering hos REMA 1000 bør modeller testes på flere varegrupper for å validere om "Crazy Days"-effekten er konsistent på tvers av kategorier.
-
-Til slutt viser den høye MAPE-verdien (639 %) at prosentvise feilmål er lite egnet for denne typen logistikkdata med mange dager med lav etterspørsel. Dette støtter Hyndman og Koehlers (2006) anbefaling om å prioritere absolutte feilmål (MAE) i operativ planlegging.
-
+## 9.2 Praktisk betydning for logistikk og vareflyt
+Den observerte underestimeringen har kritiske konsekvenser for planlegging og drift:
+1.  **Risiko for manglende leveringsevne:** Vedvarende negativ bias på dager med høyt volum øker sannsynligheten for "stockouts", der faktisk etterspørsel overstiger planlagt kapasitet.
+2.  **Operasjonell usikkerhet:** Systematiske avvik tvinger logistikksystemet til å jobbe reaktivt, med behov for hasteordre og ekstratransport for å dekke det udekkede behovet på ca. 90 enheter per toppdag.
+3.  **Kapasitetsplanlegging:** Selv om Random Forest fanger opp ikke-lineære mønstre i kalenderdata bedre enn SARIMA, er ingen av modellene robuste nok til å brukes som eneste beslutningsgrunnlag for dimensjonering av ressurser under store kampanjer uten manuelle justeringer.
 
 # 10. Konklusjon
-Dette prosjektet har undersøkt prognosepresisjon for daglig etterspørsel ved REMA 1000 Distribusjon Trondheim, med særlig fokus på produktet "Lasagne Familiepakning". Gjennom en kvantitativ analyse av historiske salgsdata har vi besvart problemstillingen om i hvilken grad tidsserie-baserte metoder kan predikere etterspørsel i et distribusjonsledd preget av høy volatilitet.
+Dette prosjektet har undersøkt prognosepresisjon for "Lasagne Familiepakning" ved REMA 1000 Distribusjon Trondheim.
 
-Hovedkonklusjonene i studien er:
-1.  **Kampanjeinformasjon er kritisk:** Inkludering av en binær variabel for "Crazy Days"-kampanjer i en regresjonsmodell førte til en halvering av den gjennomsnittlige prognosefeilen (MAE) fra 22,92 til 11,74 enheter sammenlignet med tradisjonelle baseline-modeller. Dette bekrefter at systematiske kampanjeeffekter har større forklaringskraft enn rent historisk salgsmønster for dette produktet.
-2.  **MAE som primært styringsmål:** Studien bekrefter at absolutte feilmål som MAE er langt mer pålitelige enn prosentvise mål (MAPE) i situasjoner med "lumpy demand" og lavt daglig volum, da MAPE gir urealistiske utslag ved null-etterspørsel.
-3.  **Logistisk verdi:** Økt prognosepresisjon muliggjør en mer presis dimensjonering av sikkerhetslageret ved distribusjonssenteret. Ved å redusere usikkerheten knyttet til kampanjeprioriteringer, kan REMA 1000 oppnå lavere lagerbindingskostnader uten å redusere servicegraden til butikkene.
+Hovedkonklusjonene er:
+1.  **Modellvalidering:** Random Forest oppnår høyest presisjon i segmentet for normale dager (MAE 6,56). SARIMA-modellen fanger effektivt opp sesongvariasjoner og representerer en robust statistisk tilnærming for stabil drift.
+2.  **Systematisk underestimering:** Analysen dokumenterer en betydelig negativ bias på dager med ekstraordinært høyt salgsvolum. Dette indikerer at historiske tidsseriedata alene har begrensninger når det gjelder å fange opp de kraftigste etterspørselstoppene.
+3.  **Behov for forklaringsvariabler:** Residualanalysen bekrefter at de gjenværende feilene i stor grad er uforutsigbare innenfor rammen av dagens datagrunnlag. For å redusere bias i topp-perioder og forbedre leveringsevnen, er integrasjon av eksterne variabler som kampanjekalendere en nødvendig forutsetning.
 
-Konklusjonen er at tidsserie-baserte metoder gir god prediksjonskraft for REMA 1000, forutsatt at modellene integrerer operativ kunnskap om kampanjekalenderen og logistiske styringsregler.
+Konklusjonen er at tidsserie-baserte metoder gir høy presisjon i normaldrift, men at logistikksystemet må suppleres med ekstern informasjon for å håndtere planlagte kampanjer og sikre optimal vareflyt.
 
 # 11. Bibliografi
 Arunraj, N. S., & Ahrens, D. (2015). A hybrid seasonal autoregressive integrated moving average and quantile regression for daily food sales forecasting. *International Journal of Production Economics*, 170, 147-160. https://doi.org/10.1016/j.ijpe.2015.09.014
