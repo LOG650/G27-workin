@@ -52,3 +52,9 @@ Dette dokumentet inneholder en oversikt over de 7 kjerneartiklene som er valgt u
 **Nøkkelfunn:** Knytter prognosenøyaktighet direkte til lagerstyring (inventory control). Forklarer hvordan forbedret prognosepresisjon reduserer sikkerhetslager og risiko for stock-outs.  
 **Bruk i prosjektet:** Løfte diskusjonen (kapittel 7) til å handle om den praktiske logistikk-verdien for REMA 1000 i Trondheim.  
 **DOI:** [10.1057/jors.2008.173](https://doi.org/10.1057/jors.2008.173)
+
+### 8. Seiringer, W., Brockmann, F., Altendorfer, K., & Felberbauer, T. (2024)
+**Tittel:** *Influence of Forecast Error and Forecast Bias on Safety Stock on a MRP System with Rolling Horizon Forecast Updates*  
+**Journal:** *Proceedings of the International Conference on Production Research*  
+**Nøkkelfunn:** Analyserer hvordan ulike typer prognosefeil og bias påvirker behovet for sikkerhetslager i komplekse forsyningskjeder. Viser at systematiske feil (bias) har en mer kritisk innvirkning på lagerkostnader enn tilfeldige avvik.  
+**Bruk i prosjektet:** Brukes i diskusjonskapittelet for å koble våre funn (MAE/MAPE) til de faktiske økonomiske konsekvensene for REMA 1000s lagerbinding.
