@@ -4,7 +4,8 @@ Dette dokumentet inneholder de fundamentale føringene for hvordan vi jobber i d
 
 ## 1. Språk og Format
 - **Språk:** All dokumentasjon, kodekommentarer og rapporttekst skal skrives på norsk (inkludert særnorske tegn som æ, ø og å).
-- **Tone:** Bruk et saklig og faglig språk (akademisk standard for LOG650).
+- **Tone i rapporten:** Bruk et saklig, konsist og profesjonelt fagspråk (akademisk standard for LOG650). Unngå overforklaringer av grunnleggende begreper i selve rapportteksten med mindre det er strengt nødvendig for analysen.
+- **Tone i chat (Pedagogisk veiledning):** I dialogen med brukeren skal jeg være pedagogisk, forklare logistikkmessige og metodiske valg underveis, og fungere som en mentor/peer-programmerer for å fremme læring.
 - **Format:** Alle tekstfiler skal lagres i UTF-8. Markdown benyttes for all løpende dokumentasjon.
 - **Krav og Maler:** Følg detaljerte tips og krav i `000 templates\Mal prosjekt LOG650 v2.docx`.
 - **Referanser:** Bruk APA 7. utgave som beskrevet i `000 templates\Referansestiler\APA 7th norsk v1.12.pdf`.
