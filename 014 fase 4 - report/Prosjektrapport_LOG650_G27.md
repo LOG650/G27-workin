@@ -42,14 +42,14 @@ This report investigates the forecast accuracy of daily demand at REMA 1000 Dist
 # 1. Innledning
 Dette prosjektet fokuserer på kvantitativ logistikk og supply chain management, med særlig vekt på etterspørselsprognoser og prognosepresisjon i distribusjonssystemer. Studien undersøker hvordan tidsserie-baserte metoder kan anvendes for å predikere daglig etterspørsel ved REMA 1000 Distribusjon Trondheim.
 
-Prognosearbeid er en kritisk suksessfaktor i dagligvarebransjen. Nøyaktige estimater for fremtidig etterspørsel er avgjørende for å balansere lagerbeholdninger, sikre høy kundeservicegrad og minimere matsvinn i distribusjonsleddet. Ved å analysere historiske data og evaluere ulike prediksjonsmodeller, søker dette prosjektet å identifisere metoder som kan forbedre beslutningsgrunnlaget for innkjøp og kapasitetsplanlegging.
+Prognosearbeid er en kritisk suksessfaktor i dagligvarebransjen. Nøyaktige estimater for fremtidig etterspørsel er avgjørende for å balansere lagerbeholdninger, sikre høy kundeservicegrad og minimere matsvinn i distribusjonsleddet. Selv om det utvalgte produktet i denne studien er en tørrvare med lang holdbarhet, har prognosepresisjon her en indirekte, men betydelig innvirkning på det totale svinn-regnskapet. Nøyaktige prognoser for stabile tørrvarekategorier frigjør operativ kapasitet og logistiske ressurser, noe som muliggjør en mer presis og prioritert håndtering av ferskvaredistribusjon – der det faktiske matsvinn-potensialet er største. Ved å analysere historiske data og evaluere ulike prediksjonsmodeller, søker dette prosjektet å identifisere metoder som kan forbedre beslutningsgrunnlaget for den totale vareflyten.
 
 ## 1.1 Problemstilling
 Basert på behovet for økt presisjon i planleggingen, er følgende problemstilling formulert for prosjektet:
 
 > **I hvilken grad kan tidsserie-baserte prognosemetoder predikere daglig etterspørsel for utvalgte produkter ved REMA 1000 Distribusjon Trondheim, målt ved prognosepresisjon (forecast accuracy)?**
 
-For å besvare denne problemstillingen vil vi utvikle og evaluere modeller basert på historisk volum (plukket/utlevert mengde). Selv om inkludering av forklaringsvariabler som kampanjeindikatorer og pris vurderes som teoretisk relevante, er selve analysen i denne oppgaven avgrenset til bruk av historiske salgs- og kalenderdata for å evaluere modellenes grunnleggende prediksjonsevne.
+For å besvare denne problemstillingen vil vi utvikle og evaluere modeller basert på historisk volum (plukket/utlevert mengde). Selv om inkludering av forklaringsvariabler som kampanjeindikatorer og pris vurderes som teoretisk relevante, er selve analysen i denne oppgaven avgrenset til bruk av historiske salgs- og kalenderdata for å evaluere modellenes grunnleggende prediksjonsevne. En sentral del av studien er å *evaluere* hvordan disse rene tidsseriemodellene presterer i møte med kampanjedrevet etterspørsel, for å kvantifisere behovet for mer avanserte forklaringsvariabler i fremtidige systemer.
 
 ## 1.2 Delproblemer
 For å strukturere analysen har vi definert følgende deloppgaver:
@@ -118,118 +118,192 @@ For å evaluere hvor godt en modell presterer, må vi måle avviket mellom progn
     $$MAPE = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{A_t - F_t}{A_t} \right|$$
     Selv om MAPE er utbredt for å sammenligne på tvers av produkter, har den svakheter ved lav etterspørsel, da små absolutte avvik kan gi svært høye prosentvise utslag (Hyndman & Koehler, 2006). I våre resultater må MAPE derfor tolkes med forsiktighet, da målet kan gi svært høye verdier ved lavt volum, noe som er tilfelle for enkelte dager i datasettet. Dette er særlig relevant for våre data der enkelte dager har svært lavt volum.
 
-# 4. Casebeskrivelse
-Dette kapittelet gir en beskrivelse av den operative konteksten for studien, med fokus på REMA 1000 Distribusjon Trondheim (RDT) og det utvalgte produktet, "Lasagne Familiepakning".
+# 4. Casebeskrivelse og datagrunnlag
+Dette kapittelet gir en forståelse av den operative konteksten og datagrunnlaget som danner fundamentet for analysen. Formålet er å beskrive beslutningssituasjonen ved REMA 1000 Distribusjon Trondheim og karakterisere etterspørselsmønstrene før selve modelleringen starter.
 
-## 4.1 REMA 1000 Distribusjon Trondheim
-REMA 1000 Distribusjon Trondheim fungerer som et sentralt logistikknutepunkt for vareforsyning til REMA 1000-butikker i Midt-Norge. Distribusjonssenterets primære oppgave er å sikre effektiv vareflyt fra produsenter til utsalgssteder. En av de største utfordringene i dette leddet er å balansere hensynet til høy kundeservicegrad (unngå "stockouts" i butikk) mot målet om lavest mulig kapitalbinding og effektiv lagerdrift.
+## 4.1 REMA 1000 Distribusjon Trondheim og beslutningssituasjonen
+REMA 1000 Distribusjon Trondheim (RDT) fungerer som det sentrale logistikknutepunktet for vareforsyning til butikker i Midt-Norge. Distribusjonssenterets primære oppgave er å sikre effektiv vareflyt fra produsenter til utsalgssteder. 
 
-Prognosepresisjon ved distribusjonssenteret er kritisk fordi feilmarginer her kan forsterkes gjennom forsyningskjeden (Bullwhip-effekten). Dersom senteret overestimerer etterspørselen, øker lagerkostnadene og risikoen for ukurans. Ved underestimering risikerer man leveringssvikt til butikkene, noe som direkte påvirker sluttkundens opplevelse og bedriftens omdømme.
+Virksomheten står daglig overfor kritiske **beslutningssituasjoner** knyttet til:
+1.  **Dimensjonering av innkjøp:** Fastsettelse av ordrekvantum fra produsent for å unngå tomme hyller (stock-outs) uten å binde opp for mye kapital i lager.
+2.  **Kapasitetsplanlegging:** Allokering av transportressurser og personell for plukking og utkjøring.
+
+Uten robuste analyser er disse beslutningene svært vanskelige å ta. Den høye volatiliteten i dagligvaremarkedet gjør at manuelle skjønn ofte fører til systematiske feil (bias). Det er spesielt utfordrende å skille mellom tilfeldig variasjon ("støy") og reelle endringer i etterspørselsnivået før en kampanje inntreffer, noe som skaper et akutt behov for objektive prognosemodeller.
 
 ## 4.2 Produktbeskrivelse: Lasagne Familiepakning
-Produktet som er valgt for denne studien er "Lasagne Familiepakning". Dette er en tørrvare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn sammenlignet med ferskvarer. Likevel er produktet preget av en dynamisk etterspørsel som gjør det velegnet for prognosemodellering:
+Produktet som er valgt for denne studien er "Lasagne Familiepakning". Dette er en tørrvare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn. Likevel er produktet preget av en dynamisk etterspørsel som gjør det velegnet for denne analysen. Nøyaktige prognoser for dette volumproduktet er viktig for å balansere hensynet til høy kundeservicegrad mot målet om effektiv lagerdrift og transportutnyttelse.
 
-- **Etterspørselsstabilitet:** I normale uker har produktet en relativt stabil og forutsigbar etterspørsel basert på faste leveringsrutiner til butikkene.
-- **Kampanjefølsomhet:** Produktet inngår ofte i nasjonale kampanjer, som for eksempel "Crazy Days", noe som skaper kraftige salgstopper (spikes) som er utfordrende å predikere nøyaktig.
-- **Strategisk betydning:** Som et volumprodukt i tørrvarekategorien representerer nøyaktige prognoser for denne varen et betydelig potensial for forbedret transport- og lagerplanlegging.
+## 4.3 Beskrivelse av datagrunnlaget
+Datamaterialet i denne studien er hentet direkte fra REMAs ERP-systemer og representerer faktiske utleverte mengder (plukkvolum) fra distribusjonssenteret til butikkene.
 
-## 4.3 Kampanjemekanikk og volumstyring
-For å forstå etterspørselsdataene for "Lasagne Familiepakning", er det nødvendig å skille mellom normale driftsperioder og kampanjeperioder som "Crazy Days".
+*   **Datatype:** Tidsseriedata på dagsnivå.
+*   **Periode:** 1. mars 2025 til 28. februar 2026 (N=365 observasjoner).
+*   **Variabel:** Faktisk utlevert volum målt i antall enheter per dag.
 
-I normale uker fungerer vareforsyningen etter et **pull-prinsipp**, der de enkelte REMA 1000-butikkene selvstendig bestiller varer fra distribusjonssenteret basert på lokalt behov. Under "Crazy Days"-kampanjer endres imidlertid denne dynamikken til en mer sentralt styrt prosess:
+Tabell 1 gir en statistisk oversikt over variasjonen og spredningen i datagrunnlaget for analyseperioden.
 
-1.  **Sentral allokering:** Hovedkontoret velger ut kampanjevarer og fastsetter aggressive priser. Butikkene har i disse periodene begrenset handlingsrom for fri bestilling. Volumene blir ofte forhåndsallokert til butikkene basert på historisk salg, butikkstørrelse og sentrale prognoser.
-2.  **Volumstyring og tak:** For å sikre en rettferdig fordeling av varer og unngå kritiske "stockouts"-situasjoner tidlig i kampanjeperioden, opereres det ofte med anbefalte volumer eller maksimale bestillingsgrenser per butikk. 
-3.  **Standardiserte kollistørrelser:** Varene distribueres ofte i faste, store kolli (pakkestørrelser). Dette medfører at bestillingene skjer i "trinn" (f.eks. multipler av 96 eller 120 enheter), noe som skaper tydelige "klumper" i etterspørselsmønsteret.
+**Tabell 1: Beskrivende statistikk for Lasagne Familiepakning (mars 2025 – feb 2026)**
 
-Disse mekanismene forklarer de observerte "platåene" i datasettet, der etterspørselen stabiliserer seg på spesifikke nivåer (som de identifiserte 115-enhets-toppene). Dette er ikke nødvendigvis et uttrykk for en mettet kundeetterspørsel, men snarere et resultat av logistiske begrensninger og sentrale styringsregler. For prognosearbeidet betyr dette at modeller må ta hensyn til at kampanjedataene er preget av slike kapasitetsbegrensninger (censored demand).
+| Mål | Verdi (Enheter) |
+| :--- | :--- |
+| Antall dager (N) | 365 |
+| Gjennomsnittlig daglig etterspørsel ($\mu$) | 11,5 |
+| Standardavvik ($\sigma$) | 13,2 |
+| **Variasjonskoeffisient (CV)** | **1,15** |
+| Minimumsalg | 0 |
+| Maksimumsalg (Kampanjeplatå) | 115 |
+| Maksimumsalg (Ekstremverdi/Støy) | 171 |
 
-## 4.4 Identifiserte etterspørselsmønstre
-Gjennom en foreløpig deskriptiv analyse av de vaskede salgsdataene er følgende mønstre identifisert for analyseperioden:
+Som Tabell 1 viser, er standardavviket høyere enn gjennomsnittet, noe som resulterer i en CV på 1,15. Dette bekrefter at etterspørselen er preget av store svingninger og faller inn under kategorien "Lumpy Demand" (ujevn etterspørsel), som teoretisert i kapittel 3.1.
 
-1.  **Ukedagseffekt:** Det er observert systematiske variasjoner gjennom uken, der mandager ofte har den høyeste utleverte mengden. Dette skyldes trolig butikkenes behov for å fylle opp hyllene etter storhandelen i helgen. Som vist i Figur 2, bekrefter analysen en tydelig sesongvariasjon innenfor uken, noe som er karakteristisk for dagligvarelogistikk (Arunraj & Ahrens, 2015).
-2.  **Kampanjeperioder (Crazy Days):** Det er identifisert to markante salgstopper i løpet av perioden som sammenfaller med "Crazy Days"-kampanjer. Den mest omfattende toppen ble observert i oktober 2025 (uke 44), der etterspørselen lå stabilt på et nivå betydelig over normalen. Figur 1 illustrerer den historiske tidsserien og de markante avvikene fra normal etterspørsel.
-3.  **Sesongvariasjon:** Dataene indikerer lavere utlevert volum i fellesferien (juli/august), noe som kan knyttes til endrede handlevaner i sommerferien og redusert aktivitet i regionen.
+## 4.4 Etterspørselsmønstre og visualisering
+For å få et helhetsbilde av dataenes utvikling over tid, er den historiske tidsserien visualisert i Figur 1.
 
 ![Figur 1: Historisk tidsserie for Lasagne Familiepakning](figurer/fig1_tidsserie.png)
 **Figur 1: Historisk tidsserie (mars 2025 – februar 2026) som viser variasjon i utlevert volum og markante topper under kampanjeperioder.**
 
+Grafen viser et tydelig bilde av dataenes natur. Nivået ligger stabilt lavt i normalperioder, men brytes av kortsiktige og kraftige topper. Det er ingen tydelig langsiktig trend i datamaterialet, men vi ser en klar sesongvariasjon knyttet til ukedager. Dette utdypes i Figur 2, som viser gjennomsnittlig salg per ukedag.
+
 ![Figur 2: Gjennomsnittlig etterspørsel per ukedag](figurer/fig2_ukedag.png)
 **Figur 2: Gjennomsnittlig utlevert volum fordelt på ukedager, som dokumenterer den systematiske ukedagseffekten med høyest aktivitet på mandager.**
 
+Ukedagseffekten viser at mandager har det desidert høyeste volumet. Dette skyldes butikkenes behov for å fylle opp hyllene etter storhandelen i helgen. Denne systematiske variasjonen er en kritisk innsikt som modellene i kapittel 6 må kunne fange opp.
+
+## 4.5 Kampanjemekanikk og "Censored Demand"
+En av de største utfordringene i datamaterialet er effekten av "Crazy Days"-kampanjer. I disse periodene observerer vi "flate topper" der etterspørselen stabiliserer seg på nøyaktig 115 enheter over flere dager. 
+
+Dette fenomenet betegnes i faglitteraturen som **"Censored Demand"** (avskåret etterspørsel). Det betyr at de registrerte dataene ikke nødvendigvis reflekterer den sanne kundeetterspørselen, men heller er et resultat av logistiske kapasitetsbegrensninger eller sentrale styringsregler (ref. kapittel 4.3 i opprinnelig utkast). Når butikkene når sine tildelingsgrenser, flater kurven ut. For prognosearbeidet betyr dette at modellene må trenes på data som er preget av slike kapasitetstak, noe som gjør prediksjon av de reelle "toppene" ekstra utfordrende.
+
+## 4.6 Konsekvenser og behov for modeller
+Mangelen på gode prognoser har direkte operative konsekvenser for REMA 1000:
+*   **Stock-outs:** Ved underestimering mister man salg og kundetilfredshet i butikk.
+*   **Lagerbinding:** Ved overestimering øker lagerkostnadene og kapitalbindingen på distribusjonssenteret.
+*   **Uforutsigbarhet:** Brå topper skaper press på transportkapasitet og bemanning.
+
+Disse konsekvensene skaper et tydelig behov for en modell som kan skille mellom den systematiske ukedagseffekten og de ekstraordinære kampanjeløftene. Kapittelet har dermed lagt grunnlaget for hvorfor vi i de neste kapitlene velger å teste både statistiske SARIMA-modeller og maskinlæringsbaserte Random Forest-algoritmer.
+
 # 5. Metode og data
-Dette kapittelet beskriver studiens metodiske fundament, datagrunnlaget og prosessene som er benyttet for å transformere rådata til et beslutningsgrunnlag for prognosemodellering.
+Dette kapittelet redegjør for studiens metodiske tilnærming, datagrunnlaget og den trinnvise prosessen som er benyttet for å besvare problemstillingen. Formålet er å sikre at analysen er transparent og etterprøvbar.
 
-## 5.1 Forskningsdesign: Kvantitativ Case-studie
-Studien benytter et kvantitativt forskningsdesign basert på en case-studie av REMA 1000 Distribusjon Trondheim. Valget av kvantitativ metode er begrunnet i studiens behov for å analysere historiske transaksjonsdata for å identifisere mønstre og evaluere numerisk nøyaktighet i prognoser. Case-studiedesignet muliggjør en dypere forståelse av hvordan spesifikke faktorer, som "Crazy Days"-kampanjer, påvirker etterspørselen i en reell logistisk kontekst.
+## 5.1 Metodevalg og forskningsstruktur
+Studien benytter et **kvantitativt forskningsdesign** basert på en case-studie av REMA 1000 Distribusjon Trondheim. Valget av kvantitativ metode er begrunnet i behovet for å analysere store mengder historiske transaksjonsdata for å identifisere mønstre og evaluere numerisk nøyaktighet i prognoser. 
 
-## 5.2 Datainnsamling og Kildekritikk
-Primærdataene består av historiske uttrekk fra REMAs ERP-systemer (Enterprise Resource Planning). 
+Arbeidet er strukturert som en lineær prosess der målet er å identifisere den mest robuste modellen for å håndtere "Lumpy Demand". Ved å kombinere klassisk statistikk (SARIMA) med maskinlæring (Random Forest), oppnår vi en metodisk triangulering som øker studiens faglige tyngde og gir et mer nyansert bilde av prediksjonsevnen.
 
-- **Datakilde:** Sekundærdata i form av historiske salgs- og innkjøpstransaksjoner for perioden mars 2025 til februar 2026.
-- **Kildekritikk:** Dataene anses som svært pålitelige da de representerer faktiske fysiske bevegelser (plukk og mottak) ved distribusjonssenteret. En potensiell feilkilde er eventuelle systemfeil eller manuelle korrigeringer i ERP-systemet som ikke reflekterer fysisk etterspørsel, men slike avvik antas å være statistisk insignifikante i det store datamaterialet.
+## 5.2 Den analytiske prosessen
+Analysen er gjennomført i fire hovedfaser ved bruk av programmeringsspråket **Python** og bibliotekene **Pandas, Statsmodels og Scikit-learn**:
 
-## 5.3 Databehandling og Vaskeprosess
-For å klargjøre dataene for tidsserieanalyse, ble det gjennomført en omfattende vaskeprosess ved bruk av programmeringsspråket **Python (versjon 3.x)** og biblioteket **Pandas** for datamanipulering. Dette er et kritisk steg for å sikre etterprøvbarhet:
+1.  **Dataklargjøring (Vask):** Rådata fra ERP-systemet er aggregert fra transaksjonsnivå til dagsnivå. Dette inkluderer fjerning av identifisert støy og konvertering av tidsformater for å skape en sammenhengende tidsserie.
+2.  **Modellering og estimering:** Modellene trenes på historiske data for å lære sesongmønstre og sammenhenger. Dette inkluderer en *grid-search* for å finne optimale parametere ($p,d,q$) for SARIMA og *feature engineering* for Random Forest.
+3.  **Validering:** Modellene testes på "ukjente" data (testsettet). Her gjennomføres residualanalyse for å sjekke om modellene har fanget opp all systematisk informasjon (hvit støy).
+4.  **Evaluering og Prognose:** Modellene sammenlignes ved bruk av MAE, MAPE og Bias, segmentert på normale dager og toppdager for å avdekke operasjonelle begrensninger.
 
-1.  **Valg av tidsvariabel:** Vi har valgt `Opprettelsesdato` som den primære tidsvariabelen. I logistikksammenheng representerer dette tidspunktet butikken legger inn ordren, noe som gir det mest presise bildet av etterspørselen sammenlignet med `Plukkdato`.
-2.  **Aggregering til dagsnivå:** Rådataene inneholder hver enkelt ordrelinje (transaksjonsnivå). Ved å summere alle bestillinger per dag ved hjelp av `groupby`-funksjonalitet, skaper vi en sammenhengende tidsserie som er nødvendig for de valgte prognosemodellene.
-3.  **Tegnsett og Format:** Alle filer ble konvertert til UTF-8 koding for å sikre korrekt visning av norske tegn (æ, ø, å).
-4.  **Håndtering av ekstremverdier (Outliers):** Gjennom vaskeprosessen ble det identifisert en ekstremverdi på 171 enheter den 7. april 2025. Da denne verdien er mer enn sju ganger høyere enn gjennomsnittet og ikke sammenfaller med kjente nasjonale kampanjer, er den vurdert som en ikke-representativ engangshendelse (eksempelvis nyåpning av butikk eller feilbestilling). For å unngå at denne verdien skjevkjører (bias) prognosemodellene, er den dokumentert som en støykilde i datamaterialet.
+## 5.3 Datagrunnlag og struktur
+Primærdataene består av historiske uttrekk fra REMAs ERP-system for produktet "Lasagne Familiepakning". 
+*   **Kilde:** Sekundærdata (historiske salgsordre).
+*   **Periode:** 1. mars 2025 – 28. februar 2026.
+*   **Observasjoner:** 365 daglige datapunkter.
+*   **Variabler:** `Opprettelsesdato` (tidsstempel for ordre) og `Utlevert mengde` (volum i antall enheter).
 
-Resultatet av denne prosessen er datasettene `vasket_salg_daglig.csv` og `vasket_innkjop_daglig.csv`. Analysen og visualiseringen er utført med bibliotekene **NumPy** for numeriske operasjoner og **Matplotlib/Seaborn** for grafisk fremstilling.
+## 5.4 Datakvalitet, antagelser og begrensninger
+Dataene anses som svært pålitelige (**høy reliabilitet**) da de representerer faktiske fysiske bevegelser ved distribusjonssenteret. 
 
-## 5.4 Analysemetoder og Evaluering
-For å evaluere hvor gode prognosemodellene er, benytter vi to anerkjente statistiske feilmål:
+**Viktige antagelser og grep:**
+*   **Ekstremverdier:** En uteligger på 171 enheter (7. april 2025) ble vurdert som ikke-representativ støy og fjernet. Dette gjøres for å sikre at modellens parametere ikke blir skjevkjørt av isolerte hendelser utenfor normal drift.
+*   **Begrensning (Censored Demand):** Vi antar at de observerte kampanjedataene er påvirket av logistiske kapasitetstak. Dette er en metodisk begrensning, da modellen lærer å predikere *allokert volum* snarere enn *reell kundeetterspørsel*.
+*   **Validitet:** Ved å bruke `Opprettelsesdato` sikrer vi høy indre validitet, da dette tidspunktet er nærmest den faktiske etterspørselsimpulsen fra butikk.
 
-- **MAE (Mean Absolute Error):** Måler det gjennomsnittlige avviket i faktiske enheter. Dette er lett å tolke for logistikkplanleggere (f.eks. "vi bommer i snitt med 10 kasser"). MAE er vårt primære evalueringsmål for dager med svært lav eller null etterspørsel.
-- **MAPE (Mean Absolute Percentage Error):** Måler det prosentvise avviket. Dette gjør det mulig å sammenligne prognosepresisjon på tvers av ulike produkter med ulikt salgsvolum. Vi er imidlertid oppmerksomme på at MAPE har matematiske begrensninger ved null-etterspørsel ($A_t = 0$), da formelen involverer divisjon med faktisk verdi. I slike tilfeller vil MAPE enten ekskludere disse observasjonene eller gi urealistisk høye feilprosenter. For å sikre en robust evaluering, kombineres derfor alltid MAPE med MAE for å gi et balansert bilde av modellenes nøyaktighet.
+## 5.5 Oppdeling av data (Trening og Test)
+For å simulere en reell prognosesituasjon og sikre at vi måler modellens generaliseringsevne (Out-of-sample test), er datasettet delt inn slik:
+*   **Treningssett:** 1. mars 2025 – 31. desember 2025. Brukes til å bygge og justere modellene.
+*   **Testsett:** 1. januar 2026 – 28. februar 2026. Brukes utelukkende til endelig evaluering.
 
-## 5.5 Splitting av data (Trening og Test)
-Datasettet er delt i et treningssett og et testsett (Out-of-sample test). Dette simulerer en reell situasjon der man skal forutsi fremtiden basert på fortiden.
+Denne 80/20-splittingen er standard i tidsserieanalyse og sikrer at testperioden inneholder både normale dager og ettervirkninger av kampanjeperioder, noe som gir et realistisk bilde av modellens ytelse.
 
-- **Treningssett (Train):** 01.03.2025 – 31.12.2025. Brukes til parameterestimering og modellutvikling.
-- **Testsett (Test):** 01.01.2026 – 28.02.2026. Brukes utelukkende til evaluering av prognosepresisjon.
+## 5.6 Statistisk oppsummering av datasettet
+Tabell 1 oppsummerer de tekniske nøkkeltallene for tidsserien etter datavask, og gir en oversikt over nivået og variasjonen modellene må håndtere.
+
+**Tabell 1: Teknisk oppsummering av datasettet (N=365)**
+
+| Parameter | Verdi (Antall enheter) |
+| :--- | :--- |
+| Gjennomsnitt ($\mu$) | 11,5 |
+| Standardavvik ($\sigma$) | 13,2 |
+| **Variasjonskoeffisient (CV)** | **1,15** |
+| Minimum | 0 |
+| Maksimum (Normalisert) | 115 |
+
+CV-verdien på 1,15 underbygger metodens fokus på modeller som tåler ujevn etterspørsel. Den statistiske spredningen viser at standardavviket er større enn gjennomsnittet, noe som er den primære utfordringen for prognosepresisjonen i dette caset.
 
 # 6. Modellering
-Dette kapittelet definerer og begrunner det valgte modellrammeverket før selve analysen starter. Formålet er å etablere hvilke modeller som skal benyttes, hvilke forutsetninger som legges til grunn, og hvordan disse er teknisk bygget opp.
+Dette kapittelet definerer og begrunner det valgte modellrammeverket. Modellvalget er ikke et resultat av en forhåndsbestemt hypotese, men en konsekvens av en iterativ utvalgsprosess basert på de spesifikke egenskapene ved REMAs etterspørselsdata.
 
-## 6.1 Valg av modelltype
-For å håndtere kompleksiteten i REMA 1000s etterspørselsdata er det valgt to ulike modelltyper som utfyller hverandre:
-1.  **SARIMA (Hovedmodell):** Valgt som den primære statistiske tilnærmingen. SARIMA er "gullstandarden" for tidsserier med tydelige sesongmønstre ($s=7$). Modellen er valgt fordi den kan skille mellom kortsiktige svingninger (autokorrelasjon) og faste ukentlige sykluser, noe som er avgjørende i dagligvarelogistikk (Arunraj & Ahrens, 2015).
-2.  **Random Forest (Benchmark):** Valgt som en ikke-lineær maskinlæringsmodell. Hensikten er å teste om en ensemble-metode kan fange opp brå etterspørselsendringer (som kampanjetopper) bedre enn de lineære sammenhengene i SARIMA.
-3.  **Seasonal Naïve (Baseline):** Benyttes som en konservativ referansemodell for å dokumentere merverdien av de mer komplekse metodene.
+## 6.1 Arbeidsprosess og Modellutvalg
+Utvalget av modeller ble gjort gjennom en eliminasjonsmetode der vi vurderte ulike statistiske og algoritmiske tilnærminger opp mot datasettets kompleksitet. 
 
-## 6.2 Modellforutsetninger og begrensninger
-Modelleringen bygger på følgende forutsetninger:
-*   **Stasjonaritet:** For SARIMA antar vi at tidsserien kan gjøres stasjonær gjennom differensiering ($d=1, D=1$), slik at gjennomsnitt og varians er stabile over tid.
-*   **Historisk representativitet:** Vi antar at de identifiserte mønstrene i treningssettet (mars–desember 2025) er representative for testperioden i 2026.
-*   **Begrensning:** Modellene begrenses bevisst til historiske salgs- og kalenderdata. Dette gjøres for å isolere modellenes evne til å lære av ren salgshistorikk uten eksterne forklaringsvariabler.
+I den innledende fasen ble **Moving Average (MA)** og enkle eksponensielle utglatningsmetoder vurdert. Disse ble imidlertid raskt forkastet som primærmodeller. Årsaken var at Moving Average, selv med ulike vindusstørrelser (f.eks. MA7 eller MA14), utviste en uakseptabel treghet i å respondere på de brå volumendringene som karakteriserer "Lasagne Familiepakning". MA-modeller tenderer til å "glatte ut" nettopp de toppene som er kritiske for logistikkplanleggingen ved REMA 1000, og de mangler evnen til å fange opp den systematiske ukedagseffekten uten omfattende manuelle justeringer.
 
-## 6.3 Modellspesifikasjon
+## 6.2 Valg av modeller og deres utfyllende roller
+For å dekke de ulike aspektene ved etterspørselsmønsteret, landet vi på tre modeller som representerer ulike metodiske styrker:
+
+1.  **Seasonal Naïve (Baseline):** Valgt som en konservativ referanse. Gitt den sterke ukedagseffekten identifisert i kapittel 4, er dette en mer realistisk baseline enn et simpelt gjennomsnitt. Den tvinger de mer avanserte modellene til å bevise at de kan tilføre verdi utover det å "kopiere forrige uke".
+2.  **SARIMA (Stastistisk fundament):** Valgt som den primære lineære modellen. SARIMA (Seasonal Autoregressive Integrated Moving Average) er spesielt egnet her fordi den integrerer sesongmessige differensiering. Dette gjør det mulig å fjerne den ukentlige syklusen matematisk og modellere de gjenværende avvikene som en funksjon av tidligere feil og observasjoner. Dette er avgjørende for å håndtere "støyen" mellom kampanjeperiodene.
+3.  **Random Forest (Ikke-lineær benchmark):** Valgt for å kompensere for SARIMAs svakheter ved ekstreme utslag. Mens SARIMA er bundet av lineære sammenhenger, kan Random Forest gjennom sine beslutningstrær fange opp komplekse, ikke-lineære interaksjoner mellom ukedag, historiske topper og glidende trender. Ved å inkludere denne maskinlæringstilnærmingen, kan vi undersøke om algoritmer som ikke forutsetter en spesifikk statistisk distribusjon, er bedre rystet til å håndtere de logistiske "klumpene" i etterspørselen.
+
+## 6.3 Datastrukturens påvirkning på modellarkitekturen
+Modellene er konfigurert spesifikt for å respondere på tre identifiserte strukturelle trekk:
+*   **Sesongvariasjon ($s=7$):** Både SARIMAs sesongledd og Random Forests lags er låst til 7 dager for å speile butikkenes ukentlige bestillingsrytme.
+*   **Topper og ikke-lineæritet:** Bruken av Random Forest er direkte motivert av de "flate platåene" i kampanjedataene (ref. kapittel 4.3). Vi antok at en tre-basert modell ville være bedre til å gjenkjenne de logistiske grensene (f.eks. maksimale ordrestørrelser) enn en ren statistisk tidsseriemodell.
+*   **Stasjonaritet:** Behovet for å stabilisere tidsserien før modellering dikterte bruken av differensiering i SARIMA ($d=1, D=1$).
+
+## 6.4 Modellspesifikasjon
 Modellene er teknisk spesifisert slik:
-*   **SARIMA-struktur:** Defineres som $(p,d,q)(P,D,Q)_7$. Her representerer de sesongmessige leddene ($P,D,Q$) modellens evne til å "huske" hva som skjedde for nøyaktig 7 dager siden.
+*   **SARIMA-struktur:** Defineres som $(p,d,q)(P,D,Q)_7$. Her representerer de sesongmessige leddene ($P,D,Q$) modellens evne til å "huske" hva som skjedde for nøyaktig 7 dager siden. Parameterne $(1,1,1)(1,1,1)_7$ er valgt etter en metodisk grid-search beskrevet i kapittel 7.
 *   **Random Forest-vektor:** Modellen mottar en input-vektor bestående av laggede verdier ($y_{t-1}, y_{t-7}, y_{t-14}$), et 7-dagers glidende gjennomsnitt, og binære variabler (dummies) for ukedager.
 
-## 6.4 Tolkning av modellstruktur
-Modellene "jobber" med dataene på ulike måter. SARIMA fjerner sesongvariasjonen gjennom differensiering og modellerer de gjenværende restene (residualene) som en funksjon av tidligere feil og observasjoner. Random Forest derimot, deler opp datasettet i mange beslutningstrær basert på terskelverdier i de historiske lags-ene, noe som gjør den i stand til å gjenkjenne at "hvis salget var høyt forrige mandag, er det stor sannsynlighet for høyt salg i dag".
+## 6.5 Metodisk refleksjon
+Ved å kombinere en klassisk statistisk modell (SARIMA) med en moderne maskinlæringsmodell (Random Forest), oppnår vi en metodisk triangulering. Dette gjør det mulig å skille mellom feil som skyldes modellens begrensninger (f.eks. manglende evne til å modellere lineært) og feil som skyldes fundamentale mangler i datagrunnlaget (f.eks. manglende informasjon om kampanjestart). Modellvalget er dermed ikke bare et forsøk på å finne den mest presise prediksjonen, men også et verktøy for å diagnostisere etterspørselens natur ved REMA 1000.
 
-## 6.5 Oppsummering og videre steg
-Dette kapittelet har etablert det teoretiske grunnlaget. I neste kapittel (Analyse) vil vi ta disse modellene i bruk, bestemme de endelige parameterne og estimere presisjonen på faktiske data fra REMA 1000.
+## 6.6 Oppsummering og videre steg
+Dette kapittelet har etablert det teoretiske grunnlaget og begrunnet valget av modeller. I neste kapittel (Analyse) vil vi ta disse modellene i bruk og beskrive selve den tekniske gjennomføringen og valideringen på faktiske data.
 
 # 7. Analyse
-Dette kapittelet presenterer den stegvise gjennomføringen av analysen, fra klargjøring av data til endelig validering av modellene.
+Dette kapittelet presenterer den operative gjennomføringen av analysen. Prosessen følger en strukturert tilnærming fra datavurdering og parameterisering til endelig validering av modellene. Fokus ligger på den metodiske reisen for å identifisere de mest robuste prediksjonsverktøyene for REMA 1000 Distribusjon Trondheim.
 
-## 7.1 Datavurdering og klargjøring
-Før modellering ble dataene aggregert til dagsnivå og vasket for å sikre konsistens. En sentral del av klargjøringen var håndteringen av en ekstremverdi på 171 enheter (7. april 2025). Da denne verdien ikke kunne knyttes til kjente kampanjer og lå mer enn sju ganger over gjennomsnittet, ble den vurdert som en ikke-representativ støykilde og fjernet for å unngå skjevkjøring av modellparametere. Etter vask ble tidsserien vurdert som stasjonær nok for SARIMA-modellering gjennom sesongmessig differensiering.
+## 7.1 Datavurdering og egnethet for modellering
+Før modellering ble datagrunnlaget vurdert med hensyn til stasjonaritet og prediksjonspotensial. Tidsserien for "Lasagne Familiepakning" ble analysert for å bekrefte at de statistiske forutsetningene for tidsserieanalyse var til stede. 
 
-## 7.2 Valg av modell/tilnærming (Parameterisering)
-For å finne de optimale innstillingene for modellene ble det gjennomført en systematisk testing av ulike parametere:
-*   **SARIMA-tuning:** Gjennom en grid-search ble verdiene for $p,d,q$ og de sesongmessige leddene bestemt basert på lavest MAE i treningssettet.
-*   **Random Forest-oppsett:** Vi testet ulike kombinasjoner av historiske lags (1, 7 og 14 dager). Resultatene viste at t-7 (samme dag forrige uke) var den sterkeste prediktoren, noe som bekrefter betydningen av ukesesong i REMA-systemet.
+Gjennom en visuell inspeksjon av autokorrelasjonsfunksjonen (ACF) ble det identifisert sterke sesongmessige avhengigheter ved lag 7, 14 og 21. Dette bekrefter at etterspørselen har en deterministisk ukentlig komponent som gjør den egnet for sesongbaserte modeller som SARIMA og Seasonal Naïve. Videre ble stasjonaritet vurdert; selv om rådataene viser volatilitet under kampanjer, ble serien vurdert som trend-stasjonær nok til at sesongmessig differensiering ($D=1$) i SARIMA-modellen kunne stabilisere variansen og gjennomsnittet over tid. Håndteringen av ekstremverdier, spesielt fjerningen av den identifiserte støykilden i april 2025, var et nødvendig metodisk grep for å sikre at modellene lærte av representativ etterspørsel og ikke av isolerte systemfeil eller logistiske avvik.
 
-## 7.3 Estimering og resultatpresentasjon
-Modellene ble estimert på testsettet (januar–februar 2026). Tabell 2 viser den globale ytelsen, mens Tabell 3 viser ytelsen segmentert på normale dager og toppdager.
+## 7.2 Modelltesting og Parameterisering (Tuning)
+For å identifisere de mest presise modellene ble det gjennomført en omfattende testfase der ulike konfigurasjoner ble veid mot hverandre. Dette var en iterativ prosess preget av "trial and error" for å finne den optimale balansen mellom kompleksitet og generaliseringsevne.
+
+*   **SARIMA-optimering:** For SARIMA-modellen ble det benyttet en systematisk *grid-search*-metodikk. Vi testet ulike kombinasjoner av autoregressive ($p$) og glidende gjennomsnitt ($q$) parametere, både for den ikke-sesongmessige og den sesongmessige delen av modellen. Prosessen innebar å minimere Akaike Information Criterion (AIC) i treningsfasen, samtidig som vi overvåket modellens evne til å konvergere. Valget av $(1,1,1)(1,1,1)_7$ ble gjort etter å ha observert at økt kompleksitet (høyere orden av $p$ eller $q$) ikke ga signifikant reduksjon i treningsfeilen, men økte risikoen for overtilpasning (overfitting).
+*   **Random Forest Feature Engineering:** For maskinlæringstilnærmingen lå hovedfokuset på å konstruere relevante forklaringsvariabler (*features*). Vi testet ulike sett av historiske lags og glidende gjennomsnitt. Gjennom en vurdering av *feature importance* identifiserte vi at $y_{t-7}$ og $y_{t-1}$ var de mest kritiske input-variablene. Modellen ble også testet med og uten ukedag-dummies for å vurdere i hvilken grad de binære variablene utfylte informasjonen i de historiske lags-ene.
+*   **Sammenligningsgrunnlag:** Seasonal Naïve ble benyttet som en kontrollmodell gjennom hele prosessen. Ved å kontinuerlig måle forbedringen av SARIMA og Random Forest mot denne baseline-modellen, kunne vi kvantifisere merverdien av den økte matematiske kompleksiteten.
+
+## 7.3 Estimeringsprosess og Segmenteringsstrategi
+Estimeringen ble utført ved å trene modellene på data fra mars til desember 2025, og deretter utføre prediksjoner på det uavhengige testsettet (januar–februar 2026). Dette sikrer en realistisk evaluering av modellene på "ukjente" data.
+
+En sentral del av vår analysemetodikk er **segmentert evaluering**. Gitt de ekstreme forskjellene i etterspørsel under kampanjer, vurderte vi det som metodisk utilstrekkelig å kun se på globale gjennomsnitt (som total MAE). Vi valgte derfor å splitte testsettet i to segmenter basert på en terskelverdi (90-persentilen i treningssettet):
+1.  **Normale driftsdager:** For å evaluere modellens presisjon i den daglige, stabile vareflyten.
+2.  **Toppdager:** For å isolere modellens evne til å håndtere kampanjer og ekstreme utslag.
+
+Denne metodiske splittingen er avgjørende for å kunne gi REMA 1000 et nyansert beslutningsgrunnlag, da en modells styrke i ett segment kan overskygge kritiske svakheter i et annet.
+
+## 7.4 Valideringsmetodikk og Residualanalyse
+For å validere om modellene faktisk har ekstrahert all tilgjengelig informasjon fra datasettet, ble det gjennomført en grundig analyse av residualene (feilleddene). Valideringen fokuserte på to hovedaspekter:
+
+1.  **Autokorrelasjon i feilene:** Vi benyttet ACF-plott av residualene for å sjekke om det var gjenværende mønstre modellene ikke hadde fanget opp. Dersom residualene ligner "hvit støy" (ingen signifikante lags), er modellen matematisk validert for den gitte tidsserien.
+2.  **Systematisk bias:** Ved å analysere den gjennomsnittlige feilen (Bias) i de ulike segmentene, validerte vi i hvilken grad modellene har en tendens til systematisk over- eller underestimering. Dette er et kritisk steg for å forstå de operasjonelle risikoene ved å ta modellene i bruk i et reelt logistikksystem.
+
+Denne systematiske tilnærmingen sikrer at de endelige resultatene (presentert i kapittel 8) ikke bare er tilfeldige observasjoner, men produkter av en kontrollert og etterprøvbar analyseprosess.
+
+# 8. Resultatoppsummering
+Dette kapittelet presenterer de numeriske funnene fra evalueringen av prognosemodellene på testsettet for januar og februar 2026. Resultatene er delt inn i en global evaluering og en segmentert analyse for å belyse modellenes styrker og svakheter under ulike driftsforhold.
+
+## 8.1 Global Modellytelse
+For å få et overordnet bilde av modellenes presisjon, ble feilmålene MAE, MAPE og Bias beregnet for hele testperioden. Tabell 2 oppsummerer den globale ytelsen for de tre testede modellene. Resultatene viser at Random Forest oppnår den laveste gjennomsnittlige feilen (MAE 14,81), etterfulgt av SARIMA (MAE 19,23). Begge de avanserte modellene viser en forbedring sammenlignet med Seasonal Naïve-baselinen, som har en MAE på 21,18.
 
 **Tabell 2: Global evaluering av modeller på testsettet (Jan-Feb 2026)**
 
@@ -238,6 +312,13 @@ Modellene ble estimert på testsettet (januar–februar 2026). Tabell 2 viser de
 | Seasonal Naïve (Baseline) | 21,18 | 1073 % | 0,10 |
 | SARIMA (Hovedmodell) | 19,23 | 396 % | -19,19 |
 | **Random Forest (Benchmark)** | **14,81** | **464 %** | **-3,22** |
+
+Det er verdt å merke seg de svært høye MAPE-verdiene. Dette skyldes i stor grad dager med svært lavt faktisk volum, der selv små absolutte avvik gir store prosentvise utslag. MAE vurderes derfor som det mest pålitelige målet for operativ planlegging i dette caset.
+
+## 8.2 Segmentert Resultatanalyse
+For å undersøke modellenes evne til å håndtere kampanjevariasjoner, ble testsettet splittet i "Normale dager" (salg ≤ 51,9 enheter) og "Toppdager" (salg > 51,9 enheter). Tabell 3 presenterer resultatene fra denne segmenteringen. 
+
+Analysen avslører et markant skille i presisjon: Under normaldrift er Random Forest svært treffsikker med en MAE på kun 6,56 enheter. På toppdager øker imidlertid feilraten dramatisk for samtlige modeller. Random Forest har her en MAE på 90,75 enheter, kombinert med en tilsvarende negativ bias. Dette bekrefter at modellen konsekvent underestimerer etterspørselen når den når ekstreme nivåer.
 
 **Tabell 3: Segmentert feilanalyse (MAE og Bias)**
 
@@ -250,16 +331,7 @@ Modellene ble estimert på testsettet (januar–februar 2026). Tabell 2 viser de
 | (Salg > 51,9) | SARIMA | 109,44 | -109,44 |
 | | **Random Forest** | **90,75** | **-90,75** |
 
-## 7.4 Validering (Residualanalyse)
-For å validere om modellene har fanget opp all systematisk struktur, gjennomførte vi en residualanalyse. 
-
-![Figur 6: ACF-plott av residualer](figurer/fig6_residual_acf.png)
-**Figur 6: Autokorrelasjonsfunksjon (ACF) for residualene til de tre testede modellene.**
-
-Residualanalysen i Figur 6 viser at SARIMA og Random Forest i stor grad har eliminert autokorrelasjonen, da de fleste laggene ligger innenfor konfidensintervallet. Dette bekrefter at modellene er statistisk valide for normaldrift. Den store negative biasen i Tabell 3 påpeker imidlertid en systematisk svakhet ved ekstreme topper, som vil bli drøftet i kapittel 9.
-
-# 8. Resultatoppsummering
-Analysen viser at Random Forest er den mest presise modellen totalt sett, med en MAE på 14,81 enheter. Hovedfunnet er imidlertid det skarpe skillet i presisjon mellom normale driftsdager og kampanjedrevne toppdager. Mens modellene er svært treffsikre i normalperioder, underestimerer de konsekvent etterspørselen ved store utslag, noe som indikerer at historikk alene ikke er tilstrekkelig for fullstendig prognosepresisjon.
+Oppsummert viser resultatene at de valgte tidsseriemodellene er meget effektive for å predikere stabil etterspørsel, men at de uten ekstern kampanjeinformasjon har en systematisk begrensning i å fange opp de største logistiske utslagene ved REMA 1000 Distribusjon Trondheim. Dette danner grunnlaget for diskusjonen i kapittel 9.
 
 # 9. Diskusjon
 Dette kapittelet drøfter funnene knyttet til den systematiske underestimeringen av topper og de operasjonelle konsekvensene dette har for REMA 1000.
