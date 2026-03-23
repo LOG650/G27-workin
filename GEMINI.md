@@ -58,3 +58,32 @@ Rapporten skal følge denne overordnede strukturen:
 - **Jevn fremdrift:** Arbeidet skal utføres i et jevnt tempo gjennom hele prosjektperioden.
 - **Unngå skippertak:** Ingen kritiske deler av rapporten eller analysen skal utsettes til de siste to ukene.
 
+## 11. Spesifikke Krav til Kapittelstruktur (Lærerens føringer)
+
+### Kapittel 4: Casebeskrivelse (Kontekst for analysen)
+*   **Hensikt:** Gi kontekst ved å beskrive problem, data og modellbehov slik at leseren forstår utfordringene før modellering starter.
+*   **Kjerneinnhold:**
+    *   **Beslutningssituasjon:** Hva virksomheten prøver å ta beslutninger om, og hvorfor det er vanskelig uten analyse.
+    *   **Data:** Type data (tidsserie), periode, representasjon og visualisering (grafer over tid).
+    *   **Mønstre:** Sesongvariasjon, spredning og enkle tabeller med beskrivende statistikk.
+    *   **Konsekvenser:** Hva skjer ved manglende analyse (behov for modell).
+
+### Kapittel 5: Metode og data (Gjennomføring og transparens)
+*   **Hensikt:** Dokumentere hvordan analysen gjennomføres for å sikre transparens og etterprøvbarhet.
+*   **Kjerneinnhold:**
+    *   **Metodevalg:** Type analyse og stegvis struktur.
+    *   **Analyseprosess:** Detaljert beskrivelse (Dataklargjøring → Modellering → Validering → Prognose).
+    *   **Datakvalitet:** Antagelser, begrensninger og reliabilitet.
+    *   **Oppdeling:** Begrunnelse for splitting i trening- og testsett.
+    *   **Oppsummering:** Tabell med tekniske nøkkeltall (min, maks, gjennomsnitt).
+
+### Kapittel 6 & 7: Modellering og Analyse (Prosessfokus)
+*   **Hensikt:** Beskrive *hvordan* arbeidet er gjort, ikke resultatene.
+*   **Kjerneinnhold:**
+    *   **Begrunnelse:** Hvilke modeller som ble vurdert/forkastet (f.eks. Moving Average).
+    *   **Parametrisering:** Hvordan parameterkombinasjoner (tuning) er testet.
+    *   **Validering:** Hvordan modellvalget er gjort og validert (residualanalyse).
+
+### Kapittel 8: Resultater (Funn)
+*   **Hensikt:** Presentere faktiske funn.
+*   **Kjerneinnhold:** Tabeller med MAE, MAPE og Bias (gjerne segmentert).
