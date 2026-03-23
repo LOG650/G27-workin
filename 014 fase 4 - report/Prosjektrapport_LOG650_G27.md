@@ -192,44 +192,52 @@ Datasettet er delt i et treningssett og et testsett (Out-of-sample test). Dette 
 - **Testsett (Test):** 01.01.2026 – 28.02.2026. Brukes utelukkende til evaluering av prognosepresisjon.
 
 # 6. Modellering
-For å besvare problemstillingen er det etablert to enkle baseline-modeller, samt en maskinlæringsmodell som benytter tilgjengelige kalender- og historiske data.
+Dette kapittelet definerer og begrunner det valgte modellrammeverket før selve analysen starter. Formålet er å etablere hvilke modeller som skal benyttes, hvilke forutsetninger som legges til grunn, og hvordan disse er teknisk bygget opp.
 
-## 6.1 Baseline-modeller
-Som referansepunkt for evalueringen benyttes to standardmetoder:
-1.  **Seasonal Naive (SN):** Denne modellen antar at etterspørselen for en gitt ukedag er identisk med samme ukedag forrige uke. Dette fanger opp den sterke "mandagseffekten" identifisert i EDA-en.
-2.  **SARIMA (Hovedmodell):** En avansert statistisk tidsseriemodell som kombinerer autoregresjon (AR), differensiering (I) og glidende gjennomsnitt (MA), tilpasset både trend og sesongvariasjoner i datasettet.
+## 6.1 Valg av modelltype
+For å håndtere kompleksiteten i REMA 1000s etterspørselsdata er det valgt to ulike modelltyper som utfyller hverandre:
+1.  **SARIMA (Hovedmodell):** Valgt som den primære statistiske tilnærmingen. SARIMA er "gullstandarden" for tidsserier med tydelige sesongmønstre ($s=7$). Modellen er valgt fordi den kan skille mellom kortsiktige svingninger (autokorrelasjon) og faste ukentlige sykluser, noe som er avgjørende i dagligvarelogistikk (Arunraj & Ahrens, 2015).
+2.  **Random Forest (Benchmark):** Valgt som en ikke-lineær maskinlæringsmodell. Hensikten er å teste om en ensemble-metode kan fange opp brå etterspørselsendringer (som kampanjetopper) bedre enn de lineære sammenhengene i SARIMA.
+3.  **Seasonal Naïve (Baseline):** Benyttes som en konservativ referansemodell for å dokumentere merverdien av de mer komplekse metodene.
 
-## 6.2 Random Forest (Benchmark)
-Som en mer avansert sammenligningsmodell benyttes en Random Forest-regressor. Denne maskinlæringsmetoden er valgt for sin evne til å fange opp ikke-lineære mønstre uten å kreve antagelser om dataenes fordeling. Modellen er spesifisert med følgende uavhengige variabler for å unngå data leakage:
-- **Laggede variabler:** Historisk etterspørsel fra t-1, t-7 og t-14 dager tilbake.
-- **Glidende gjennomsnitt:** Et 7-dagers glidende snitt av historisk salg.
-- **Kalenderdata:** One-hot encoding av ukedag for å fange opp systematiske ukentlige svingninger.
+## 6.2 Modellforutsetninger og begrensninger
+Modelleringen bygger på følgende forutsetninger:
+*   **Stasjonaritet:** For SARIMA antar vi at tidsserien kan gjøres stasjonær gjennom differensiering ($d=1, D=1$), slik at gjennomsnitt og varians er stabile over tid.
+*   **Historisk representativitet:** Vi antar at de identifiserte mønstrene i treningssettet (mars–desember 2025) er representative for testperioden i 2026.
+*   **Begrensning:** Modellene begrenses bevisst til historiske salgs- og kalenderdata. Dette gjøres for å isolere modellenes evne til å lære av ren salgshistorikk uten eksterne forklaringsvariabler.
 
-Ved å utelate kampanjevariabler eksplisitt, evalueres modellens evne til å predikere etterspørsel utelukkende basert på mønstre i den historiske tidsrekken. Det ble vurdert å inkludere en proxy for kampanjer basert på etterspørselsmønstre, men dette ble forkastet på grunn av risiko for *data leakage*. Bruk av indirekte eller fremtidig informasjon i modelleringen er metodisk problematisk da det kan gi et urealistisk bilde av prognoseevnen i sanntid. Modellen benytter derfor kun historisk salg og kalenderdata.
+## 6.3 Modellspesifikasjon
+Modellene er teknisk spesifisert slik:
+*   **SARIMA-struktur:** Defineres som $(p,d,q)(P,D,Q)_7$. Her representerer de sesongmessige leddene ($P,D,Q$) modellens evne til å "huske" hva som skjedde for nøyaktig 7 dager siden.
+*   **Random Forest-vektor:** Modellen mottar en input-vektor bestående av laggede verdier ($y_{t-1}, y_{t-7}, y_{t-14}$), et 7-dagers glidende gjennomsnitt, og binære variabler (dummies) for ukedager.
+
+## 6.4 Tolkning av modellstruktur
+Modellene "jobber" med dataene på ulike måter. SARIMA fjerner sesongvariasjonen gjennom differensiering og modellerer de gjenværende restene (residualene) som en funksjon av tidligere feil og observasjoner. Random Forest derimot, deler opp datasettet i mange beslutningstrær basert på terskelverdier i de historiske lags-ene, noe som gjør den i stand til å gjenkjenne at "hvis salget var høyt forrige mandag, er det stor sannsynlighet for høyt salg i dag".
+
+## 6.5 Oppsummering og videre steg
+Dette kapittelet har etablert det teoretiske grunnlaget. I neste kapittel (Analyse) vil vi ta disse modellene i bruk, bestemme de endelige parameterne og estimere presisjonen på faktiske data fra REMA 1000.
 
 # 7. Analyse
-Dette kapittelet presenterer den statistiske evalueringen av modellene, med fokus på segmentert feilanalyse og residualanalyse for å identifisere systematiske avvik.
+Dette kapittelet presenterer den stegvise gjennomføringen av analysen, fra klargjøring av data til endelig validering av modellene.
 
-Analysen er strukturert i tre trinn for å gi en helhetlig vurdering av prognosepresisjon. Først evalueres den samlede nøyaktigheten for testperioden. Deretter gjennomføres en segmentert analyse der vi skiller mellom normale dager og toppdager for å avdekke modellenes begrensninger ved ekstreme volumutslag. Til slutt benyttes residualanalyse for å vurdere i hvilken grad modellene har evnet å fange opp den systematiske strukturen i dataene.
+## 7.1 Datavurdering og klargjøring
+Før modellering ble dataene aggregert til dagsnivå og vasket for å sikre konsistens. En sentral del av klargjøringen var håndteringen av en ekstremverdi på 171 enheter (7. april 2025). Da denne verdien ikke kunne knyttes til kjente kampanjer og lå mer enn sju ganger over gjennomsnittet, ble den vurdert som en ikke-representativ støykilde og fjernet for å unngå skjevkjøring av modellparametere. Etter vask ble tidsserien vurdert som stasjonær nok for SARIMA-modellering gjennom sesongmessig differensiering.
 
-# 8. Resultat
-Dette kapittelet presenterer resultatene fra evalueringen av de tre prognosemodellene i testperioden januar–februar 2026. Modellene er evaluert uten bruk av kampanjevariabler for å sikre metodisk validitet og unngå "data leakage".
+## 7.2 Valg av modell/tilnærming (Parameterisering)
+For å finne de optimale innstillingene for modellene ble det gjennomført en systematisk testing av ulike parametere:
+*   **SARIMA-tuning:** Gjennom en grid-search ble verdiene for $p,d,q$ og de sesongmessige leddene bestemt basert på lavest MAE i treningssettet.
+*   **Random Forest-oppsett:** Vi testet ulike kombinasjoner av historiske lags (1, 7 og 14 dager). Resultatene viste at t-7 (samme dag forrige uke) var den sterkeste prediktoren, noe som bekrefter betydningen av ukesesong i REMA-systemet.
 
-## 8.1 Sammenligning av prognosepresisjon
-Evalueringen indikerer at Random Forest oppnår den laveste gjennomsnittlige feilraten i testperioden, med særlig styrke i segmentet for normale dager. SARIMA fremstår som en robust statistisk hovedmodell, mens Seasonal Naïve benyttes som baseline for å fange opp gjentakende ukentlige sesongmønstre. Figur 3 og 4 gir en visuell sammenligning av modellene mot de faktiske salgsdataene i testperioden.
-
-![Figur 3 & 4: Sammenligning av modeller i testperioden](figurer/fig3_4_modellsammenligning.png)
-**Figur 3 & 4: Visualisering av prediksjoner fra SARIMA og Random Forest mot faktiske salgsdata. Modellene følger grunnleggende sesongvariasjoner godt, men viser tydelige avvik ved brå endringer.**
+## 7.3 Estimering og resultatpresentasjon
+Modellene ble estimert på testsettet (januar–februar 2026). Tabell 2 viser den globale ytelsen, mens Tabell 3 viser ytelsen segmentert på normale dager og toppdager.
 
 **Tabell 2: Global evaluering av modeller på testsettet (Jan-Feb 2026)**
 
-... (tabell innhold) ...
-
-## 8.2 Segmentert feilanalyse og Bias
-For å forstå modellenes begrensninger i perioder med høy etterspørsel, ble testsettet delt inn i "normale dager" og "toppdager". Terskelverdien for en toppdag er beregnet til **51,90 enheter**, tilsvarende 90-persentilen i treningssettet. Som illustrert i Figur 5, skaper kampanjeaktivitet etterspørselstopper som ligger langt over modellens prediksjonsnivå.
-
-![Figur 5: Kampanjeeffekt og modellavvik](figurer/fig5_campaign_impact.png)
-**Figur 5: Detaljvisning av kampanjeeffekt der faktiske salgstopper (spikes) sammenlignes med modellenes prognoser, noe som tydeliggjør den systematiske underestimeringen (negative bias).**
+| Modell | MAE (Enheter) | MAPE (%) | Bias (Enheter) |
+| :--- | :--- | :--- | :--- |
+| Seasonal Naïve (Baseline) | 21,18 | 1073 % | 0,10 |
+| SARIMA (Hovedmodell) | 19,23 | 396 % | -19,19 |
+| **Random Forest (Benchmark)** | **14,81** | **464 %** | **-3,22** |
 
 **Tabell 3: Segmentert feilanalyse (MAE og Bias)**
 
@@ -242,16 +250,16 @@ For å forstå modellenes begrensninger i perioder med høy etterspørsel, ble t
 | (Salg > 51,9) | SARIMA | 109,44 | -109,44 |
 | | **Random Forest** | **90,75** | **-90,75** |
 
-Resultatene viser en tydelig **negativ bias** for alle modeller på toppdager. Denne systematiske underestimeringen av topper er i tråd med funn fra Trapero et al. (2015), som understreker utfordringene ved å fange opp kampanjedrevet etterspørsel uten eksplisitte forklaringsvariabler. Selv om Random Forest er den mest presise modellen på dager med normalt volum, underestimerer den etterspørselen med i gjennomsnitt 90,75 enheter på dager der salget overstiger 90-persentilen.
-
-## 8.3 Residualanalyse
-Residualanalyse gjennomføres for å kontrollere om all systematisk struktur i dataene er fanget opp av modellen. Residualanalysen (ACF-plott) av feilene viser at SARIMA og Random Forest har eliminert det meste av autokorrelasjonen i tidsserien. 
+## 7.4 Validering (Residualanalyse)
+For å validere om modellene har fanget opp all systematisk struktur, gjennomførte vi en residualanalyse. 
 
 ![Figur 6: ACF-plott av residualer](figurer/fig6_residual_acf.png)
-
 **Figur 6: Autokorrelasjonsfunksjon (ACF) for residualene til de tre testede modellene.**
 
-Som vist i Figur 6, fremstår de gjenværende feilene for SARIMA og Random Forest i stor grad som uforutsigbar variasjon (støy), da de fleste laggene ligger innenfor konfidensintervallet. Dette indikerer at modellene utnytter de tilgjengelige historiske dataene og kalenderdataene effektivt. Den systematiske underestimeringen på toppdager (identifisert i bias-analysen) bekrefter imidlertid at informasjonen som kreves for å predikere disse toppene ikke ligger latent i selve salgshistorikken.
+Residualanalysen i Figur 6 viser at SARIMA og Random Forest i stor grad har eliminert autokorrelasjonen, da de fleste laggene ligger innenfor konfidensintervallet. Dette bekrefter at modellene er statistisk valide for normaldrift. Den store negative biasen i Tabell 3 påpeker imidlertid en systematisk svakhet ved ekstreme topper, som vil bli drøftet i kapittel 9.
+
+# 8. Resultatoppsummering
+Analysen viser at Random Forest er den mest presise modellen totalt sett, med en MAE på 14,81 enheter. Hovedfunnet er imidlertid det skarpe skillet i presisjon mellom normale driftsdager og kampanjedrevne toppdager. Mens modellene er svært treffsikre i normalperioder, underestimerer de konsekvent etterspørselen ved store utslag, noe som indikerer at historikk alene ikke er tilstrekkelig for fullstendig prognosepresisjon.
 
 # 9. Diskusjon
 Dette kapittelet drøfter funnene knyttet til den systematiske underestimeringen av topper og de operasjonelle konsekvensene dette har for REMA 1000.
