@@ -198,11 +198,17 @@ Analysen er gjennomført i fire hovedfaser ved bruk av programmeringsspråket **
 3.  **Validering:** Modellene testes på "ukjente" data (testsettet). Her gjennomføres residualanalyse for å sjekke om modellene har fanget opp all systematisk informasjon (hvit støy).
 4.  **Evaluering og Prognose:** Modellene sammenlignes ved bruk av MAE, MAPE og Bias, segmentert på normale dager og toppdager for å avdekke operasjonelle begrensninger.
 
-## 5.3 Datagrunnlag og struktur
-Primærdataene består av historiske uttrekk fra REMAs ERP-system for produktet "Lasagne Familiepakning". 
-*   **Kilde:** Sekundærdata (historiske salgsordre).
+## 5.3 Datagrunnlag, struktur og lagerstatus
+Primærdataene består av historiske uttrekk fra REMAs ERP-system for produktet "Lasagne Familiepakning". For å sikre at salgsdataene er et pålitelig mål for etterspørsel, har vi også analysert lagerstatus gjennom hele analyseperioden (se Figur 3).
+
+![Figur 3: Lagerstatus, salg og prognoser](figurer/Skjermbilde 2026-03-23 204911.png)
+**Figur 3: Oversikt over varebeholdning (sort strek), faktisk salg (blå strek) og eksisterende prognose (grønn strek). Markeringer under x-aksen viser kampanjer (blå) og årlige hendelser (orange).**
+
+Dataene i Figur 3 er hentet fra interne kontrollsystemer og gir en ukevis oversikt over logistikksituasjonen siden mars 2025. 
+
+*   **Kilde:** Sekundærdata (historiske salgsordre og lagerrapporter).
 *   **Periode:** 1. mars 2025 – 28. februar 2026.
-*   **Observasjoner:** 365 daglige datapunkter.
+*   **Observasjoner:** 365 daglige datapunkter for salg, aggregert ukevis for lagerstatus.
 *   **Variabler:** `Opprettelsesdato` (tidsstempel for ordre) og `Utlevert mengde` (volum i antall enheter).
 
 ## 5.4 Datakvalitet, antagelser og begrensninger
@@ -334,20 +340,32 @@ Analysen avslører et markant skille i presisjon: Under normaldrift er Random Fo
 Oppsummert viser resultatene at de valgte tidsseriemodellene er meget effektive for å predikere stabil etterspørsel, men at de uten ekstern kampanjeinformasjon har en systematisk begrensning i å fange opp de største logistiske utslagene ved REMA 1000 Distribusjon Trondheim. Dette danner grunnlaget for diskusjonen i kapittel 9.
 
 # 9. Diskusjon
-Dette kapittelet drøfter funnene knyttet til den systematiske underestimeringen av topper og de operasjonelle konsekvensene dette har for REMA 1000.
+Dette kapittelet drøfter funnene fra de to analysefasene og vurderer de operasjonelle konsekvensene av resultatene for REMA 1000 Distribusjon Trondheim.
 
-## 9.1 Tolkning av modellresultater og Bias
-Hovedfunnet er at Random Forest og SARIMA gir en betydelig forbedring over baseline på normale dager, men at alle modeller svikter ved ekstreme etterspørselsutslag. En bias på -90,75 enheter på toppdager innebærer at modellene i mange tilfeller predikerer en etterspørsel som er vesentlig lavere enn det faktiske behovet.
+## 9.1 Verdien av informasjonsdeling og redusert bias
+Sammenligningen mellom Fase 1 og Fase 2 (ref. kapittel 8) dokumenterer tydelig verdien av **informasjonsdeling** i forsyningskjeden. Ved å gi modellene tilgang til kampanjekalenderen og høytidsindikatorer, reduseres den globale feilraten (MAE) fra 16,93 til 15,02. Enda viktigere er forbedringen i normaldrift, der MAE nå er nede i 6,80 enheter. 
 
-Denne negative biasen kan tilskrives fraværet av kampanjevariabler i modellene. Siden vi metodisk har valgt å basere oss utelukkende på historisk salg og kalenderdata, har modellene ingen mulighet til å "forutse" når en kampanje inntreffer, selv om de er gode til å fange opp de generelle mønstrene mellom kampanjene.
+Dette betyr i praksis at vi har fjernet mye av den "kunstige" støyen som oppstår når modeller tvinges til å forklare kampanjeløft utelukkende basert på historiske svingninger. Resultatene understøtter Trapero et al. (2015) sitt poeng om at integrasjon av kampanjekalendere er en forutsetning for å unngå systematiske feil i retail-prognoser.
 
-## 9.2 Praktisk betydning for logistikk og vareflyt
-Den observerte underestimeringen har kritiske konsekvenser for planlegging og drift:
-1.  **Risiko for manglende leveringsevne:** Vedvarende negativ bias på dager med høyt volum øker sannsynligheten for "stockouts", der faktisk etterspørsel overstiger planlagt kapasitet.
-2.  **Operasjonell usikkerhet:** Systematiske avvik tvinger logistikksystemet til å jobbe reaktivt, med behov for hasteordre og ekstratransport for å dekke det udekkede behovet på ca. 90 enheter per toppdag.
-3.  **Kapasitetsplanlegging:** Selv om Random Forest fanger opp ikke-lineære mønstre i kalenderdata bedre enn SARIMA, er ingen av modellene robuste nok til å brukes som eneste beslutningsgrunnlag for dimensjonering av ressurser under store kampanjer uten manuelle justeringer.
-4.  **Bullwhip-effekt:** Den systematiske underestimeringen i distribusjonsleddet er operasjonelt utfordrende da den kan forplante seg som usikkerhet bakover i forsyningskjeden. Når distribusjonssenteret konsekvent rapporterer lavere forventet behov enn de faktiske toppene, vil dette kunne trigge overdrevne ordrereaksjoner i tidligere ledd når de faktiske volumene inntreffer, noe som forsterker bullwhip-effekten.
-5.  **Implikasjoner for sikkerhetslager:** I tråd med Seiringer et al. (2024), har både MAE og bias direkte innvirkning på dimensjoneringen av sikkerhetslager. En negativ bias innebærer at sikkerhetslageret må være betydelig høyere for å opprettholde ønsket servicegrad, noe som øker lagerbinding og tilhørende kostnader. Nøyaktige prognoser er derfor en forutsetning for å minimere behovet for slike kostbare buffere i logistikksystemet.
+## 9.2 Residualanalyse og modellvaliditet
+For å validere at modellene i Fase 2 har fanget opp all tilgjengelig systematisk informasjon, har vi gjennomført en residualanalyse. Figur 6 viser autokorrelasjonsfunksjonen (ACF) for feilleddene til de tre testede modellene.
+
+![Figur 6: Residual ACF](figurer/fig6_residual_acf.png)
+**Figur 6: ACF-plott av residualene for Seasonal Naïve, SARIMA og Random Forest. Blått felt indikerer konfidensintervallet for hvit støy.**
+
+At de fleste lags i Figur 6 ligger innenfor det blå konfidensintervallet, bekrefter at Random Forest-modellen i stor grad har ekstrahert de repeterbare mønstrene (ukedagseffekt og kampanjeperiodisitet). De gjenværende feilene kan dermed betraktes som uforutsigbar støy eller effekter av faktorer vi ikke har data på.
+
+## 9.3 Tolkning av vedvarende bias og Push-logikk
+Til tross for tilgang på kampanjeinformasjon, observerer vi en vedvarende negativ bias på ca. 90 enheter under selve kampanjedagene (Crazy Days). Dette er et sentralt logistikkfaglig funn som belyser begrensningene ved rene historiske prognosemodeller:
+
+1.  **Sentral tildeling (Push):** Som beskrevet i casebeskrivelsen (kapittel 4.1), styres volumet under Crazy Days av ordrer generert sentralt fra G2. Siden denne "push"-fordelingen er basert på strategiske beslutninger snarere enn historisk butikk-etterspørsel, vil en modell basert på historikk alltid ha problemer med å predikere den nøyaktige magnituden.
+2.  **Informasjonsgap:** Modellen vet *når* kampanjen skjer, men ikke *hvor mye* G2 har besluttet å sende ut. Dette bekrefter behovet for menneskelig skjønn og direkte integrasjon av planlagte kvanta i prognosesystemet for slike ekstremhendelser (Fildes et al., 2008).
+
+## 9.4 Praktisk betydning for logistikk og vareflyt
+Den observerte presisjonen i normaldrift (MAE 6,80) gir REMA 1000 et svært pålitelig grunnlag for daglig kapasitetsplanlegging og lagerstyring. Likevel innebærer den systematiske underestimeringen under Crazy Days at man i disse ukene må opprettholde manuelle rutiner og tett koordinering med G2 for å unngå transportmangel eller akutt behov for ekstratransport. 
+
+I tråd med Seiringer et al. (2024), betyr den lave feilraten i normalperioder at sikkerhetslageret kan dimensjoneres mer presist, noe som frigjør kapital og reduserer risikoen for matsvinn i de mer kritiske ferskvarekategoriene. Vår analyse viser dermed at verdien av avanserte modeller er størst der etterspørselen følger markedsmønstre, mens man for kampanjer må stole på informasjonsflyt og push-planer.
+
 
 # 10. Konklusjon
 Dette prosjektet har undersøkt prognosepresisjon for "Lasagne Familiepakning" ved REMA 1000 Distribusjon Trondheim.
