@@ -51,6 +51,8 @@ Basert på behovet for økt presisjon i planleggingen, er følgende problemstill
 
 For å besvare denne problemstillingen vil vi utvikle og evaluere modeller basert på historisk volum (plukket/utlevert mengde). Selv om inkludering av forklaringsvariabler som kampanjeindikatorer og pris vurderes som teoretisk relevante, er selve analysen i denne oppgaven avgrenset til bruk av historiske salgs- og kalenderdata for å evaluere modellenes grunnleggende prediksjonsevne. En sentral del av studien er å *evaluere* hvordan disse rene tidsseriemodellene presterer i møte med kampanjedrevet etterspørsel, for å kvantifisere behovet for mer avanserte forklaringsvariabler i fremtidige systemer.
 
+Underveis i prosjektarbeidet mottok vi utvidet informasjon om kampanjekalendere og faste markedshendelser fra REMA 1000. Denne informasjonen viste seg å være avgjørende for å forklare de observerte salgstoppene i datasettet. For å kvantifisere verdien av denne tilleggsinformasjonen, har vi valgt å utvide analysen til to scenarioer: Scenario 1, som kun baserer seg på historiske salgsdata (en "blind" tilnærming), og Scenario 2, som integrerer kampanje- og hendelsesinformasjon. Dette gjør det mulig å isolere den faktiske effekten av informasjonsdeling i forsyningskjeden og vurdere hvorvidt avanserte modeller kan kompensere for manglende ekstern informasjon.
+
 ## 1.2 Delproblemer
 For å strukturere analysen har vi definert følgende deloppgaver:
 1. Hvordan karakteriseres de historiske etterspørselsmønstrene for det valgte produktet?
@@ -210,6 +212,8 @@ Dataene i Figur 3 er hentet fra interne kontrollsystemer og gir en ukevis oversi
 *   **Periode:** 1. mars 2025 – 28. februar 2026.
 *   **Observasjoner:** 365 daglige datapunkter for salg, aggregert ukevis for lagerstatus.
 *   **Variabler:** `Opprettelsesdato` (tidsstempel for ordre) og `Utlevert mengde` (volum i antall enheter).
+
+Selv om enkelte faste hendelser som jul eller påske har begrenset direkte effekt på volumet for "Lasagne Familiepakning", har vi valgt å inkludere disse variablene i Scenario 2. Dette er gjort for å utvikle en mer anvendelig og robust modell som kan overføres til andre produktkategorier der slike sesongsvingninger er mer fremtredende (for eksempel godteri til jul), og sikrer at modellen er forberedt på fremtidige logistiske impulser.
 
 ## 5.4 Datakvalitet, antagelser og begrensninger
 Dataene anses som svært pålitelige (**høy reliabilitet**) da de representerer faktiske fysiske bevegelser ved distribusjonssenteret. 

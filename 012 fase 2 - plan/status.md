@@ -1,7 +1,7 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000
 
-**Dagens dato:** 24.03.2026
-**Nåværende fase:** Fase 3 - Gjennomføring (Utvidet analyse fullført)
+**Dagens dato:** 26.03.2026
+**Nåværende fase:** Fase 3 - Gjennomføring (Scenarioanalyse fullført)
 
 Denne filen oppdateres løpende for å gjenspeile fremdriften i prosjektet basert på `schedule.json`.
 
@@ -12,7 +12,7 @@ Denne filen oppdateres løpende for å gjenspeile fremdriften i prosjektet baser
 | **16.03.26** | ACT-03: Litteraturgjennomgang | ✅ 100% | Fullført |
 | **16.03.26** | ACT-07: Datavask og strukturering | ✅ 100% | Fullført |
 | **19.03.26** | ACT-06: Datainnhenting fra REMA | ✅ 100% | Fullført (Inkl. lagerbeholdningsgraf) |
-| **24.03.26** | ACT-08: Utvidet analyse og modellering | ✅ 100% | Fullført (Kampanjer, Push-fordeling og Lagerkapasitet) |
+| **26.03.26** | ACT-08: Utvidet analyse og modellering | ✅ 100% | Fullført (Scenario 1 vs 2 sammenligning inkludert) |
 
 ## 📊 Statusoversikt per Milepæl
 
