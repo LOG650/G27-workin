@@ -1,17 +1,18 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000 (G27)
 
-**Statusdato:** 2026-04-15
-**Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport i revisjon)
+**Statusdato:** 2026-04-15 (oppdatert etter modellutvidelse og rapportrevisjon)
+**Nåværende fase:** Fase 3 – Gjennomføring (analyse og hoveddel av rapport lukket)
 
-Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik. Reviewfunn er hentet fra `review.md` (14.04.2026).
+Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
 
 ## Kort status
 
-- Fase 3 er i sluttspurt. ACT-03 (litteratur) og ACT-07 (datavask) fullført 2026-03-16, ACT-06 (datainnhenting fra REMA inkl. lagerstatus) fullført 2026-03-19, ACT-08 (analyse og modellering) utvidet og funksjonelt fullført 2026-03-26.
-- Scenario 1 (blind prognose) og Scenario 2 (med kampanjeinfo) er implementert i `scenario_analyse.py` og gir resultater i `004 data/scenario_resultater.csv` (52 × 21).
-- Prosjektreview gjennomført 2026-04-14 (`review.md`) med 17 prioriterte tiltak: 6 høy prioritet, 7 medium, 4 lav. Lærerkommentarer om helgedata, kampanjekalender og modellutvidelser er besvart i reviewen men ikke lukket i rapporten.
-- Rapporten `014 fase 4 - report/Prosjektrapport_LOG650_G27.md` er 80–90 % ferdig. Hovedgapet er kap. 8 (Scenario 2 ikke eksplisitt presentert) og kap. 12 (vedlegg tomt).
-- **Neste steg:** Lukke de seks høyprioriterte reviewtiltakene (helgedata-dokumentasjon, `s=5` vs `s=7`, kampanjekalender-fil, Scenario 2-presentasjon, fylling av vedlegg, modellutvidelser). Parallelt: ACT-09 skriving mot M-03 (2026-04-27) og peer review M-05 (2026-05-01).
+- **Datagrunnlag regenerert:** Oppdaget datafeil i `vask_data.py`-utdata (undertelling ~70 %). Nytt `vask_relex.py` bygger datasett fra RELEX-eksport (260 virkedager, sum 20 701). Dokumentert i rapportens kap. 5.4 og 9.1.
+- **Modellering utvidet:** Åtte modeller estimert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner), GBM CV-tuning (16 kombinasjoner × 3-fold TimeSeriesSplit), ADF og Ljung-Box-diagnostikk utført.
+- **Scenario 1 vs 2** sammenlignet på seks modeller. Kampanjeinformasjon gir størst gevinst på SARIMA i normaldrift (MAE 46 → 29, −36 %), marginal eller negativ gevinst ellers.
+- **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert.
+- **Review-tiltak fra 2026-04-14:** Alle 6 høyprioriterte og de viktigste medium-tiltakene er adressert. Figur 3 renamed til `fig3_lagerstatus.png`. Kampanjekalender som fil (`004 data/kampanjekalender.csv`). Rapportdato oppdatert til 2026-04-15.
+- **Neste steg:** Peer review M-05 (2026-05-01). Eventuelt fylle formalia-seksjoner (egenerklæring, publiseringsavtale) før innlevering M-06 (2026-05-31).
 
 ## Faktisk fremdrift per arbeidskopi
 
