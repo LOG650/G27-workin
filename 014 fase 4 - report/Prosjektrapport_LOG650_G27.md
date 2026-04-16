@@ -260,7 +260,7 @@ Dataene anses som høyt reliable – de representerer faktiske fysiske bevegelse
 
 ## 5.5 Oppdeling av data (trening og test)
 For å simulere en reell prognosesituasjon og sikre at vi måler modellenes generaliseringsevne (out-of-sample), er datasettet delt inn slik:
-* **Treningssett:** 1. mars 2025 – 31. desember 2025 (208 virkedager etter lag-oppbygging).
+* **Treningssett:** 1. mars 2025 – 31. desember 2025 (218 virkedager rå, 208 effektivt etter at de 10 første droppes fordi lag- og rolling-features ikke er definert der).
 * **Testsett:** 1. januar 2026 – 28. februar 2026 (42 virkedager).
 
 Splitten tilsvarer ~83/17 % av de tilgjengelige observasjonene. Testperioden inneholder Crazy Days uke 5/2026, noe som gir anledning til å evaluere modellenes evne til å prediktere kampanjeeffekter som ikke overlapper treningssettet fullt ut.
@@ -312,6 +312,7 @@ Modellene er konfigurert for tre identifiserte strukturelle trekk:
 * **Random Forest-vektor:** Modellen mottar lag-features ($y_{t-1}, y_{t-5}, y_{t-10}$), et 5-dagers glidende gjennomsnitt, kalenderfeatures (`is_monday`, `month`, `week_of_month`, `days_since_last_order`), ukedag-dummier og kampanjeflagg.
 * **Gradient Boosting:** Samme feature-sett som RF. Hyperparametere velges ved kryssvalidert søk.
 * **Holt-Winters:** `trend='add'`, `seasonal='add'`, `seasonal_periods=5`.
+* **Evalueringsprotokoll:** Alle modeller evalueres som **én-steg-frem-prognoser**. For hver testdag har modellen tilgang til faktiske observerte verdier fra foregående dager — `lag_1`, `lag_5`, `lag_10` og `rolling_mean_5` bygges én gang på hele serien og vurderes derfor ikke som datalekkasje, men som realistisk operasjonell informasjon. Dette reflekterer REMAs dag-for-dag-bestillingsprosess, men betyr at resultatene ikke uten videre kan sammenlignes med en rullerende multi-step-prognose der modellen kun ser testdata rekursivt.
 
 ## 6.5 Metodisk refleksjon
 Åtte modeller er flere enn minimum nødvendig, men gir en sterk **metodisk triangulering**:
@@ -423,6 +424,8 @@ Analysen avdekker en klart segmentert modellvinner-struktur:
 
 Andre modeller (Holt-Winters, full RF, SARIMA) har systematisk stor negativ eller positiv bias på toppdager, hvilket gir dem dårligere operasjonell robusthet. Fordi bias-skjevhet er mer kritisk for sikkerhetslagerdimensjonering enn tilfeldige avvik (Seiringer et al., 2024), er hybridens balanserte bias (−85 vs SARIMAs −432) et viktig resultat.
 
+Et slående observasjon er at både **Holt-Winters og SARIMA har |Bias| = MAE på toppdager** (487,2 og 432,3). Når Bias og MAE er like i absolutt verdi, må hver enkelt residual ha samme fortegn — alle 15 toppdager undervurderes systematisk. Dette er ikke en beregningsartefakt, men et strukturelt kjennetegn ved klassisk sesongutjevning: modellene glatter mot historisk gjennomsnitt og kan ikke produsere de ekstreme nivåene kampanjer krever. Funnet underbygger at tidsseriemodeller alene er utilstrekkelige for kampanjevolum og motiverer hybridroutingen i kap. 9.4.
+
 ## 8.4 Residualdiagnostikk og modellvaliditet
 For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-Box Q-test (10 lags) og ACF-plott evaluert (Figur 6).
 
@@ -447,7 +450,7 @@ Tabell 5 og Figur 6 viser et markant skille: **tidsseriemodellene (Naive, HW, SA
 Oppsummert viser resultatene at modellene tilbyr *komplementære styrker*: SARIMA gir best presisjon i normaldrift, RF uten lag_1 gir best ytelse på kampanje- og toppdager, og hybridene kombinerer styrkene med balanserte bias. Dette gir grunnlag for en nyansert diskusjon i kap. 9.
 
 # 9. Diskusjon
-Dette kapittelet drøfter funnene fra analysen og vurderer de operasjonelle konsekvensene for REMA 1000 Distribusjon Trondheim. Kapittelet er strukturert rundt fem temaer: (9.1) datakvalitet og metodiske erfaringer, (9.2) verdien av informasjonsdeling (Scenario 1 vs 2), (9.3) modellenes komplementære roller, (9.4) hybridenes routing-utfordring, og (9.5) praktiske implikasjoner.
+Dette kapittelet drøfter funnene fra analysen og vurderer de operasjonelle konsekvensene for REMA 1000 Distribusjon Trondheim. Kapittelet er strukturert rundt seks temaer: (9.1) datakvalitet og metodiske erfaringer, (9.2) verdien av informasjonsdeling (Scenario 1 vs 2), (9.3) modellenes komplementære roller, (9.4) hybridenes routing-utfordring, (9.5) praktiske implikasjoner, og (9.6) metodiske begrensninger.
 
 ## 9.1 Datakvalitet og metodisk erfaring
 En viktig metodisk erfaring i prosjektet var oppdagelsen av en datafeil i det opprinnelige vaskeskriptet. Første iterasjon av analysen brukte en aggregert tidsserie med sum 6 201 stk, mens faktisk `Bestilt antall` i råfilen summerer til 20 934 stk – et undertelling på ~70 %. Feilen ble oppdaget ved kryssjekk mot en uavhengig RELEX-eksport (20 801 stk), og skyldtes sannsynligvis en utdatert versjon av den vaskede filen som ikke ble regenerert etter at råfilen ble oppdatert. Vaskeskriptet selv produserer korrekte tall når det kjøres på dagens rådata.
@@ -503,6 +506,14 @@ Siden butikkenes ordrer for frysevarer godkjennes med nær 100 % aksept av AOF/R
 3. Månedlig kapasitetsplanlegging: terskelbasert hybrid som kompromissmodell med balansert bias.
 
 Dette er i tråd med Fildes et al. (2008)s observasjon om at menneskelige overstyringer basert på unik lokalkunnskap kan forbedre prognoser, så lenge de anvendes systematisk heller enn ukritisk.
+
+## 9.6 Metodiske begrensninger
+
+**Testsettets sammensetning.** Januar–februar 2026 inneholder Crazy Days uke 5 og ettervirkningen av julehandel. Av 42 testdager er 15 (36 %) klassifisert som toppdager — betydelig over den forventede andelen på ca. 10 % i et representativt år. De globale feilmålene i Tabell 3 er derfor sterkt påvirket av toppdagene, og sammenligninger mellom modeller på globalt nivå må tolkes med varsomhet. Den **segmenterte analysen i kap. 8.3 er rapportens primære lens** for modellvalg, nettopp fordi den isolerer normaldrift og kampanjedrift.
+
+**Fravær av walk-forward-validering.** Evalueringen bygger på en enkelt fast trenings-/testsplitt (83/17 %). Med kun 42 testdager er resultatene sårbare for tilfeldigheter i hvilke datoer som faller i testperioden. En walk-forward-validering (expanding window) ville gitt mer robuste estimater og mulighet til å kvantifisere prognoseusikkerhet over tid. Dette er et naturlig neste steg for videre arbeid (se kap. 10).
+
+**Risiko for overdifferensiering i SARIMA.** ADF-testen (kap. 7.1, Tabell A1) indikerer at treningsserien allerede er stasjonær (p < 0,001). Likevel valgte AIC-minimerende grid-søk en modell med både vanlig og sesongdifferensiering ($d=1, D=1$). Grid-søket inkluderte også $d=0, D=0$-kombinasjoner, så valget er datastyrt, men AIC straffer ikke overdifferensiering per se. Double differencing på en allerede stasjonær serie kan introdusere kunstig MA-struktur (MA-koeffisient nær $-1$), noe som delvis kan forklare den systematiske underestimeringen på toppdager (jf. kap. 8.3). En parsimonisk $(p,0,q)(P,0,Q)_5$-modell bør vurderes i et videre arbeid som sensitivitetssjekk.
 
 
 # 10. Konklusjon

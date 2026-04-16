@@ -24,7 +24,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 | ACT-04 Metode og analyseopplegg | 2026-02-24 til 2026-03-09 | Ferdig 2026-03-09 | MAE/MAPE/Bias fastsatt |
 | ACT-05 Prosjektplanlegging (WBS/Gantt) | 2026-02-24 til 2026-03-09 | Ferdig 2026-03-09 | M-02 oppnådd |
 | ACT-06 Datainnhenting fra REMA | 2026-02-16 til 2026-03-19 | Ferdig 2026-03-19 | Inkludert lagerstatus-data og kampanjeinfo fra e-post |
-| ACT-07 Datavask og strukturering | 2026-02-16 til 2026-03-16 | Ferdig 2026-03-16 | `vask_data.py` → `vasket_salg_daglig.csv` (267 virkedager) |
+| ACT-07 Datavask og strukturering | 2026-02-16 til 2026-03-16 | Ferdig 2026-04-15 | `vask_relex.py` → `vasket_salg_daglig.csv` (260 virkedager, sum 20 701) |
 | ACT-08 Analyse og modellering | 2026-03-16 til 2026-04-13 | Ferdig 2026-03-26 (utvidet) | Scenario 1/2 implementert; review 14.04 flagger `s=7`, helgedata og RF-features |
 | ACT-09 Skriving av metode/resultat | 2026-03-10 til 2026-04-27 | Pågår (~80 %) | Kap. 8 Scenario 2-presentasjon og kap. 12 vedlegg gjenstår |
 | ACT-10 Peer review og kvalitetssikring | 2026-04-27 til 2026-05-01 | Ikke startet | M-05 |
@@ -71,7 +71,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 
 #### ACT-07 Datavask og strukturering
 - [x] EDA og outlier-håndtering (R-001 residualrisiko nedgradert)
-- [x] Tidsserie strukturert på virkedagsnivå (267 observasjoner)
+- [x] Tidsserie strukturert på virkedagsnivå (260 observasjoner fra RELEX-eksport via `vask_relex.py`)
 - [x] Trenings-/testsplitt i `split_innkjop.py`
 - [x] Dokumentert i kap. 4–5
 - [x] Gjennomført og lukket
@@ -136,11 +136,11 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 
 | Aktivitet | Skript | Figurer | Resultatfiler | Vurdering |
 | --- | ---: | ---: | ---: | --- |
-| ACT-07 Datavask | 1 (`vask_data.py`) | 0 | 2 (`vasket_salg_daglig.csv`, `vasket_innkjop_daglig.csv`) | Fullført og dokumentert |
-| ACT-07 Datasplitt | 1 (`split_innkjop.py`) | 0 | 4 (`train_salg.csv`, `test_salg.csv`, `train_innkjop.csv`, `test_innkjop.csv`) | Bug på linje 30 flagget i review §4.1 |
+| ACT-07 Datavask | 1 (`vask_relex.py`) | 0 | 1 (`vasket_salg_daglig.csv`, 260 rader) | Fullført og dokumentert; `vask_data.py` utgått |
+| ACT-07 Datasplitt | 0 (inline i `analyse_hoved.py`/`scenario_analyse.py` via `SPLITT_DATO = '2026-01-01'`) | 0 | 0 | `split_innkjop.py` utgått; gamle CSV-splitter fjernet |
 | ACT-08 Hovedanalyse | 2 (`analyse_hoved.py`, `modell_test.py`) | 3 (`fig1_tidsserie.png`, `fig2_ukedag.png`, `fig6_residual_acf.png`) | 2 (`analyse_resultater_stram.csv`, `prediksjoner_avansert.csv`) | Fullført; `s=7` og helgedata-håndtering åpne reviewpunkter |
 | ACT-08 Scenarioanalyse | 1 (`scenario_analyse.py`) | 1 (`fig_scenario_sammenligning.png`) | 1 (`scenario_resultater.csv`, 52 × 21) | Figur ikke referert i rapportens kap. 8 |
-| ACT-08 Visualisering | 1 (`visualiser_resultater.py`) | 2 (`fig3_4_modellsammenligning.png`, `fig5_kampanjeeffekt.png`) | 0 | Figurer finnes på disk, ikke referert i rapporten |
+| ACT-08 Visualisering | 0 (figurer genereres av `analyse_hoved.py` og `scenario_analyse.py`) | 0 | 0 | `visualiser_resultater.py` slettet 2026-04-16 (kun utdaterte to-modell-figurer) |
 | ACT-06 Lagerstatus | 0 | 1 (`Skjermbilde 2026-03-23 204911.png`, omtalt som Figur 3) | 0 | Filnavn bør renames til `fig3_lagerstatus.png` (review §3.4) |
 
 ## Rapportstatus
@@ -178,16 +178,15 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 1. `schedule.json` har fortsatt `status: "In Progress"` med 75/80/50/0 % fullføring for ACT-03, ACT-06, ACT-07 og ACT-08. Arbeidskopien viser alle fire fullført — `schedule.json` må oppdateres til `Completed` med `percentComplete: 100`.
 2. `wbs.md` er datert 19.03.2026 og tidligere `status.md` 26.03.2026. Begge er eldre enn dagens statusdato (2026-04-15) og `review.md` (14.04.2026); bør synkroniseres ved neste arbeidsøkt.
 3. `risk.json` har `statusDate: "2026-03-17"` og omtaler R-001, R-002, R-004 som "Åpen" med residualrisiko medium. Etter gjennomført EDA og datamottak er disse reelt sett redusert til lav.
-4. `fig_scenario_sammenligning.png`, `fig3_4_modellsammenligning.png` og `fig5_kampanjeeffekt.png` finnes i `014 fase 4 - report/figurer/` uten å være referert i rapporten.
+4. Figurer i `014 fase 4 - report/figurer/` er alle referert i rapporten etter opprydning 2026-04-16 (`fig_scenario_sammenligning.png` → Figur 4; `fig3_4_modellsammenligning.png` og `fig5_kampanjeeffekt.png` slettet som utdaterte).
 5. Rapportens datering er fortsatt 17.03.2026 — oppdateres ved ferdigstillelse.
-6. Tabell 1 forekommer to ganger i rapporten (kap. 4.3 og 5.6) med ulikt innhold — identifisert i review §3.6.
 
 ## Viktigste risikoer (oppdatert 2026-04-15)
 
 1. **R-008 Metodisk svakhet ved helgedata og sesongparameter (ny, medium):** `asfreq('D').fillna(0)` i `scenario_analyse.py:13` og `analyse_hoved.py:16` setter helger til 0 og forurenser SARIMA og lag-features. SARIMA bruker `s=7`, men reell syklus er 5 virkedager. *Tiltak:* Rekjøre modellene med `s=5` og `is_monday`-feature før peer review (01.05). Ref. `review.md` §2.1.
 2. **R-009 Resultatpresentasjon av Scenario 2 (ny, medium):** Scenario 2-resultater er beregnet (`scenario_resultater.csv`) men ikke presentert i kap. 8. *Tiltak:* Legge inn sammenligningstabell og `fig_scenario_sammenligning.png` i kap. 8; rydde "Fase 1/2"-terminologi i kap. 9. Ref. `review.md` §3.2.
 3. **R-010 Etterprøvbarhet (ny, medium):** Kampanjedata er hardkodet i Python-skriptene, kap. 12 Vedlegg er tomt, og det finnes ingen `requirements.txt`. *Tiltak:* Opprette `004 data/kampanjekalender.csv`, fylle vedlegg med RF-parametere, grid-search-AIC og feature importance. Ref. `review.md` §2.2 og §3.3.
-4. **R-001 Datakvalitet (lav, nedgradert):** Residualrisiko redusert etter omfattende EDA (`vask_data.py`) og validert datasett på 267 virkedager. Følges opp med datavask-logg i kap. 4.
+4. **R-001 Datakvalitet (lav, nedgradert):** Residualrisiko redusert etter at undertellingen i `vask_data.py` ble oppdaget og erstattet med RELEX-pipen (`vask_relex.py`, 260 virkedager, sum 20 701). Følges opp med datavask-logg i kap. 4.
 5. **R-002 Forsinket datatilgang (lav, nedgradert):** Alle nødvendige data for casen er mottatt (salg, innkjøp, lagerstatus, kampanjeinfo). Risikoen er realisert uten konsekvens.
 6. **R-003 Modellkonvergens (lav):** Tre modeller estimert og validert; ingen konvergensproblemer observert.
 7. **R-004 Tidsnød i sluttfasen (lav):** Prosjektet ligger foran skjema. Følges opp ved å holde tempoet i ACT-09 mot M-03 (2026-04-27), slik at vi har buffer til peer review og reviewtiltak.
