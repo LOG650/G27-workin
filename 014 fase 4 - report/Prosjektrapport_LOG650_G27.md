@@ -62,7 +62,7 @@ For å strukturere analysen har vi definert følgende deloppgaver:
 ## 1.3 Avgrensinger
 For å sikre dybde i analysen er prosjektet avgrenset på følgende måte:
 - **Geografisk:** Analysen er begrenset til REMA 1000 Distribusjon Trondheim.
-- **Produkt:** Studien fokuserer på ett utvalgt produkt, "Lasagne Familiepakning", som en frysevare med stabil basisvolum og periodevis kampanjeaktivitet.
+- **Produkt:** Studien fokuserer på ett utvalgt produkt, "Lasagne Familiepakning", som en tørrvare med stabil basisvolum og periodevis kampanjeaktivitet.
 - **Tidsoppløsning:** Analysen gjennomføres på virkedagsnivå (mandag–fredag). Distribusjonssenteret ekspederer ikke i helg.
 - **Prisdata:** Prisdata var ønsket i proposalen men er ikke tilgjengelig i datasettet og inngår ikke i analysen.
 - **Omfang:** Prosjektet omfatter ikke full optimalisering av transport eller lagerstyring, men fokuserer isolert på prediksjonsleddet.
@@ -148,7 +148,7 @@ Dette kapittelet gir en forståelse av den operative konteksten og datagrunnlage
 REMA 1000 Distribusjon Trondheim (RDT) fungerer som det sentrale logistikknutepunktet for vareforsyning til butikker i Midt-Norge. Distribusjonssenterets primære oppgave er å sikre effektiv vareflyt fra produsenter til utsalgssteder. Virksomheten er åpen for ekspedisjon fem virkedager i uken (mandag–fredag); helgebestillinger akkumuleres og leveres på påfølgende mandag. Dette forklarer den systematiske mandagseffekten som dokumenteres i kap. 4.4.
 
 ### Bestillings- og leveranseprosess
-Butikkene legger inn bestillinger via et **automatisk ordreforslagssystem** (AOF, og fra 2026 det nye prognoseverktøyet RELEX). Systemet foreslår ordrekvantum basert på forventet etterspørsel, og butikken godkjenner eller justerer forslaget. Ifølge produkt-kategoriansvarlig (PK, REMA) er det for **tørre og frosne varer praksis at butikkene godkjenner nærmere 100 % av forslagene uten endring**. Dette er særlig relevant for lasagne familiepakning (frysevare), hvor den operative bestillingskvantiteten derfor i stor grad styres av prognosemodellen. Kvaliteten på prognosen får tilsvarende stor direkte operasjonell betydning.
+Butikkene legger inn bestillinger via et **automatisk ordreforslagssystem** (AOF, og fra 2026 det nye prognoseverktøyet RELEX). Systemet foreslår ordrekvantum basert på forventet etterspørsel, og butikken godkjenner eller justerer forslaget. Ifølge produkt-kategoriansvarlig (PK, REMA) er det for **tørre og frosne varer praksis at butikkene godkjenner nærmere 100 % av forslagene uten endring**. Dette er særlig relevant for lasagne familiepakning (tørrvare), hvor den operative bestillingskvantiteten derfor i stor grad styres av prognosemodellen. Kvaliteten på prognosen får tilsvarende stor direkte operasjonell betydning.
 
 For **kampanjevarer** kan ordrer i tillegg "pushes" ut til butikkene fra regionskontor eller REMA sentralt, utenom den ordinære AOF-rytmen. RD Trondheim kan selv selge ut overskudd til rabatterte priser ved for stort kvantum eller kort holdbarhet. Lasagne familiepakning er ikke berørt av de siste mekanismene i vesentlig grad.
 
@@ -160,7 +160,7 @@ Virksomheten står daglig overfor kritiske **beslutningssituasjoner** knyttet ti
 Uten robuste analyser er disse beslutningene svært vanskelige å ta. Den høye volatiliteten i dagligvaremarkedet gjør at manuelle skjønn ofte fører til systematiske feil (bias). Det er spesielt utfordrende å skille mellom tilfeldig variasjon ("støy") og reelle endringer i etterspørselsnivået før en kampanje inntreffer, noe som skaper et behov for objektive prognosemodeller.
 
 ## 4.2 Produktbeskrivelse: Lasagne Familiepakning
-Produktet som er valgt for denne studien er "Lasagne Familiepakning" (produktkode 885871, leverandør Orkla Foods Norge). Produktet er en frysevare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn. Likevel er produktet preget av en dynamisk etterspørsel – preget av en stabil grunnlinje med kraftige topper under Crazy Days-kampanjer – som gjør det velegnet for denne analysen. Pallestørrelse i RELEX er 115 stk per D-pakning.
+Produktet som er valgt for denne studien er "Lasagne Familiepakning" (produktkode 885871, leverandør Orkla Foods Norge). Produktet er en tørrvare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn. Likevel er produktet preget av en dynamisk etterspørsel – preget av en stabil grunnlinje med kraftige topper under Crazy Days-kampanjer – som gjør det velegnet for denne analysen. Pallestørrelse i RELEX er 115 stk per D-pakning.
 
 ## 4.3 Beskrivelse av datagrunnlaget
 Datamaterialet er hentet fra REMA 1000s prognoseverktøy RELEX og representerer daglig utlevert volum fra distribusjonssenteret til butikkene.
@@ -219,7 +219,7 @@ Mangelen på presise prognoser har direkte operative konsekvenser for REMA 1000:
 * **Lagerbinding:** Ved overestimering øker lagerkostnadene og kapitalbindingen på distribusjonssenteret.
 * **Uforutsigbarhet:** Brå topper skaper press på transportkapasitet og bemanning.
 
-Siden butikkenes ordrer godkjennes med ~100 % aksept for frysevarer, er prognosens kvalitet nærmest direkte bestemmende for bestilt volum. En modell som både håndterer den stabile virkedagssyklusen og de kraftige kampanje-/høytidstoppene, er derfor en konkret driver for operasjonell effektivitet. Dette danner grunnlaget for modellvalget i kap. 6.
+Siden butikkenes ordrer godkjennes med ~100 % aksept for tørrvarer, er prognosens kvalitet nærmest direkte bestemmende for bestilt volum. En modell som både håndterer den stabile virkedagssyklusen og de kraftige kampanje-/høytidstoppene, er derfor en konkret driver for operasjonell effektivitet. Dette danner grunnlaget for modellvalget i kap. 6.
 
 # 5. Metode og data
 Dette kapittelet redegjør for studiens metodiske tilnærming, datagrunnlaget og den trinnvise prosessen som er benyttet for å besvare problemstillingen. Formålet er å sikre at analysen er transparent og etterprøvbar.
@@ -335,7 +335,7 @@ Før modellering ble treningsserien vurdert med hensyn til stasjonaritet ved Aug
 ACF-plott av treningsserien viste sterke topper ved lag 5, 10 og 15, konsistent med den ukentlige (virkedagsbaserte) sesongvariasjonen. Dette bekrefter relevansen av sesongbaserte modeller (Seasonal Naive, Holt-Winters med s=5, SARIMA med sesongledd).
 
 ## 7.2 Parametersøk og tuning
-**SARIMA grid-search:** Vi testet 144 kombinasjoner av ordre $(p,d,q) \in \{0,1,2\} \times \{0,1\} \times \{0,1,2\}$ og sesongordre $(P,D,Q)_5 \in \{0,1\}^3$. AIC ble brukt som utvalgskriterium, og modeller som ikke konvergerte ble kassert. Resultatene er tabellert i `004 data/sarima_diagnostikk.csv` (vedlegg A2). Beste modell er $(0,1,2)(0,1,1)_5$ med AIC 2 480,87. Dette er en vesentlig forbedring fra den opprinnelige $(1,1,1)(1,1,1)_7$ (AIC 2 558) – i sum 77 AIC-poeng lavere.
+**SARIMA grid-search:** Vi testet 144 kombinasjoner av ordre $(p,d,q) \in \{0,1,2\} \times \{0,1\} \times \{0,1,2\}$ og sesongordre $(P,D,Q)_5 \in \{0,1\}^3$. AIC ble brukt som utvalgskriterium, og modeller som ikke konvergerte ble kassert. Resultatene er tabellert i `004 data/sarima_diagnostikk.csv` (vedlegg A2). Beste konvergerte modell er $(0,1,2)(0,1,1)_5$ med AIC 2 510,06. Dette er en forbedring fra den opprinnelige $(1,1,1)(1,1,1)_7$ (AIC 2 558) på 48 AIC-poeng. Flere ikke-konvergerte kombinasjoner hadde numerisk lavere AIC (for eksempel $(1,0,2)(0,1,1)_5$ med AIC 2 480,87), men ble kassert fordi MLE-optimeringen ikke konvergerte.
 
 **Random Forest feature-sett:** Feature importance-analyse (`rf_feature_importance.csv`, vedlegg A4) viser at $y_{t-1}$ (lag_1) dominerer med 84 % vekt i full RF-variant. `rolling_mean_5` (7 %), `lag_10` (2 %) og `lag_5` (2 %) følger. Denne dominansen motiverer den diagnostiske RF-varianten uten lag_1, der `rolling_mean_5` (46 %), `lag_5` (25 %) og `lag_10` (14 %) tar over rollen som hoveddrivere.
 
@@ -360,6 +360,8 @@ Begge metoder brukes i sammenheng i kap. 8.3. I tillegg analyseres **systematisk
 
 # 8. Resultater
 Dette kapittelet presenterer numeriske funn fra evalueringen av prognosemodellene på testsettet (januar–februar 2026, 42 virkedager). Resultatene er strukturert i fire deler: (8.1) sammenligning av Scenario 1 vs Scenario 2, (8.2) global modellytelse, (8.3) segmentert resultatanalyse, og (8.4) residualdiagnostikk.
+
+Alle tall i Tabell 2, 3 og 4 bygger på `scenario_sammendrag.csv` fra `scenario_analyse.py`, som kjører Scenario 1 og 2 konsistent på samme datagrunnlag. Ljung-Box-diagnostikken i Tabell 5 stammer fra en parallell kjøring i `analyse_hoved.py`; RF-variantene har identiske features i begge skript (kun ulik rekkefølge), så de kvalitative konklusjonene om residualstruktur er robuste.
 
 ## 8.1 Sammenligning av Scenario 1 og Scenario 2
 For å svare på problemstillingens delproblem 3 – *i hvilken grad kampanjeaktivitet begrenser modellenes presisjon* – er alle modeller kjørt i to scenarier: Scenario 1 (blind, kun historikk) og Scenario 2 (historikk + kampanje- og hendelsesindikatorer). Tabell 2 presenterer MAE for begge scenarier på tvers av seks modeller, globalt over hele testsettet.
@@ -390,13 +392,13 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 | Seasonal Naive | 227,1 | 1 913 % | 122 % | 129 % | −0,6 |
 | Holt-Winters | 198,7 | 477 % | 182 % | 113 % | −198,6 |
 | SARIMA (grid) | 173,3 | 369 % | 164 % | 99 % | −170,5 |
-| Random Forest | 195,0 | 1 281 % | 107 % | 111 % | +144,4 |
-| **RF uten lag_1** | **174,0** | 1 446 % | 107 % | **99 %** | +41,0 |
-| Gradient Boosting | 285,4 | 1 617 % | 106 % | 163 % | +244,8 |
-| Hybrid (kampanje) | 178,7 | 371 % | 160 % | 102 % | −118,2 |
-| **Hybrid (terskel)** | 181,2 | 1 307 % | 144 % | 103 % | **+11,1** |
+| Random Forest | 192,1 | 1 214 % | 106 % | 109 % | +135,5 |
+| **RF uten lag_1** | **169,1** | 1 308 % | 108 % | **96 %** | +38,9 |
+| Gradient Boosting | 294,3 | 1 629 % | 107 % | 168 % | +253,6 |
+| Hybrid (kampanje) | 177,7 | 371 % | 159 % | 101 % | −118,7 |
+| **Hybrid (terskel)** | 176,2 | 1 217 % | 144 % | 100 % | **+9,4** |
 
-MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (174,0) og WAPE (99 %), og terskelbasert hybrid har nesten null bias (+11), hvilket er operasjonelt attraktivt.
+MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+9,4), hvilket er operasjonelt attraktivt.
 
 ## 8.3 Segmentert resultatanalyse
 Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (> 69,3 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
@@ -495,7 +497,7 @@ Tradeoff-en er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), 
 For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+11) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
 
 ## 9.5 Praktiske implikasjoner for REMA 1000
-Siden butikkenes ordrer for frysevarer godkjennes med nær 100 % aksept av AOF/RELEX-forslaget (kap. 4.1), er prognosens kvalitet direkte styrende for bestilt volum. De observerte MAE-tallene kan derfor oversettes direkte til operasjonelle konsekvenser:
+Siden butikkenes ordrer for tørrvarer godkjennes med nær 100 % aksept av AOF/RELEX-forslaget (kap. 4.1), er prognosens kvalitet direkte styrende for bestilt volum. De observerte MAE-tallene kan derfor oversettes direkte til operasjonelle konsekvenser:
 
 - **I normaldrift** (27 dager av 42, ca. 90 % av året) gir SARIMA en MAE på 29 stk. Med median normalt salg på ca. 20 stk er dette et grovt nivå, men fortsatt brukbart – og kan reduseres til mer enn halvparten med presis modellvalg.
 - **På toppdager** (15 dager av 42, primært kampanjer og høytider) gir RF uten lag_1 MAE 290 stk. Det betyr at i et absoluttvolum på 1 000–2 000 stk feilestimerer modellen typisk 15–20 %. Dette er en kritisk feilmargin som må suppleres med menneskelig skjønn og nær koordinasjon mellom distribusjonslageret, regionskontor og kampanjeplanleggerne hos REMA sentralt.
@@ -577,12 +579,13 @@ Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering – SA
 
 | Rang | order | seasonal_order | AIC | BIC | Konvergerte |
 | ---: | :--- | :--- | ---: | ---: | :--- |
-| 1 (valgt) | (0,1,2) | (0,1,1,5) | 2 480,87 | 2 500,48 | Ja |
-| 2 | (1,1,2) | (0,1,1,5) | 2 482,56 | 2 505,47 | Ja |
-| 3 | (0,1,2) | (1,1,1,5) | 2 482,84 | 2 505,75 | Ja |
-| ... | ... | ... | ... | ... | ... |
+| 1 (valgt) | (0,1,2) | (0,1,1,5) | 2 510,06 | 2 529,67 | Ja |
+| 2 | (0,1,2) | (1,1,1,5) | 2 511,96 | 2 534,83 | Ja |
+| 3 | (1,1,2) | (1,1,1,5) | 2 533,97 | 2 560,12 | Ja |
+| 4 | (1,0,2) | (0,0,1,5) | 2 537,94 | 2 561,02 | Ja |
+| 5 | (1,0,2) | (1,1,0,5) | 2 551,51 | 2 574,49 | Ja |
 
-Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original konfigurasjon (1,1,1)(1,1,1)_7 (AIC 2 558): 77 AIC-poeng.
+Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original konfigurasjon (1,1,1)(1,1,1)_7 (AIC 2 558): 48 AIC-poeng. Merk: Flere ordner med numerisk lavere AIC (helt ned mot 2 480) hadde konvergensproblemer og ble derfor ikke valgt.
 
 ## A3 — Gradient Boosting hyperparameter-tuning
 3-fold TimeSeriesSplit-kryssvalidering, scoring=neg_mean_absolute_error. 16 kombinasjoner.
@@ -652,8 +655,7 @@ G27-workin/
 │   ├── metrics.py          — MAE, MAPE, sMAPE, WAPE, Bias
 │   ├── modeller.py         — feature engineering, grid-search, tuning, hybrider
 │   ├── analyse_hoved.py    — hovedanalyse (8 modeller)
-│   ├── scenario_analyse.py — Scenario 1 vs 2 (8 modeller)
-│   └── visualiser_resultater.py — figurgenerering
+│   └── scenario_analyse.py — Scenario 1 vs 2 (8 modeller)
 └── 014 fase 4 - report/figurer/
     ├── fig1_tidsserie.png
     ├── fig2_ukedag.png
