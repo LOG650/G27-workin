@@ -4,9 +4,9 @@
     "registerId": "RR-LOG650-2026-01",
     "projectId": "LOG650-2026-REMA1000",
     "name": "Risikoregister for Prognoseprosjekt REMA 1000",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "status": "Aktiv",
-    "statusDate": "2026-03-17",
+    "statusDate": "2026-04-16",
     "scoringModel": {
       "probabilityScale": "1-5",
       "impactScale": "1-5",
@@ -29,9 +29,9 @@
         "title": "Mangelfull datakvalitet og støy i rådata",
         "description": "Historiske data fra REMA 1000 kan inneholde avvik, manglende verdier eller støy knyttet til ERP-skiftet som vanskeliggjør dagsbasert modellering.",
         "categoryId": "CAT-DATA",
-        "status": "Åpen",
+        "status": "Lukket",
         "owner": "Line Lyngsnes Johansen",
-        "reviewDate": "2026-03-23",
+        "reviewDate": "2026-04-16",
         "inherentRisk": {
           "probability": 3,
           "impact": 5,
@@ -40,11 +40,11 @@
           "rationale": "Dersom dagsdata er inkonsistente, vil modellene miste prediksjonskraft og validitet."
         },
         "residualRisk": {
-          "probability": 2,
-          "impact": 4,
-          "score": 8,
-          "band": "Medium",
-          "rationale": "Grundig datavask og aggregering vil redusere sannsynligheten for feil i analysen."
+          "probability": 1,
+          "impact": 2,
+          "score": 2,
+          "band": "Low",
+          "rationale": "Undertelling i `vask_data.py` oppdaget og korrigert; datasettet er regenerert fra RELEX-eksport (`vask_relex.py`, 260 virkedager, sum 20 701). EDA og outlier-håndtering fullført."
         },
         "responsePlan": {
           "strategy": "Mitigate",
@@ -52,10 +52,10 @@
             {
               "planId": "P-001-1",
               "type": "Action",
-              "description": "Gjennomføre omfattende EDA (Exploratory Data Analysis) for å identifisere outliers og manglende verdier tidlig.",
+              "description": "Gjennomføre omfattende EDA for å identifisere outliers og manglende verdier tidlig. Regenerere datasett fra RELEX-eksport.",
               "owner": "Line",
-              "dueDate": "2026-03-19",
-              "status": "In Progress"
+              "dueDate": "2026-04-15",
+              "status": "Completed"
             }
           ]
         }
@@ -65,9 +65,9 @@
         "title": "Forsinket datatilgang fra ekstern kilde",
         "description": "Forsinkelser i uttrekk eller overføring av anonymiserte data fra REMA 1000 Distribusjon Trondheim.",
         "categoryId": "CAT-DATA",
-        "status": "Åpen",
+        "status": "Lukket",
         "owner": "Amanda Arnesen Almaas",
-        "reviewDate": "2026-03-23",
+        "reviewDate": "2026-04-16",
         "inherentRisk": {
           "probability": 2,
           "impact": 5,
@@ -77,10 +77,10 @@
         },
         "residualRisk": {
           "probability": 1,
-          "impact": 5,
-          "score": 5,
-          "band": "Medium",
-          "rationale": "Tidlig dialog og etablert kontaktpunkt reduserer sannsynligheten."
+          "impact": 1,
+          "score": 1,
+          "band": "Low",
+          "rationale": "Alle nødvendige data mottatt: salg, innkjøp, lagerstatus og kampanjeinfo (Crazy Days uke 45/2025 og 5/2026; hendelser uke 16, 33, 51). Risikoen er realisert uten konsekvens."
         },
         "responsePlan": {
           "strategy": "Avoid",
@@ -91,7 +91,7 @@
               "description": "Opprettholde ukentlig kontakt med dataeier hos REMA for å sikre fremdrift i uttrekk.",
               "owner": "Amanda",
               "dueDate": "2026-03-19",
-              "status": "In Progress"
+              "status": "Completed"
             }
           ]
         }
@@ -101,9 +101,9 @@
         "title": "Manglende modellkonvergens eller tekniske analyseproblemer",
         "description": "Utfordringer med å tilpasse tidsseriemodeller (f.eks. ARIMA/Prophet) til de spesifikke etterspørselsmønstrene.",
         "categoryId": "CAT-METO",
-        "status": "Åpen",
+        "status": "Lukket",
         "owner": "Line Lyngsnes Johansen",
-        "reviewDate": "2026-03-23",
+        "reviewDate": "2026-04-16",
         "inherentRisk": {
           "probability": 3,
           "impact": 3,
@@ -112,11 +112,11 @@
           "rationale": "Komplekse mønstre kan kreve mer avansert koding eller statistisk forståelse enn først antatt."
         },
         "residualRisk": {
-          "probability": 2,
-          "impact": 3,
-          "score": 6,
-          "band": "Medium",
-          "rationale": "Tilgang til veiledere og KI-verktøy fungerer som sikkerhetsnett."
+          "probability": 1,
+          "impact": 2,
+          "score": 2,
+          "band": "Low",
+          "rationale": "Åtte modeller estimert og validert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner) og GBM CV-tuning fullført uten konvergensproblemer."
         },
         "responsePlan": {
           "strategy": "Mitigate",
@@ -127,7 +127,7 @@
               "description": "Starte med enkle baselinemodeller før avanserte teknikker implementeres.",
               "owner": "Line",
               "dueDate": "2026-03-30",
-              "status": "Planned"
+              "status": "Completed"
             }
           ]
         }
@@ -139,7 +139,7 @@
         "categoryId": "CAT-FREM",
         "status": "Åpen",
         "owner": "Amanda Arnesen Almaas",
-        "reviewDate": "2026-03-23",
+        "reviewDate": "2026-04-16",
         "inherentRisk": {
           "probability": 3,
           "impact": 4,
@@ -148,11 +148,11 @@
           "rationale": "Akademiske krav til LOG650 er omfattende og krever betydelig tid til revidering."
         },
         "residualRisk": {
-          "probability": 2,
-          "impact": 4,
-          "score": 8,
-          "band": "Medium",
-          "rationale": "Stram oppfølging av milepælsplan reduserer faren for skippertak."
+          "probability": 1,
+          "impact": 3,
+          "score": 3,
+          "band": "Low",
+          "rationale": "Prosjektet ligger ~32 dager foran baseline for M-03. Rapporten er 80–90 % ferdig, og peer review M-05 er 15 dager unna. Risiko redusert fra medium til lav."
         },
         "responsePlan": {
           "strategy": "Mitigate",
@@ -160,10 +160,10 @@
             {
               "planId": "P-004-1",
               "type": "Action",
-              "description": "Sette av faste dager til skriving parallelt med analysearbeidet.",
+              "description": "Holde tempo i ACT-09 slik at buffer opprettholdes til peer review og revisjon.",
               "owner": "Begge",
-              "dueDate": "2026-04-13",
-              "status": "Planned"
+              "dueDate": "2026-04-27",
+              "status": "In Progress"
             }
           ]
         }
@@ -175,7 +175,7 @@
         "categoryId": "CAT-TEAM",
         "status": "Åpen",
         "owner": "Begge",
-        "reviewDate": "2026-03-23",
+        "reviewDate": "2026-04-16",
         "inherentRisk": {
           "probability": 2,
           "impact": 4,
@@ -188,7 +188,7 @@
           "impact": 4,
           "score": 4,
           "band": "Low",
-          "rationale": "Kontinuerlig deling av filer i felles mappenstruktur sikrer at begge kan overta oppgaver."
+          "rationale": "Kontinuerlig deling av filer i Git-repo sikrer at begge kan overta oppgaver. Ingen fravær rapportert."
         },
         "responsePlan": {
           "strategy": "Accept",
@@ -198,32 +198,152 @@
               "type": "Action",
               "description": "Sikre at all kode og dokumentasjon er synkronisert og lettforståelig for begge parter.",
               "owner": "Begge",
-              "dueDate": "2026-03-17",
+              "dueDate": "2026-05-31",
               "status": "Ongoing"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-008",
+        "title": "Metodisk svakhet ved helgedata og sesongparameter",
+        "description": "Opprinnelig modellering brukte SARIMA med s=7 og `asfreq('D').fillna(0)` som forurenset sesongkomponent og lag-features med kunstige nuller for helger.",
+        "categoryId": "CAT-METO",
+        "status": "Lukket",
+        "owner": "Line Lyngsnes Johansen",
+        "reviewDate": "2026-04-16",
+        "inherentRisk": {
+          "probability": 4,
+          "impact": 3,
+          "score": 12,
+          "band": "High",
+          "rationale": "Feil sesongparameter kan gi misledende modellvalg og undervurdert usikkerhet."
+        },
+        "residualRisk": {
+          "probability": 1,
+          "impact": 2,
+          "score": 2,
+          "band": "Low",
+          "rationale": "SARIMA rekjørt med s=5 (virkedager) og `is_monday`/`days_since_last_order`-features implementert i `modeller.py`. Beste SARIMA-modell: (0,1,1)(0,1,1,5). Dokumentert i vedlegg A2."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-008-1",
+              "type": "Action",
+              "description": "Rekjøre SARIMA med s=5 og legge til virkedagsspesifikke features i RF.",
+              "owner": "Line",
+              "dueDate": "2026-04-15",
+              "status": "Completed"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-009",
+        "title": "Manglende presentasjon av Scenario 2 i rapporten",
+        "description": "Scenario 2-resultater (med kampanjeinfo) var beregnet i `scenario_resultater.csv`, men ikke eksplisitt presentert i rapportens kap. 8.",
+        "categoryId": "CAT-METO",
+        "status": "Lukket",
+        "owner": "Amanda Arnesen Almaas",
+        "reviewDate": "2026-04-16",
+        "inherentRisk": {
+          "probability": 3,
+          "impact": 3,
+          "score": 9,
+          "band": "Medium",
+          "rationale": "Uten eksplisitt Scenario 2-sammenligning mister leseren det sentrale poenget i problemstillingen."
+        },
+        "residualRisk": {
+          "probability": 1,
+          "impact": 2,
+          "score": 2,
+          "band": "Low",
+          "rationale": "Kap. 8.1 presenterer Scenario 1 vs 2 med Tabell 2 og Figur 4 (`fig_scenario_sammenligning.png`). Terminologi konsistent som 'Scenario 1/2' i hele kapittelet."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-009-1",
+              "type": "Action",
+              "description": "Legge inn sammenligningstabell og figur i kap. 8; rydde terminologi.",
+              "owner": "Amanda",
+              "dueDate": "2026-04-15",
+              "status": "Completed"
+            }
+          ]
+        }
+      },
+      {
+        "riskId": "R-010",
+        "title": "Etterprøvbarhet og dokumentasjon av analysepipeline",
+        "description": "Kampanjedata var hardkodet i Python-skriptene, kap. 12 Vedlegg var tomt og `requirements.txt` manglet.",
+        "categoryId": "CAT-METO",
+        "status": "Åpen",
+        "owner": "Line Lyngsnes Johansen",
+        "reviewDate": "2026-04-16",
+        "inherentRisk": {
+          "probability": 3,
+          "impact": 3,
+          "score": 9,
+          "band": "Medium",
+          "rationale": "Uten dokumentert pipeline og environment kan ikke sensor/medstudenter reprodusere resultatene."
+        },
+        "residualRisk": {
+          "probability": 1,
+          "impact": 2,
+          "score": 2,
+          "band": "Low",
+          "rationale": "`004 data/kampanjekalender.csv` opprettet (5 rader); kap. 12 Vedlegg fylt med A1–A7 (ADF, SARIMA grid, GBM-tuning, feature importance, RF-hyperparametere, kampanjekalender, filstruktur). Gjenstår: opprette `requirements.txt` i repo-rot."
+        },
+        "responsePlan": {
+          "strategy": "Mitigate",
+          "plans": [
+            {
+              "planId": "P-010-1",
+              "type": "Action",
+              "description": "Eksternalisere kampanjedata og fylle vedlegg.",
+              "owner": "Line",
+              "dueDate": "2026-04-15",
+              "status": "Completed"
+            },
+            {
+              "planId": "P-010-2",
+              "type": "Action",
+              "description": "Opprette `requirements.txt` med pandas, statsmodels, scikit-learn, matplotlib.",
+              "owner": "Line",
+              "dueDate": "2026-04-27",
+              "status": "Planned"
             }
           ]
         }
       }
     ],
     "summary": {
-      "totalRisks": 5,
+      "totalRisks": 8,
       "byBand": {
         "Critical": 0,
-        "High": 3,
-        "Medium": 2,
+        "High": 4,
+        "Medium": 4,
         "Low": 0
       },
       "byCategory": {
         "Data": 2,
         "Fremdrift": 1,
-        "Metode": 1,
+        "Metode": 4,
         "Team": 1
       },
       "residualByBand": {
         "Critical": 0,
         "High": 0,
-        "Medium": 4,
-        "Low": 1
+        "Medium": 0,
+        "Low": 8
+      },
+      "byStatus": {
+        "Åpen": 3,
+        "Lukket": 5
       }
     }
   }

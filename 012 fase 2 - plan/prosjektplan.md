@@ -148,7 +148,7 @@ behov gjennom prosjektets løpetid.
 Dette prosjektet svarer på behovet for bedre prognosepresisjon i
 distribusjonskjeden. Problemstillingen er: I hvilken grad kan
 tidsserie-baserte prognosemetoder predikere daglig etterspørsel for
-utvalgte produkter ved REMA 1000 Distribusjon Trondheim, målt ved
+ett utvalgt produkt ved REMA 1000 Distribusjon Trondheim, målt ved
 prognosepresisjon (forecast accuracy)?
 
 ## 1.2 Sponsor
@@ -252,7 +252,7 @@ som definerer alle leveranser.
 ## 2.1 Mål
 
 Prosjektmålet er å undersøke i hvilken grad tidsserie-baserte
-prognosemetoder kan predikere daglig etterspørsel for utvalgte produkter
+prognosemetoder kan predikere daglig etterspørsel for ett utvalgt produkt
 ved REMA 1000 Distribusjon Trondheim, med særlig fokus på:
 
 \- Kampanjebaserte produkter (f.eks. Toro familiepakning lasagne).

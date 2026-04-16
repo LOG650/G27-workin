@@ -1,18 +1,19 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000 (G27)
 
-**Statusdato:** 2026-04-15 (oppdatert etter modellutvidelse og rapportrevisjon)
-**Nåværende fase:** Fase 3 – Gjennomføring (analyse og hoveddel av rapport lukket)
+**Statusdato:** 2026-04-16 (synkronisert med `schedule.json`, `wbs.md` og `risk.json`)
+**Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport 90 % ferdig)
 
-Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
+Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
 
 ## Kort status
 
 - **Datagrunnlag regenerert:** Oppdaget datafeil i `vask_data.py`-utdata (undertelling ~70 %). Nytt `vask_relex.py` bygger datasett fra RELEX-eksport (260 virkedager, sum 20 701). Dokumentert i rapportens kap. 5.4 og 9.1.
-- **Modellering utvidet:** Åtte modeller estimert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner), GBM CV-tuning (16 kombinasjoner × 3-fold TimeSeriesSplit), ADF og Ljung-Box-diagnostikk utført.
+- **Modellering utvidet:** Åtte modeller estimert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner) med `s=5`, GBM CV-tuning (16 kombinasjoner × 3-fold TimeSeriesSplit), ADF og Ljung-Box-diagnostikk utført. `is_monday` og `days_since_last_order`-features lagt til i RF (`modeller.py`).
 - **Scenario 1 vs 2** sammenlignet på seks modeller. Kampanjeinformasjon gir størst gevinst på SARIMA i normaldrift (MAE 46 → 29, −36 %), marginal eller negativ gevinst ellers.
-- **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert.
-- **Review-tiltak fra 2026-04-14:** Alle 6 høyprioriterte og de viktigste medium-tiltakene er adressert. Figur 3 renamed til `fig3_lagerstatus.png`. Kampanjekalender som fil (`004 data/kampanjekalender.csv`). Rapportdato oppdatert til 2026-04-15.
-- **Neste steg:** Peer review M-05 (2026-05-01). Eventuelt fylle formalia-seksjoner (egenerklæring, publiseringsavtale) før innlevering M-06 (2026-05-31).
+- **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg A1–A7) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert.
+- **Review-tiltak fra 2026-04-14:** Alle 6 høyprioriterte og de viktigste mediumtiltakene er lukket: helgedata/mandagseffekt dokumentert, `s=5`, kampanjekalender som fil (`004 data/kampanjekalender.csv`), Scenario 2 eksplisitt presentert i kap. 8.1, konsistent «Scenario 1/2»-terminologi, Tabell 2/3 introdusert i tekst, kap. 12 Vedlegg utfylt, Pandas/Statsmodels/Scikit-learn sitert i kap. 11. Figur 3 renamed til `fig3_lagerstatus.png`. Rapportdato 2026-04-15.
+- **M-03 Ferdig analyse:** Oppnådd 2026-04-16 (baseline 2026-04-27, 11 dager foran skjema).
+- **Neste steg:** Forberede peer review M-05 (2026-05-01) — eksportere rapport til PDF/DOCX, dele med medstudenter, opprette `requirements.txt` for etterprøvbarhet. Formalia (egenerklæring, publiseringsavtale) fylles ved M-06 (2026-05-31).
 
 ## Faktisk fremdrift per arbeidskopi
 
@@ -25,8 +26,8 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 | ACT-05 Prosjektplanlegging (WBS/Gantt) | 2026-02-24 til 2026-03-09 | Ferdig 2026-03-09 | M-02 oppnådd |
 | ACT-06 Datainnhenting fra REMA | 2026-02-16 til 2026-03-19 | Ferdig 2026-03-19 | Inkludert lagerstatus-data og kampanjeinfo fra e-post |
 | ACT-07 Datavask og strukturering | 2026-02-16 til 2026-03-16 | Ferdig 2026-04-15 | `vask_relex.py` → `vasket_salg_daglig.csv` (260 virkedager, sum 20 701) |
-| ACT-08 Analyse og modellering | 2026-03-16 til 2026-04-13 | Ferdig 2026-03-26 (utvidet) | Scenario 1/2 implementert; review 14.04 flagger `s=7`, helgedata og RF-features |
-| ACT-09 Skriving av metode/resultat | 2026-03-10 til 2026-04-27 | Pågår (~80 %) | Kap. 8 Scenario 2-presentasjon og kap. 12 vedlegg gjenstår |
+| ACT-08 Analyse og modellering | 2026-03-16 til 2026-04-13 | Ferdig 2026-04-16 | Alle seks høyprioriterte reviewtiltak lukket; M-03 oppnådd |
+| ACT-09 Skriving av metode/resultat | 2026-03-10 til 2026-04-27 | Pågår (~90 %) | Formalia (egenerklæring/publiseringsavtale) fylles ved M-06 |
 | ACT-10 Peer review og kvalitetssikring | 2026-04-27 til 2026-05-01 | Ikke startet | M-05 |
 | ACT-11 Ferdigstillelse av rapportutkast | 2026-05-02 til 2026-05-18 | Ikke startet | M-04 |
 | ACT-12 Endelig revisjon og innlevering | 2026-05-19 til 2026-05-31 | Ikke startet | M-06 |
@@ -70,25 +71,22 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 - [x] Gjennomført og lukket
 
 #### ACT-07 Datavask og strukturering
-- [x] EDA og outlier-håndtering (R-001 residualrisiko nedgradert)
+- [x] EDA og outlier-håndtering (R-001 lukket)
 - [x] Tidsserie strukturert på virkedagsnivå (260 observasjoner fra RELEX-eksport via `vask_relex.py`)
-- [x] Trenings-/testsplitt i `split_innkjop.py`
+- [x] Trenings-/testsplitt håndtert inline via `SPLITT_DATO = '2026-01-01'` i `analyse_hoved.py`/`scenario_analyse.py`
 - [x] Dokumentert i kap. 4–5
 - [x] Gjennomført og lukket
 
-#### ACT-08 Analyse og modellering (funksjonelt fullført)
+#### ACT-08 Analyse og modellering
 - [x] ADF-test for stasjonaritet, ACF/PACF-diagnostikk
 - [x] Seasonal Naïve baseline implementert i `modell_test.py` og `analyse_hoved.py`
-- [x] SARIMA(1,1,1)(1,1,1)_7 grid-search og estimering
-- [x] Random Forest med lag-features (`analyse_hoved.py`, `n_estimators=100, random_state=42`)
+- [x] SARIMA grid-search (144 kombinasjoner) med `s=5`; beste modell (0,1,1)(0,1,1,5) — review §2.1 tiltak 2 lukket
+- [x] Random Forest med lag-features, `is_monday` og `days_since_last_order` (`modeller.py`) — review §2.1 tiltak 6 lukket
 - [x] MAE, MAPE, Bias rapportert globalt og segmentert (kap. 8)
 - [x] Scenario 1 (blind) vs Scenario 2 (med kampanjeinfo) implementert i `scenario_analyse.py`
 - [x] Residualanalyse med ACF-plot
-- [ ] Revurder sesongparameter `s=7` → `s=5` (virkedager) — review §2.1, tiltak 2
-- [ ] Legg til `is_monday`/`days_since_last_order`-feature i Random Forest — review §2.1, tiltak 6
-- [ ] Opprette `004 data/kampanjekalender.csv` og lese kampanjeinfo fra fil — review §2.2, tiltak 3
-- [ ] Fikse bugs i `split_innkjop.py:30` og `modell_test.py:8,44` — review §4.1
-- [ ] Gjennomføre review og lukke aktiviteten
+- [x] Kampanjeinformasjon eksternalisert til `004 data/kampanjekalender.csv` — review §2.2 tiltak 3 lukket
+- [x] Gjennomført og lukket (M-03 oppnådd 2026-04-16)
 
 ### Neste aktiviteter
 
@@ -96,22 +94,21 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 - [x] Kap. 1 Innledning (1.1–1.4)
 - [x] Kap. 2 Litteratur (2.1–2.3)
 - [x] Kap. 3 Teori (3.1–3.3)
-- [x] Kap. 4 Casebeskrivelse (4.1–4.6)
+- [x] Kap. 4 Casebeskrivelse (4.1–4.6) inkl. helgedata/mandagseffekt — review §2.1 tiltak 1 lukket
 - [x] Kap. 5 Metode og data (5.1–5.6)
-- [x] Kap. 6 Modellering (6.1–6.6)
+- [x] Kap. 6 Modellering (6.1–6.6) inkl. RF-hyperparametere og AIC-tabell
 - [x] Kap. 7 Analyse (7.1–7.4)
-- [x] Kap. 8 Resultater — global og segmentert ytelse (8.1–8.2)
-- [x] Kap. 9 Diskusjon (9.1–9.4)
-- [ ] Dokumentere helgedata og mandagseffekt i kap. 4 eller 5 — review §2.1, tiltak 1
-- [ ] Legge til eksplisitt Scenario 1 vs 2-sammenligning med separat tabell og `fig_scenario_sammenligning.png` i kap. 8 — review §3.2, tiltak 4
-- [ ] Bruke konsistent terminologi "Scenario 1/2" i kap. 8 og 9 (erstatte "Fase 1/2")
-- [ ] Introdusere Tabell 2 og 3 i tekst før visning — review §3.4
-- [ ] Fylle kap. 12 Vedlegg med RF-hyperparametere, grid-search-AIC, feature importance og kampanjekalender — review §3.3, tiltak 5
-- [ ] Legge til referanser til Pandas, Statsmodels og Scikit-learn i kap. 11 — review §3.5
-- [ ] Fylle inn egenerklæring og publiseringsavtale — review §3.6
+- [x] Kap. 8 Resultater — global og segmentert ytelse; eksplisitt Scenario 1 vs 2-sammenligning med Tabell 2 og `fig_scenario_sammenligning.png` (Figur 4) — review §3.2 tiltak 4 lukket
+- [x] Kap. 9 Diskusjon (9.1–9.4) med konsistent «Scenario 1/2»-terminologi
+- [x] Tabell 2 og 3 introdusert i tekst før visning — review §3.4 lukket
+- [x] Kap. 11 Bibliografi: Pandas (McKinney 2010), Statsmodels (Seabold & Perktold 2010), Scikit-learn (Pedregosa et al. 2011) sitert i APA 7 — review §3.5 lukket
+- [x] Kap. 12 Vedlegg A1–A7: ADF-test, SARIMA grid-AIC, GBM-tuning, feature importance, RF-hyperparametere, kampanjekalender, filstruktur — review §3.3 tiltak 5 lukket
+- [ ] Fylle inn egenerklæring og publiseringsavtale (rapport linje 10–14, plassholdere) — utsatt til M-06
 - [ ] Gjennomføre review og lukke aktiviteten
 
 #### ACT-10 Peer review og kvalitetssikring
+- [ ] Eksportere rapport til PDF/DOCX for distribusjon (mal i `000 templates/Mal prosjekt LOG650 v2.docx`)
+- [ ] Dele rapport og `scenario_resultater.csv` med medstudenter
 - [ ] Innhente tilbakemelding fra medstudenter
 - [ ] Oppsummere funn og forbedringspunkter
 - [ ] Revidere analyse, tekst og figurer
@@ -119,11 +116,12 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 
 #### ACT-11 Ferdigstillelse av rapportutkast
 - [ ] Sammenstille alle kapitler til komplett hovedutkast
-- [ ] Oppdatere dato på rapporten (er fortsatt 17.03.2026)
+- [ ] Oppdatere rapportdato til innleveringsdato
 - [ ] Kvalitetssikre innholdsfortegnelse, figur-/tabellister og bibliografi
 - [ ] Gjennomføre review og lukke aktiviteten (M-04)
 
 #### ACT-12 Endelig revisjon og innlevering
+- [ ] Fylle inn egenerklæring og publiseringsavtale (mal i `000 templates/`)
 - [ ] Siste korrektur og APA 7-formattering
 - [ ] Kvalitetssikre språk, sporbarhet og konsistens
 - [ ] Levere i Inspera/Canvas (M-06)
@@ -138,10 +136,10 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 | --- | ---: | ---: | ---: | --- |
 | ACT-07 Datavask | 1 (`vask_relex.py`) | 0 | 1 (`vasket_salg_daglig.csv`, 260 rader) | Fullført og dokumentert; `vask_data.py` utgått |
 | ACT-07 Datasplitt | 0 (inline i `analyse_hoved.py`/`scenario_analyse.py` via `SPLITT_DATO = '2026-01-01'`) | 0 | 0 | `split_innkjop.py` utgått; gamle CSV-splitter fjernet |
-| ACT-08 Hovedanalyse | 2 (`analyse_hoved.py`, `modell_test.py`) | 3 (`fig1_tidsserie.png`, `fig2_ukedag.png`, `fig6_residual_acf.png`) | 2 (`analyse_resultater_stram.csv`, `prediksjoner_avansert.csv`) | Fullført; `s=7` og helgedata-håndtering åpne reviewpunkter |
-| ACT-08 Scenarioanalyse | 1 (`scenario_analyse.py`) | 1 (`fig_scenario_sammenligning.png`) | 1 (`scenario_resultater.csv`, 52 × 21) | Figur ikke referert i rapportens kap. 8 |
-| ACT-08 Visualisering | 0 (figurer genereres av `analyse_hoved.py` og `scenario_analyse.py`) | 0 | 0 | `visualiser_resultater.py` slettet 2026-04-16 (kun utdaterte to-modell-figurer) |
-| ACT-06 Lagerstatus | 0 | 1 (`Skjermbilde 2026-03-23 204911.png`, omtalt som Figur 3) | 0 | Filnavn bør renames til `fig3_lagerstatus.png` (review §3.4) |
+| ACT-08 Hovedanalyse | 3 (`modeller.py`, `analyse_hoved.py`, `modell_test.py`) | 3 (`fig1_tidsserie.png`, `fig2_ukedag.png`, `fig6_residual_acf.png`) | 2 (`analyse_resultater_stram.csv`, `prediksjoner_avansert.csv`) | Fullført; SARIMA `s=5` og virkedagsfeatures på plass |
+| ACT-08 Scenarioanalyse | 1 (`scenario_analyse.py`) | 1 (`fig_scenario_sammenligning.png`, Figur 4) | 1 (`scenario_resultater.csv`, 52 × 21) | Fullført; presentert i kap. 8.1 |
+| ACT-08 Kampanjedata | 0 | 0 | 1 (`004 data/kampanjekalender.csv`, 5 rader) | Eksternalisert fra Python-skript; dokumentert i vedlegg A6 |
+| ACT-06 Lagerstatus | 0 | 1 (`fig3_lagerstatus.png`) | 0 | Filnavn oppdatert |
 
 ## Rapportstatus
 
@@ -150,16 +148,18 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 | Sammendrag / Abstract | Ferdig | Norsk og engelsk versjon |
 | 1 Innledning | Ferdig | 1.1–1.4 inkl. Scenario 1/2-definisjon |
 | 2 Litteratur | Ferdig | 2.1–2.3 |
-| 3 Teori | Ferdig | Mangler Python-bibliotekreferanser (review §3.5) |
-| 4 Casebeskrivelse | 95 % | 4.1–4.6 skrevet; helgedata-dokumentasjon og kampanjekilde mangler (review §2.1–2.2) |
-| 5 Metode og data | 90 % | 5.1–5.6; grid-search-detaljer og Python-referanser mangler |
-| 6 Modellering | 85 % | 6.1–6.6; RF-hyperparametere (`n_estimators=100`) og AIC-tabell mangler |
+| 3 Teori | Ferdig | 3.1–3.3 |
+| 4 Casebeskrivelse | Ferdig | 4.1–4.6 inkl. helgedata/mandagseffekt |
+| 5 Metode og data | Ferdig | 5.1–5.6 inkl. grid-search-detaljer |
+| 6 Modellering | Ferdig | 6.1–6.6 inkl. RF-hyperparametere og AIC-tabell |
 | 7 Analyse | Ferdig | 7.1–7.4 med residualdiagnostikk |
-| 8 Resultater | 70 % | **Scenario 2 ikke eksplisitt presentert**; Tabell 2/3 ikke introdusert i tekst (review §3.2, §3.4) |
-| 9 Diskusjon | 80 % | 9.1–9.4; inkonsistent "Fase 1/2" vs "Scenario 1/2"-terminologi |
-| 10 Konklusjon | 80 % | Mangler konkrete implementeringsanbefalinger for REMA |
-| 11 Bibliografi | Påbegynt | APA 7 konsekvent, mangler Pandas/Statsmodels/Scikit-learn |
-| 12 Vedlegg | Tom | RF-parametere, grid-search-AIC, feature importance, kampanjekalender gjenstår |
+| 8 Resultater | Ferdig | 8.1 (Scenario 1 vs 2) og 8.2 (åtte modeller globalt) |
+| 9 Diskusjon | 90 % | 9.1–9.4; mangler konkrete implementeringsanbefalinger (ryddes etter peer review) |
+| 10 Konklusjon | 90 % | Utfylles endelig etter peer review |
+| 11 Bibliografi | Ferdig | APA 7; Pandas, Statsmodels, Scikit-learn sitert |
+| 12 Vedlegg | Ferdig | A1–A7 utfylt |
+| Egenerklæring | Tom | Plassholder linje 10–11; fylles ved M-06 |
+| Publiseringsavtale | Tom | Plassholder linje 13–14; fylles ved M-06 |
 
 ## Milepæler
 
@@ -167,34 +167,32 @@ Denne statusen bygger på arbeidskopien per 2026-04-15, med planbaselinen i `012
 | --- | --- | --- | --- |
 | M-01 Godkjent proposal | 2026-02-23 | Oppnådd | Ingen avvik |
 | M-02 Godkjent prosjektplan | 2026-03-09 | Oppnådd | Ingen avvik |
-| M-03 Ferdig analyse | 2026-04-27 | Funksjonelt oppnådd 2026-03-26 | ~32 dager tidlig; seks reviewtiltak gjenstår før formell lukking |
-| M-05 Peer review gjennomført | 2026-05-01 | Planlagt | På plan |
+| M-03 Ferdig analyse | 2026-04-27 | Oppnådd 2026-04-16 | 11 dager foran baseline |
+| M-05 Peer review gjennomført | 2026-05-01 | Planlagt | På plan (15 dager unna) |
 | M-04 Hovedutkast ferdig | 2026-05-18 | Planlagt (utkast ~90 %) | Ligger foran skjema |
 | M-06 Ferdig kvalitetssikret rapport | 2026-05-31 | Planlagt | Ingen endring |
 | M-07 Gjennomført muntlig eksamen | 2026-06-05 | Planlagt | Ingen endring |
 
 ## Avvik mellom arbeidskopi og styringsgrunnlag
 
-1. `schedule.json` har fortsatt `status: "In Progress"` med 75/80/50/0 % fullføring for ACT-03, ACT-06, ACT-07 og ACT-08. Arbeidskopien viser alle fire fullført — `schedule.json` må oppdateres til `Completed` med `percentComplete: 100`.
-2. `wbs.md` er datert 19.03.2026 og tidligere `status.md` 26.03.2026. Begge er eldre enn dagens statusdato (2026-04-15) og `review.md` (14.04.2026); bør synkroniseres ved neste arbeidsøkt.
-3. `risk.json` har `statusDate: "2026-03-17"` og omtaler R-001, R-002, R-004 som "Åpen" med residualrisiko medium. Etter gjennomført EDA og datamottak er disse reelt sett redusert til lav.
-4. Figurer i `014 fase 4 - report/figurer/` er alle referert i rapporten etter opprydning 2026-04-16 (`fig_scenario_sammenligning.png` → Figur 4; `fig3_4_modellsammenligning.png` og `fig5_kampanjeeffekt.png` slettet som utdaterte).
-5. Rapportens datering er fortsatt 17.03.2026 — oppdateres ved ferdigstillelse.
+1. `schedule.json`, `wbs.md` og `risk.json` synkronisert til 2026-04-16 med arbeidskopien.
+2. Rapportens datering er 2026-04-15 — oppdateres ved ferdigstillelse i M-04/M-06.
+3. `requirements.txt` mangler fortsatt i repo-rot — planlagt opprettet før peer review (ref. R-010).
 
-## Viktigste risikoer (oppdatert 2026-04-15)
+## Viktigste risikoer (oppdatert 2026-04-16)
 
-1. **R-008 Metodisk svakhet ved helgedata og sesongparameter (ny, medium):** `asfreq('D').fillna(0)` i `scenario_analyse.py:13` og `analyse_hoved.py:16` setter helger til 0 og forurenser SARIMA og lag-features. SARIMA bruker `s=7`, men reell syklus er 5 virkedager. *Tiltak:* Rekjøre modellene med `s=5` og `is_monday`-feature før peer review (01.05). Ref. `review.md` §2.1.
-2. **R-009 Resultatpresentasjon av Scenario 2 (ny, medium):** Scenario 2-resultater er beregnet (`scenario_resultater.csv`) men ikke presentert i kap. 8. *Tiltak:* Legge inn sammenligningstabell og `fig_scenario_sammenligning.png` i kap. 8; rydde "Fase 1/2"-terminologi i kap. 9. Ref. `review.md` §3.2.
-3. **R-010 Etterprøvbarhet (ny, medium):** Kampanjedata er hardkodet i Python-skriptene, kap. 12 Vedlegg er tomt, og det finnes ingen `requirements.txt`. *Tiltak:* Opprette `004 data/kampanjekalender.csv`, fylle vedlegg med RF-parametere, grid-search-AIC og feature importance. Ref. `review.md` §2.2 og §3.3.
-4. **R-001 Datakvalitet (lav, nedgradert):** Residualrisiko redusert etter at undertellingen i `vask_data.py` ble oppdaget og erstattet med RELEX-pipen (`vask_relex.py`, 260 virkedager, sum 20 701). Følges opp med datavask-logg i kap. 4.
-5. **R-002 Forsinket datatilgang (lav, nedgradert):** Alle nødvendige data for casen er mottatt (salg, innkjøp, lagerstatus, kampanjeinfo). Risikoen er realisert uten konsekvens.
-6. **R-003 Modellkonvergens (lav):** Tre modeller estimert og validert; ingen konvergensproblemer observert.
-7. **R-004 Tidsnød i sluttfasen (lav):** Prosjektet ligger foran skjema. Følges opp ved å holde tempoet i ACT-09 mot M-03 (2026-04-27), slik at vi har buffer til peer review og reviewtiltak.
-8. **R-005 Redusert teamkapasitet (lav):** Alle filer synkronisert i Git-repo; ingen fravær rapportert.
+1. **R-004 Tidsnød i sluttfasen (Lav):** Prosjektet ligger ~32 dager foran baseline for M-03. Rapporten er ~90 % ferdig, og peer review M-05 er 15 dager unna. *Tiltak:* Holde tempo i ACT-09 og bruke bufferen til kvalitetssikring. Residualrisiko redusert fra medium til lav.
+2. **R-005 Redusert teamkapasitet (Lav, åpen):** Ingen fravær rapportert. Følges opp løpende via Git-repo-synkronisering.
+3. **R-010 Etterprøvbarhet (Lav, åpen):** Kampanjedata eksternalisert og vedlegg utfylt. Gjenstår: opprette `requirements.txt` med pandas, statsmodels, scikit-learn, matplotlib.
+4. **R-001 Datakvalitet (Lukket 2026-04-15):** Undertelling i `vask_data.py` korrigert via RELEX-pipen.
+5. **R-002 Forsinket datatilgang (Lukket):** Alle data mottatt uten konsekvens.
+6. **R-003 Modellkonvergens (Lukket):** Åtte modeller estimert uten konvergensproblemer.
+7. **R-008 Helgedata/sesongparameter (Lukket):** SARIMA rekjørt med `s=5`; `is_monday`/`days_since_last_order` i RF.
+8. **R-009 Scenario 2-presentasjon (Lukket):** Kap. 8.1 presenterer sammenligning med Tabell 2 og Figur 4.
 
 ## Vurdering
 
-Prosjektet er operativt på plan per 2026-04-15 og ligger ~32 dager foran baseline for M-03. Analysen er funksjonelt lukket med tre modeller og to scenarier, og rapporten er 80–90 % ferdig. Hovedarbeidet fremover er **kvalitativt**: lukke de seks høyprioriterte reviewtiltakene (helgedata, `s=5`, kampanjekalender, Scenario 2-presentasjon, vedlegg, modellutvidelser) og oppdatere `schedule.json`/`wbs.md`/`risk.json` mot dagens arbeidskopi. Ingen av tiltakene krever ny datainnhenting — kun dokumentasjon, rekjøring av eksisterende modeller og rydding før peer review 2026-05-01.
+Prosjektet er operativt på plan per 2026-04-16 og ligger 11 dager foran baseline for M-03. Analysen er formelt lukket (åtte modeller, to scenarier), alle seks høyprioriterte reviewtiltak og de viktigste mediumtiltakene er adressert og dokumentert i rapporten. Styringsdokumentene (`schedule.json`, `wbs.md`, `risk.json`) er synkronisert. Hovedarbeidet fremover er **kvalitativt** og **logistisk**: eksportere rapporten til delbart format, gjennomføre peer review M-05 (2026-05-01), lukke gjenværende tekstrevideringer etter tilbakemelding, og fylle formalia ved M-06. Ingen av de gjenværende oppgavene krever ny datainnhenting eller ny modellering.
 
 ---
-*Oppdatert 2026-04-15 basert på arbeidskopi, `schedule.json`, `wbs.md`, `risk.json` og `review.md`.*
+*Oppdatert 2026-04-16 basert på arbeidskopi, `schedule.json`, `wbs.md`, `risk.json`, `review.md` og verifikasjon av rapportens kapittel- og vedleggsinnhold.*

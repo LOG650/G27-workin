@@ -40,14 +40,14 @@ This report investigates the forecast accuracy of daily demand at REMA 1000 Dist
 ---
 
 # 1. Innledning
-Dette prosjektet fokuserer på kvantitativ logistikk og supply chain management, med særlig vekt på etterspørselsprognoser og prognosepresisjon i distribusjonssystemer. Studien undersøker hvordan tidsserie-baserte metoder kan anvendes for å predikere daglig etterspørsel ved REMA 1000 Distribusjon Trondheim.
+Dette prosjektet fokuserer på kvantitativ logistikk og supply chain management (forsyningskjedeledelse), med særlig vekt på etterspørselsprognoser og prognosepresisjon i distribusjonssystemer. Studien undersøker hvordan tidsserie-baserte metoder kan anvendes for å predikere daglig etterspørsel ved REMA 1000 Distribusjon Trondheim.
 
 Prognosearbeid er en kritisk suksessfaktor i dagligvarebransjen. Nøyaktige estimater for fremtidig etterspørsel er avgjørende for å balansere lagerbeholdninger, sikre høy kundeservicegrad og minimere matsvinn i distribusjonsleddet. Selv om det utvalgte produktet i denne studien er en tørrvare med lang holdbarhet, har prognosepresisjon her en indirekte, men betydelig innvirkning på det totale svinn-regnskapet. Nøyaktige prognoser for stabile tørrvarekategorier frigjør operativ kapasitet og logistiske ressurser, noe som muliggjør en mer presis og prioritert håndtering av ferskvaredistribusjon – der det faktiske matsvinn-potensialet er største. Ved å analysere historiske data og evaluere ulike prediksjonsmodeller, søker dette prosjektet å identifisere metoder som kan forbedre beslutningsgrunnlaget for den totale vareflyten.
 
 ## 1.1 Problemstilling
 Basert på behovet for økt presisjon i planleggingen, er følgende problemstilling formulert for prosjektet:
 
-> **I hvilken grad kan tidsserie-baserte prognosemetoder predikere daglig etterspørsel for utvalgte produkter ved REMA 1000 Distribusjon Trondheim, målt ved prognosepresisjon (forecast accuracy)?**
+> **I hvilken grad kan tidsserie-baserte prognosemetoder predikere daglig etterspørsel for ett utvalgt produkt ved REMA 1000 Distribusjon Trondheim, målt ved prognosepresisjon (forecast accuracy)?**
 
 For å besvare denne problemstillingen vil vi utvikle og evaluere modeller basert på historisk volum (plukket/utlevert mengde). Selv om inkludering av forklaringsvariabler som kampanjeindikatorer og pris vurderes som teoretisk relevante, er selve analysen i denne oppgaven avgrenset til bruk av historiske salgs- og kalenderdata for å evaluere modellenes grunnleggende prediksjonsevne. En sentral del av studien er å *evaluere* hvordan disse rene tidsseriemodellene presterer i møte med kampanjedrevet etterspørsel, for å kvantifisere behovet for mer avanserte forklaringsvariabler i fremtidige systemer.
 
@@ -70,12 +70,12 @@ For å sikre dybde i analysen er prosjektet avgrenset på følgende måte:
 ## 1.4 Antagelser
 I arbeidet legges følgende antagelser til grunn:
 - **Datakvalitet:** Vi antar at RELEX-eksporten og underliggende ERP-systemer gir et representativt bilde av faktisk utlevert etterspørsel. Ved kryssjekk mot et uavhengig ERP-uttrekk er avviket 0,6 %, som støtter antagelsen (se kap. 4.3).
-- **Etterspørsel = utlevert volum:** Fordi distribusjonslageret aldri var utsolgt i perioden (bekreftet av REMA, kap. 4.5), antar vi at observert utlevert volum reflekterer den faktiske etterspørselen – ingen "Censored Demand".
+- **Etterspørsel = utlevert volum:** Fordi distribusjonslageret aldri var utsolgt i perioden (bekreftet av REMA, kap. 4.5), antar vi at observert utlevert volum reflekterer den faktiske etterspørselen – ingen "Censored Demand" (sensurert etterspørsel, dvs. at reell etterspørsel er undertrykt av utsolgt-situasjoner).
 - **Stabilitet:** Vi forutsetter at grunnleggende markedsforhold for produktet er relativt stabile gjennom analyseperioden, bortsett fra kampanjer og hendelser som er eksplisitt modellert.
 - **Prisdata:** Proposalen nevnte prisdata som ønsket forklaringsvariabel, men dette er ikke tilgjengelig i datasettet og inngår derfor ikke i analysen.
 
 # 2. Litteratur
-Dette kapittelet presenterer en gjennomgang av sentrale bidrag innen retail forecasting og etterspørselsplanlegging. Litteraturgjennomgangen er strukturert tematisk for å belyse utfordringene ved dagligvareprognoser, effekten av kampanjer og valg av evalueringsmetoder.
+Dette kapittelet presenterer en gjennomgang av sentrale bidrag innen retail forecasting (dagligvareprognoser) og etterspørselsplanlegging. Litteraturgjennomgangen er strukturert tematisk for å belyse utfordringene ved dagligvareprognoser, effekten av kampanjer og valg av evalueringsmetoder.
 
 ## 2.1 Kompleksitet i dagligvareprognoser
 Fildes et al. (2022) gir en omfattende oversikt over gapet mellom akademisk teori og praktisk anvendelse i varehandelen. De påpeker at tradisjonelle statistiske modeller ofte kommer til kort i møte med den ekstreme volatiliteten og de store datamengdene som karakteriserer moderne retail. Denne kompleksiteten understøttes av Makridakis et al. (2022) i deres analyse av M5-konkurransen. Her dokumenteres det at moderne maskinlæringsmodeller og hybridmetoder ofte utkonkurrerer klassiske tidsseriemetoder på dagligvaredata, spesielt når dataene er preget av diskontinuitet og mange nullverdier.
@@ -119,7 +119,7 @@ Prosjektet benytter tre nivåer av modellkompleksitet:
 
 **Maskinlæringsmodeller:**
 * **Random Forest (RF):** Ensemble av beslutningstrær. Fanger ikke-lineære interaksjoner mellom lag-features, kalenderfeatures og kampanjeflagg.
-* **Gradient Boosting (GBM):** Sekvensielt trenede beslutningstrær som korrigerer hverandres feil. Ofte presis, men krever mer hyperparameter-tuning.
+* **Gradient Boosting (GBM):** Sekvensielt trenede beslutningstrær som korrigerer hverandres feil. Ofte presis, men krever mer hyperparameter-tuning (systematisk justering av modellens innstillinger).
 
 ## 3.3 Måling av prognosepresisjon
 For å evaluere prognosens kvalitet benyttes fem komplementære feilmål, tolket som avviket mellom prognose ($F_t$) og faktisk etterspørsel ($A_t$):
@@ -178,7 +178,9 @@ En viktig **datakildekontroll** ble gjennomført underveis: et parallelt ERP-utt
 
 Tabell 1 oppsummerer nøkkeltall for virkedagsserien som danner grunnlag for modelleringen.
 
-**Tabell 1: Beskrivende statistikk for Lasagne Familiepakning (virkedager, mars 2025 – feb 2026)**
+<div align="center">
+
+*Tabell 1: Beskrivende statistikk for Lasagne Familiepakning (virkedager, mars 2025 – feb 2026)*
 
 | Mål | Verdi (stk) |
 | :--- | :--- |
@@ -191,27 +193,65 @@ Tabell 1 oppsummerer nøkkeltall for virkedagsserien som danner grunnlag for mod
 | Minimum | 0 |
 | 90. persentil | 91,1 |
 | 95. persentil | 300,1 |
-| Maksimum (jul 2025) | 2 172 |
+| Maksimum (29. okt 2025, pre-Crazy Days) | 2 172 |
 
-Standardavviket er over tre ganger så stort som gjennomsnittet. CV = 3,23 plasserer etterspørselen klart i kategorien **"Lumpy Demand"** (ujevn etterspørsel, kap. 3.1). Medianen (20 stk) er vesentlig lavere enn gjennomsnittet (79,6), noe som indikerer høyreskjev fordeling – lave verdier preger flertallet av dagene, mens noen få kampanje- og høytidsdager står for en stor andel av det totale volumet.
+</div>
+
+Standardavviket er over tre ganger så stort som gjennomsnittet. CV = 3,23 plasserer etterspørselen klart i kategorien **"Lumpy Demand"** (ujevn etterspørsel, kap. 3.1). Medianen (20 stk) er vesentlig lavere enn gjennomsnittet (79,6), noe som indikerer høyreskjev fordeling – lave verdier preger flertallet av dagene, mens noen få pre-kampanje- og kampanjedager står for en stor andel av det totale volumet.
 
 ## 4.4 Etterspørselsmønstre og visualisering
 For å få et helhetsbilde av dataenes utvikling over tid, er tidsserien visualisert i Figur 1.
 
+<div align="center">
+
 ![Figur 1: Historisk tidsserie for Lasagne Familiepakning](figurer/fig1_tidsserie.png)
-**Figur 1: Historisk tidsserie (mars 2025 – februar 2026) som viser variasjon i utlevert volum og markante topper under Crazy Days (uke 45/2025 og uke 5/2026) samt julehandelen uke 52/2025.**
 
-Nivået ligger stabilt lavt i normalperioder, men brytes av kortsiktige og kraftige topper rundt kampanje- og høytidsperioder. Det er ingen tydelig langsiktig trend, men en klar sesongvariasjon knyttet til ukedager. Dette utdypes i Figur 2.
+*Figur 1: Historisk tidsserie (mars 2025 – februar 2026) som viser variasjon i utlevert volum. De to største toppene inntreffer i uken før Crazy Days høst (uke 44/2025) og i uken etter oppstart av Crazy Days vinter (uke 6/2026).*
 
-![Figur 2: Gjennomsnittlig etterspørsel per ukedag](figurer/fig2_ukedag.png)
-**Figur 2: Gjennomsnittlig utlevert volum fordelt på virkedager, som dokumenterer den systematiske mandagseffekten.**
+</div>
 
-Mandager har det desidert høyeste gjennomsnittet (113,6 stk), etterfulgt av tirsdag (97,3) og onsdag (82,1). Dette skyldes at helgebestillinger akkumuleres og ekspederes på mandag, slik at mandag i praksis rommer tre dagers etterspørselsakkumulasjon. Denne systematiske variasjonen er en kritisk innsikt som modellene i kap. 6 må kunne fange opp.
+Nivået ligger stabilt lavt i normalperioder, men brytes av kortsiktige og kraftige topper rundt kampanjeperiodene. Det er ingen tydelig langsiktig trend, men en klar sesongvariasjon knyttet til ukedager. Dette utdypes i Figur 2.
+
+<div align="center">
+
+![Figur 2: Gjennomsnittlig daglig utlevert volum per virkedag](figurer/fig2_ukedag.png)
+
+*Figur 2: Gjennomsnittlig daglig utlevert volum per virkedag (plukkdato, n = 52 per dag, mars 2025 – februar 2026), som dokumenterer den systematiske mandagseffekten på distribusjonssenteret.*
+
+</div>
+
+Mandager har det desidert høyeste gjennomsnittet (113,6 stk), etterfulgt av tirsdag (97,3), onsdag (82,1), torsdag (67,4) og fredag (37,6). Den fallende profilen gjennom uka skyldes at helgebestillinger akkumuleres og ekspederes på mandag, slik at mandag i praksis rommer tre dagers utleveringsbehov, mens fredagen er lavest fordi butikkene unngår bestillinger de ikke rekker å motta før helgen. Denne systematiske variasjonen er en kritisk innsikt som modellene i kap. 6 må kunne fange opp.
+
+Det er viktig å skille mellom **bestillingsdato** (når butikken oppretter ordren) og **plukkdato/utleveringsdato** (når varene faktisk går ut fra distribusjonssenteret). Figur 2 viser plukkdato; det er denne serien modellene predikerer fordi den bestemmer plukk- og pakkekapasiteten ved DC. Utleveringer skjer så å si utelukkende på virkedager – noen få lørdags- og søndagsutleveringer forekommer gjennom året, typisk i tilknytning til høytider som påske, og er derfor holdt utenfor figuren. Bestillinger registreres derimot hele uka, også lørdag og søndag, og har et helt annet ukedagsmønster. Dette synliggjøres i Figur 3.
+
+<div align="center">
+
+![Figur 3: Gjennomsnittlig daglig bestilt volum per ukedag](figurer/fig3_bestilling_ukedag.png)
+
+*Figur 3: Gjennomsnittlig daglig bestilt volum per ukedag (opprettelsesdato, alle 7 dager, mars 2025 – februar 2026). Snitt beregnet per kalenderdag i perioden, inkludert dager uten registrerte bestillinger.*
+
+</div>
+
+Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3). Lørdag (1,6) og søndag (6,1) er marginale. Onsdagstoppen reflekterer at butikkene legger inn hovedtyngden av ukens ordrer midt i uka – disse plukkes deretter på torsdag/fredag og delvis på mandag påfølgende uke. Bestilling- og utleveringsprofilene er altså faseforskjøvet: bestillingssignalet kommer onsdag, kapasitetsbehovet på DC inntreffer mandag. Totalt bestilt i perioden er 20 934 stk, mot 20 697 stk faktisk utlevert – et avvik på 1,1 % som skyldes justering mellom opprinnelig bestilt og faktisk plukket antall.
 
 ## 4.5 Kampanjemekanikk og salgstopper
-To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025 (3.–9. november) og uke 5/2026 (26. januar–1. februar). I disse periodene ser vi salgstopper på flere hundre stk per dag, med ekstremverdier opp mot 400–600 stk. I tillegg forekommer en kraftig julespike uke 52/2025, der volumet 22.–26. desember ligger mellom 1 082 og 2 172 stk per dag.
+To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025 (3.–9. november) og uke 5/2026 (26. januar–1. februar). Figur 4 viser ukentlig utlevert volum gjennom hele analyseperioden, med kampanje- og hendelsesmarkeringer.
 
-De observerte toppene reflekterer **reell, utlevert etterspørsel**, og inneholder ikke noe kapasitetstak ("Censored Demand") slik tidligere utkast feiltolkningsvis antydet. Ifølge PK hos REMA har distribusjonslageret aldri vært utsolgt på perioden, og det er ingen "flate platåer" som indikerer logistisk avskjæring. Volumet under Crazy Days styres i praksis av kombinasjonen butikkbestillinger (via AOF/RELEX) og sentralt pushet kampanjeallokering, og kan derfor variere kraftig fra én kampanje til en annen.
+<div align="center">
+
+![Figur 4: Ukentlig salg med kampanje- og hendelsesmarkeringer](figurer/fig4_kampanjeoversikt.png)
+
+*Figur 4: Ukentlig utlevert volum for Lasagne Familiepakning (mars 2025 – februar 2026). Blå bokser markerer Crazy Days-kampanjer; oransje bokser markerer hendelser (påske, skolestart, jul).*
+
+</div>
+
+Det mest karakteristiske mønsteret er at **salgstoppen inntreffer i uken før selve kampanjen**, ikke under kampanjen. For Crazy Days høst ligger uke 44 (27.–30. oktober) på 7 131 stk totalt, med dagsverdier 1 082–2 172 stk og maksimum onsdag 29. oktober. Selve kampanjeuken 45 har bare 504 stk. For Crazy Days vinter er bildet todelt: kampanjeuken (uke 5) ligger på 2 140 stk, mens uken etter (uke 6, 2.–6. februar) topper seg på 4 180 stk med dagsverdier opp mot 1 378 stk.
+
+Dette reflekterer logistikken i distribusjonskjeden: butikkene legger inn kampanjeordrer i forkant for å ha varer i butikk ved kampanjestart, og DC plukker og ekspederer disse ordrene noen dager før kampanjen begynner. I praksis er det derfor **pre-campaign stocking** som er driveren bak de største utleveringsvolumene, ikke kampanjeuken i seg selv. For prognosemodellering innebærer dette at kampanjeflagget må være aktivt i uken(e) før selve kampanjeperioden, ikke bare under den (se kap. 6.3).
+
+I motsetning til det man kunne forvente, viser dataene **ingen julespike**. Dagsverdiene 22.–26. desember 2025 er 37, 18, 0, 0 og 0 stk, og uke 52 har totalt kun 55 stk. Dette skyldes trolig at DC stenger på helligdagene og at butikkene dekker julehandelen gjennom ekstraordinære leveranser i tidligere uker. Heller ikke påske (uke 16) eller skolestart (uke 33) gir noen tydelig salgstopp i data, selv om de er merket i REMAs hendelseskalender.
+
+De observerte toppene reflekterer **reell, utlevert etterspørsel**, og inneholder ikke noe kapasitetstak ("Censored Demand"). Ifølge PK hos REMA har distribusjonslageret aldri vært utsolgt i perioden (se dokumentasjon i Vedlegg A8), og det er ingen "flate platåer" i datasettet som indikerer logistisk avskjæring. Volumet under Crazy Days styres i praksis av kombinasjonen butikkbestillinger (via AOF/RELEX) og sentralt pushet kampanjeallokering, og kan derfor variere kraftig fra én kampanje til en annen.
 
 ## 4.6 Konsekvenser og behov for modeller
 Mangelen på presise prognoser har direkte operative konsekvenser for REMA 1000:
@@ -233,17 +273,12 @@ Arbeidet er strukturert som en lineær prosess der målet er å identifisere den
 Analysen er gjennomført i fire hovedfaser ved bruk av **Python 3** og bibliotekene **Pandas**, **Statsmodels** og **Scikit-learn**:
 
 1. **Dataklargjøring (vask):** RELEX-eksporten (bredt format med 365 dagskolonner) pivoteres til langt format og filtreres til 260 virkedager. Rå ERP-uttrekket brukes som kryssjekk (se kap. 4.3).
-2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Dette inkluderer *grid-search* over (p,d,q)(P,D,Q)_5 for SARIMA (144 kombinasjoner), *feature engineering* og *kryssvalidert hyperparameter-tuning* (3-fold TimeSeriesSplit) for Gradient Boosting.
+2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Dette inkluderer *grid-search* (systematisk rutenettsøk) over (p,d,q)(P,D,Q)_5 for SARIMA (144 kombinasjoner), *feature engineering* (variabelutvikling) og *kryssvalidert hyperparameter-tuning* (3-fold TimeSeriesSplit) for Gradient Boosting.
 3. **Validering:** Modellene testes på det uavhengige testsettet. Residualene evalueres med både visuell ACF-analyse og formell **Ljung-Box-test** (H0: residualer uavhengige). **ADF-test** (Augmented Dickey-Fuller) vurderer stasjonariteten i treningsserien.
 4. **Evaluering:** Modellene sammenlignes med MAE, MAPE, sMAPE, WAPE og Bias, segmentert på normale dager og toppdager. De robuste målene (sMAPE og WAPE) supplerer MAPE for å gi et ærlig bilde ved lavt volum (Hyndman & Koehler, 2006).
 
 ## 5.3 Datagrunnlag, struktur og lagerstatus
-Primærdataene er daglig salg hentet fra REMA 1000s prognoseverktøy **RELEX**. For å bekrefte at salgsdataene er et pålitelig mål for etterspørsel, har vi i tillegg analysert lagerstatus gjennom hele analyseperioden (se Figur 3).
-
-![Figur 3: Lagerstatus, salg og prognoser](figurer/fig3_lagerstatus.png)
-**Figur 3: Oversikt over varebeholdning (sort strek), faktisk salg (blå strek) og eksisterende prognose (grønn strek). Markeringer under x-aksen viser kampanjer (blå) og årlige hendelser (oransje).**
-
-Figur 3 bekrefter at lagernivået (sort strek) aldri når null i perioden – distribusjonssenteret har aldri vært utsolgt. Dette validerer antagelsen om at observerte salgstall reflekterer faktisk utlevert etterspørsel, ikke en kapasitetsbegrenset restetterspørsel.
+Primærdataene er daglig salg hentet fra REMA 1000s prognoseverktøy **RELEX**. For å bekrefte at salgsdataene er et pålitelig mål for etterspørsel, har vi i tillegg gjennomgått lagerstatus for hele analyseperioden via et skjermbilde fra RELEX-grensesnittet (Vedlegg A8). Oversikten viser at lagernivået aldri når null – distribusjonssenteret har aldri vært utsolgt på Lasagne Familiepakning i analyseperioden. Dette validerer antagelsen om at observerte salgstall reflekterer faktisk utlevert etterspørsel, ikke en kapasitetsbegrenset restetterspørsel.
 
 * **Kilde:** RELEX Solutions-eksport (daglig aggregert) og REMA 1000 ERP-systemer (lagerstatus).
 * **Periode:** 1. mars 2025 – 28. februar 2026 (365 kalenderdager, 260 virkedager etter filtrering).
@@ -292,12 +327,12 @@ Vi vurderte også **Prophet** (Facebook) og **LSTM-nevralnettverk**. Prophet ble
 3. **SARIMA (Seasonal Autoregressive Integrated Moving Average)** – estimeres med eksogene variabler (is_crazy_days, is_event). Parametervalg gjøres ved grid-search (se kap. 7.2).
 
 **Maskinlæringsmodeller:**
-4. **Random Forest (RF)** – full feature-sett inkludert lag_1, lag_5, lag_10, rolling_mean_5 og kalenderfeatures.
+4. **Random Forest (RF)** – full feature-sett (variabelsett) inkludert lag_1, lag_5, lag_10, rolling_mean_5 og kalenderfeatures.
 5. **Random Forest uten lag_1** – identisk feature-sett som (4) minus forrige dags volum. Diagnostisk variant for å undersøke hvor mye RF faktisk lærer utover "i morgen = i dag".
 6. **Gradient Boosting (GBM)** – tunet via 3-fold TimeSeriesSplit over learning_rate, max_depth, n_estimators og subsample (16 kombinasjoner).
 
 **Hybridmodeller:**
-7. **Hybrid (kampanje-router)** – SARIMA på rutinedager, RF uten lag_1 på dager markert i kampanjekalenderen. Regelbasert routing for å kombinere SARIMAs presisjon i normaldrift med RFs robusthet i topper.
+7. **Hybrid (kampanje-router)** – SARIMA på rutinedager, RF uten lag_1 på dager markert i kampanjekalenderen. Regelbasert routing (ruting mellom modeller basert på regler) for å kombinere SARIMAs presisjon i normaldrift med RFs robusthet i topper.
 8. **Hybrid (terskelbasert)** – SARIMA er default; hvis RF uten lag_1 selv predikerer over 90. persentilen (terskel 69,3 stk fra trening), rutes dagen til RF uten lag_1. Alternativ routing som ikke krever eksplisitt kampanjeflagg.
 
 ## 6.3 Datastrukturens påvirkning på modellarkitekturen
@@ -337,7 +372,7 @@ ACF-plott av treningsserien viste sterke topper ved lag 5, 10 og 15, konsistent 
 ## 7.2 Parametersøk og tuning
 **SARIMA grid-search:** Vi testet 144 kombinasjoner av ordre $(p,d,q) \in \{0,1,2\} \times \{0,1\} \times \{0,1,2\}$ og sesongordre $(P,D,Q)_5 \in \{0,1\}^3$. AIC ble brukt som utvalgskriterium, og modeller som ikke konvergerte ble kassert. Resultatene er tabellert i `004 data/sarima_diagnostikk.csv` (vedlegg A2). Beste konvergerte modell er $(0,1,2)(0,1,1)_5$ med AIC 2 510,06. Dette er en forbedring fra den opprinnelige $(1,1,1)(1,1,1)_7$ (AIC 2 558) på 48 AIC-poeng. Flere ikke-konvergerte kombinasjoner hadde numerisk lavere AIC (for eksempel $(1,0,2)(0,1,1)_5$ med AIC 2 480,87), men ble kassert fordi MLE-optimeringen ikke konvergerte.
 
-**Random Forest feature-sett:** Feature importance-analyse (`rf_feature_importance.csv`, vedlegg A4) viser at $y_{t-1}$ (lag_1) dominerer med 84 % vekt i full RF-variant. `rolling_mean_5` (7 %), `lag_10` (2 %) og `lag_5` (2 %) følger. Denne dominansen motiverer den diagnostiske RF-varianten uten lag_1, der `rolling_mean_5` (46 %), `lag_5` (25 %) og `lag_10` (14 %) tar over rollen som hoveddrivere.
+**Random Forest feature-sett:** Feature importance-analyse (variabelviktighet, `rf_feature_importance.csv`, vedlegg A4) viser at $y_{t-1}$ (lag_1) dominerer med 84 % vekt i full RF-variant. `rolling_mean_5` (7 %), `lag_10` (2 %) og `lag_5` (2 %) følger. Denne dominansen motiverer den diagnostiske RF-varianten uten lag_1, der `rolling_mean_5` (46 %), `lag_5` (25 %) og `lag_10` (14 %) tar over rollen som hoveddrivere.
 
 **Gradient Boosting:** 16 kombinasjoner ble evaluert med 3-fold TimeSeriesSplit-kryssvalidering (`gbm_tuning.csv`, vedlegg A3). Beste hyperparametere: `learning_rate=0,05`, `max_depth=2`, `n_estimators=100`, `subsample=1,0`. Tunet GBM gir ca. 30 % bedre MAE enn utunet standard-konfigurasjon.
 
@@ -366,7 +401,9 @@ Alle tall i Tabell 2, 3 og 4 bygger på `scenario_sammendrag.csv` fra `scenario_
 ## 8.1 Sammenligning av Scenario 1 og Scenario 2
 For å svare på problemstillingens delproblem 3 – *i hvilken grad kampanjeaktivitet begrenser modellenes presisjon* – er alle modeller kjørt i to scenarier: Scenario 1 (blind, kun historikk) og Scenario 2 (historikk + kampanje- og hendelsesindikatorer). Tabell 2 presenterer MAE for begge scenarier på tvers av seks modeller, globalt over hele testsettet.
 
-**Tabell 2: MAE (stk) på testsettet per scenario og modell**
+<div align="center">
+
+*Tabell 2: MAE (stk) på testsettet per scenario og modell*
 
 | Modell | Scenario 1 (blind) | Scenario 2 (med kampanjeinfo) | Endring |
 | :--- | ---: | ---: | ---: |
@@ -377,15 +414,24 @@ For å svare på problemstillingens delproblem 3 – *i hvilken grad kampanjeakt
 | RF uten lag_1 | 178,99 | **169,11** | −5,5 % |
 | Gradient Boosting | 268,23 | 294,28 | +9,7 % |
 
-Scenario 2 gir bare marginal global forbedring på SARIMA (−0,4 %) og moderat forbedring på RF uten lag_1 (−5,5 %). For Random Forest og GBM blir globalytelsen dårligere med kampanjeinfo. Den segmenterte analysen (kap. 8.3) viser at dette skyldes hvordan modellene fordeler forbedringer mellom normale dager og toppdager. Figur 4 viser en sammenligning av faktisk etterspørsel og prediksjoner fra utvalgte modeller i Scenario 1 og 2.
+</div>
 
-![Figur 4: Scenario 1 vs Scenario 2 — modellsammenligning](figurer/fig_scenario_sammenligning.png)
-**Figur 4: Faktisk etterspørsel (sort) sammenlignet med RF Scenario 1 (rødt, blind), RF uten lag_1 Scenario 2 (oransje) og Hybrid terskelbasert Scenario 2 (grønn) over testperioden.**
+Scenario 2 gir bare marginal global forbedring på SARIMA (−0,4 %) og moderat forbedring på RF uten lag_1 (−5,5 %). For Random Forest og GBM blir globalytelsen dårligere med kampanjeinfo. Den segmenterte analysen (kap. 8.3) viser at dette skyldes hvordan modellene fordeler forbedringer mellom normale dager og toppdager. Figur 5 viser en sammenligning av faktisk etterspørsel og prediksjoner fra utvalgte modeller i Scenario 1 og 2.
+
+<div align="center">
+
+![Figur 5: Scenario 1 vs Scenario 2 — modellsammenligning](figurer/fig_scenario_sammenligning.png)
+
+*Figur 5: Faktisk etterspørsel (sort) sammenlignet med RF Scenario 1 (rødt, blind), RF uten lag_1 Scenario 2 (oransje) og Hybrid terskelbasert Scenario 2 (grønn) over testperioden.*
+
+</div>
 
 ## 8.2 Global modellytelse
 Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for åtte modeller i Scenario 2, med fem feilmål. Hybridmodellene er kun definert i Scenario 2.
 
-**Tabell 3: Global evaluering — Scenario 2 (alle testdager)**
+<div align="center">
+
+*Tabell 3: Global evaluering — Scenario 2 (alle testdager)*
 
 | Modell | MAE | MAPE | sMAPE | WAPE | Bias |
 | :--- | ---: | ---: | ---: | ---: | ---: |
@@ -398,12 +444,16 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 | Hybrid (kampanje) | 177,7 | 371 % | 159 % | 101 % | −118,7 |
 | **Hybrid (terskel)** | 176,2 | 1 217 % | 144 % | 100 % | **+9,4** |
 
+</div>
+
 MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+9,4), hvilket er operasjonelt attraktivt.
 
 ## 8.3 Segmentert resultatanalyse
 Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (> 69,3 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
 
-**Tabell 4: Segmentert evaluering — MAE og Bias per segment, Scenario 2**
+<div align="center">
+
+*Tabell 4: Segmentert evaluering — MAE og Bias per segment, Scenario 2*
 
 | Segment | Modell | MAE | Bias |
 | :--- | :--- | ---: | ---: |
@@ -420,6 +470,8 @@ Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (>
 | | **RF uten lag_1** | **290,2** | **−70,3** |
 | | Hybrid (terskel) | 305,5 | −85,5 |
 
+</div>
+
 Analysen avdekker en klart segmentert modellvinner-struktur:
 - **På normale dager** er SARIMA best (MAE 29,4) – bruk av kampanjeinformasjon reduserer feilen fra 45,97 (Scenario 1) til 29,40 (Scenario 2), en forbedring på 36 %.
 - **På toppdager** er RF uten lag_1 best (MAE 290,2). Hybrid (terskel) er nesten like presis (305,5) og har lavere absolutt bias.
@@ -431,7 +483,9 @@ Et slående observasjon er at både **Holt-Winters og SARIMA har |Bias| = MAE p�
 ## 8.4 Residualdiagnostikk og modellvaliditet
 For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-Box Q-test (10 lags) og ACF-plott evaluert (Figur 6).
 
-**Tabell 5: Ljung-Box Q-test på testresidualer (10 lags, Scenario 2)**
+<div align="center">
+
+*Tabell 5: Ljung-Box Q-test på testresidualer (10 lags, Scenario 2)*
 
 | Modell | Q-statistikk | p-verdi | Avviser H0 (autokorrelasjon)? |
 | :--- | ---: | ---: | :--- |
@@ -444,8 +498,15 @@ For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-
 | Hybrid (kampanje) | 12,9 | 0,231 | Nei (hvit støy) |
 | Hybrid (terskel) | 13,0 | 0,223 | Nei (hvit støy) |
 
+</div>
+
+<div align="center">
+
 ![Figur 6: ACF-plott av residualene](figurer/fig6_residual_acf.png)
-**Figur 6: ACF-plott av residualene for fem sentrale modeller (Seasonal Naive, Holt-Winters, SARIMA, RF uten lag_1 og Hybrid terskel). Blått felt indikerer konfidensintervall for hvit støy.**
+
+*Figur 6: ACF-plott av residualene for fem sentrale modeller (Seasonal Naive, Holt-Winters, SARIMA, RF uten lag_1 og Hybrid terskel). Blått felt indikerer konfidensintervall for hvit støy.*
+
+</div>
 
 Tabell 5 og Figur 6 viser et markant skille: **tidsseriemodellene (Naive, HW, SARIMA) og GBM har signifikant autokorrelasjon** i residualene – de har altså ikke fanget opp all struktur. **RF, RF uten lag_1 og hybridene har residualer som er statistisk uavhengige** – disse modellene har ekstrahert den systematiske informasjonen fra datasettet. Dette er et sterkt argument for de tre-baserte modellenes validitet, selv om SARIMA har bedre MAE på normale dager.
 
@@ -492,7 +553,7 @@ To hybridvarianter ble testet:
 
 Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 alene på 290). Analysen viste at **kampanjedager og toppdager ikke er samme mengde**. I testsettet er det toppdager utenfor kampanjeperioder (f.eks. mandag etter nyttår), og disse rutes feil til SARIMA. Den terskelbaserte hybriden korrigerer dette ved å la selve prediksjonsapparatet avgjøre – resultatet er MAE 305 på toppdager og nesten null systematisk bias (+11 totalt).
 
-Tradeoff-en er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir "false positive"-routinger der RF selv overpredikerer. Dette er et klassisk klassifikator-tradeoff: **terskelbasert routing forbedrer toppdager på bekostning av noen normale dager**.
+Tradeoff-en (avveiningen) er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir "false positive"-routinger (feilaktig positive) der RF selv overpredikerer. Dette er et klassisk klassifikator-tradeoff: **terskelbasert routing forbedrer toppdager på bekostning av noen normale dager**.
 
 For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+11) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
 
@@ -511,7 +572,7 @@ Dette er i tråd med Fildes et al. (2008)s observasjon om at menneskelige overst
 
 ## 9.6 Metodiske begrensninger
 
-**Testsettets sammensetning.** Januar–februar 2026 inneholder Crazy Days uke 5 og ettervirkningen av julehandel. Av 42 testdager er 15 (36 %) klassifisert som toppdager — betydelig over den forventede andelen på ca. 10 % i et representativt år. De globale feilmålene i Tabell 3 er derfor sterkt påvirket av toppdagene, og sammenligninger mellom modeller på globalt nivå må tolkes med varsomhet. Den **segmenterte analysen i kap. 8.3 er rapportens primære lens** for modellvalg, nettopp fordi den isolerer normaldrift og kampanjedrift.
+**Testsettets sammensetning.** Januar–februar 2026 inneholder Crazy Days vinter (uke 5) og den etterfølgende toppuken (uke 6, med dagsverdier opp mot 1 378 stk). Av 42 testdager er 15 (36 %) klassifisert som toppdager — betydelig over den forventede andelen på ca. 10 % i et representativt år. De globale feilmålene i Tabell 3 er derfor sterkt påvirket av toppdagene, og sammenligninger mellom modeller på globalt nivå må tolkes med varsomhet. Den **segmenterte analysen i kap. 8.3 er rapportens primære lens** for modellvalg, nettopp fordi den isolerer normaldrift og kampanjedrift.
 
 **Fravær av walk-forward-validering.** Evalueringen bygger på en enkelt fast trenings-/testsplitt (83/17 %). Med kun 42 testdager er resultatene sårbare for tilfeldigheter i hvilke datoer som faller i testperioden. En walk-forward-validering (expanding window) ville gitt mer robuste estimater og mulighet til å kvantifisere prognoseusikkerhet over tid. Dette er et naturlig neste steg for videre arbeid (se kap. 10).
 
@@ -566,16 +627,22 @@ Seabold, S., & Perktold, J. (2010). Statsmodels: Econometric and Statistical Mod
 ## A1 — ADF-test for stasjonaritet i treningsserien
 Augmented Dickey-Fuller-test (H0: enhetsrot, ikke-stasjonær). p < 0,05 → avvises.
 
+<div align="center">
+
 | Serie | ADF-stat | p-verdi | Kritisk (5 %) | Stasjonær? |
 | :--- | ---: | ---: | ---: | :--- |
 | Rå (faktisk_ettersporsel) | −5,01 | < 0,001 | −2,88 | Ja |
 | 1. ordens differensiert | −8,17 | < 0,001 | −2,88 | Ja |
 | Sesongdifferensiert (s=5) | −5,36 | < 0,001 | −2,88 | Ja |
 
+</div>
+
 Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering – SARIMAs `d=1` er konservativt valgt.
 
 ## A2 — SARIMA grid-search (utdrag: topp 5 og valgt modell)
 144 kombinasjoner av $(p,d,q)(P,D,Q)_5$ ble estimert på treningssettet med eksogene regressorer (`is_crazy_days`, `is_event`). Utvalg er minst AIC blant modeller som konvergerte.
+
+<div align="center">
 
 | Rang | order | seasonal_order | AIC | BIC | Konvergerte |
 | ---: | :--- | :--- | ---: | ---: | :--- |
@@ -584,6 +651,8 @@ Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering – SA
 | 3 | (1,1,2) | (1,1,1,5) | 2 533,97 | 2 560,12 | Ja |
 | 4 | (1,0,2) | (0,0,1,5) | 2 537,94 | 2 561,02 | Ja |
 | 5 | (1,0,2) | (1,1,0,5) | 2 551,51 | 2 574,49 | Ja |
+
+</div>
 
 Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original konfigurasjon (1,1,1)(1,1,1)_7 (AIC 2 558): 48 AIC-poeng. Merk: Flere ordner med numerisk lavere AIC (helt ned mot 2 480) hadde konvergensproblemer og ble derfor ikke valgt.
 
@@ -599,6 +668,9 @@ Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original ko
 Fullstendig grid i `004 data/gbm_tuning.csv`. Tunet GBM gir ~30 % bedre MAE enn utunet standard.
 
 ## A4 — Feature importance i Random Forest-modellene
+
+<div align="center">
+
 | Feature | RF (full) | GBM | RF uten lag_1 |
 | :--- | ---: | ---: | ---: |
 | lag_1 | 0,840 | 0,791 | – |
@@ -610,9 +682,14 @@ Fullstendig grid i `004 data/gbm_tuning.csv`. Tunet GBM gir ~30 % bedre MAE enn 
 | month | 0,004 | 0,000 | 0,020 |
 | Øvrige (dag-dummier, kampanjeflagg) | 0,020 | 0,048 | 0,064 |
 
+</div>
+
 Fullstendig tabell i `004 data/rf_feature_importance.csv`.
 
 ## A5 — Random Forest-hyperparametere
+
+<div align="center">
+
 | Parameter | Verdi |
 | :--- | :--- |
 | `n_estimators` | 100 |
@@ -622,8 +699,12 @@ Fullstendig tabell i `004 data/rf_feature_importance.csv`.
 | `min_samples_leaf` | 1 (default) |
 | `max_features` | 1.0 (default for regresjon) |
 
+</div>
+
 ## A6 — Kampanjekalender
 Lagret i `004 data/kampanjekalender.csv`, lest inn ved modellkjøring.
+
+<div align="center">
 
 | Startdato | Sluttdato | Type | Beskrivelse | Kilde |
 | :--- | :--- | :--- | :--- | :--- |
@@ -632,6 +713,8 @@ Lagret i `004 data/kampanjekalender.csv`, lest inn ved modellkjøring.
 | 2025-11-03 | 2025-11-09 | crazy_days | Crazy Days høst | REMA e-post (uke 45, 2025) |
 | 2025-12-15 | 2025-12-21 | event | Jul | Kalender (uke 51, 2025) |
 | 2026-01-26 | 2026-02-01 | crazy_days | Crazy Days vinter | REMA e-post (uke 5, 2026) |
+
+</div>
 
 ## A7 — Filstruktur og reproduserbarhet
 Analysekoden og datafiler ligger i følgende mappestruktur i prosjektets Git-repo:
@@ -659,9 +742,23 @@ G27-workin/
 └── 014 fase 4 - report/figurer/
     ├── fig1_tidsserie.png
     ├── fig2_ukedag.png
-    ├── fig3_lagerstatus.png
+    ├── fig3_bestilling_ukedag.png
+    ├── fig4_kampanjeoversikt.png
+    ├── fig3_lagerstatus.png            (RELEX-skjermbilde, Vedlegg A8)
     ├── fig_scenario_sammenligning.png
     └── fig6_residual_acf.png
 ```
 
 Alle analysene kan reproduseres ved å kjøre `python "012 fase 2 - plan/analyse_hoved.py"` og `python "012 fase 2 - plan/scenario_analyse.py"` fra prosjektroten.
+
+## A8 — Lagerstatus fra RELEX (dokumentasjon på at lageret aldri var utsolgt)
+
+Skjermbildet nedenfor er hentet fra REMA 1000s RELEX-grensesnitt og viser lagerstatus, salg og eksisterende prognose for Lasagne Familiepakning ved RD Trondheim gjennom hele analyseperioden (mars 2025 – februar 2026). Skjermbildet er brukt som dokumentasjon på at lagernivået (sort strek) aldri når null – distribusjonssenteret har dermed aldri vært utsolgt på denne varen i perioden, og observerte salgstall kan tolkes som reell utlevert etterspørsel (se kap. 5.3 og kap. 4.5).
+
+<div align="center">
+
+![Vedlegg A8: RELEX-skjermbilde av lagerstatus, salg og prognose](figurer/fig3_lagerstatus.png)
+
+*Vedlegg A8: Skjermbilde fra RELEX-grensesnittet. Varebeholdning (sort strek), faktisk salg (blå strek) og eksisterende RELEX-prognose (grønn strek). Markeringer under x-aksen viser kampanjer (blå) og hendelser (oransje). Kilde: REMA 1000 RELEX-interface, mars 2026.*
+
+</div>

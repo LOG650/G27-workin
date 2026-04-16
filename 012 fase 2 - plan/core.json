@@ -2,7 +2,7 @@
   "project_metadata": {
     "project_id": "LOG650-2026-REMA1000",
     "project_name": "Prognosepresisjon i distribusjonssystemer",
-    "description": "Forskningsprosjekt som undersøker tidsserie-baserte prognosemetoders evne til å predikere daglig etterspørsel for utvalgte produkter ved REMA 1000 Distribusjon Trondheim.",
+    "description": "Forskningsprosjekt som undersøker tidsserie-baserte prognosemetoders evne til å predikere daglig etterspørsel for ett utvalgt produkt ved REMA 1000 Distribusjon Trondheim.",
     "version": "1.1.0",
     "status_date": "2026-03-17"
   },
