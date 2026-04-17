@@ -103,7 +103,9 @@ Etterspørselen i dagligvaremarkedet er sjelden konstant og karakteriseres ofte 
 4.  **Tilfeldig variasjon (Støy):** Uforutsigbare svingninger som ikke kan forklares av de andre komponentene.
 
 I denne studien er **Variasjonskoeffisienten (Coefficient of Variation, CV)** et sentralt mål for å kategorisere etterspørselen. CV defineres som forholdet mellom standardavviket ($\sigma$) og gjennomsnittet ($\mu$):
+
 $$CV = \frac{\sigma}{\mu}$$
+
 En verdi for CV > 1.0 indikerer det som i litteraturen betegnes som **"Lumpy Demand"** (ujevn etterspørsel). Dette er typisk for produkter der etterspørselen er preget av store, sporadiske topper etterfulgt av perioder med lavt eller null salg, noe som gjør tradisjonelle prognosemetoder mindre treffsikre.
 
 ## 3.2 Prognosemetoder for tidsserier
@@ -124,20 +126,25 @@ Prosjektet benytter tre nivåer av modellkompleksitet:
 ## 3.3 Måling av prognosepresisjon
 For å evaluere prognosens kvalitet benyttes fem komplementære feilmål, tolket som avviket mellom prognose ($F_t$) og faktisk etterspørsel ($A_t$):
 
-* **MAE (Mean Absolute Error):** Gjennomsnittlig absoluttfeil i faktiske enheter, enkel å kommunisere operativt.
-    $$MAE = \frac{1}{n} \sum_{t=1}^{n} |A_t - F_t|$$
+**MAE (Mean Absolute Error):** Gjennomsnittlig absoluttfeil i faktiske enheter, enkel å kommunisere operativt.
 
-* **MAPE (Mean Absolute Percentage Error):** Absoluttfeil som prosent av faktisk verdi. Utbredt, men Hyndman og Koehler (2006) advarer mot bruk ved lav etterspørsel – små nevnere gir ekstreme utslag.
-    $$MAPE = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{A_t - F_t}{A_t} \right|$$
+$$MAE = \frac{1}{n} \sum_{t=1}^{n} |A_t - F_t|$$
 
-* **sMAPE (Symmetric MAPE):** Skalainvariant og robust mot lave nevnere. Verdier ligger i intervallet [0, 200 %].
-    $$sMAPE = \frac{100\%}{n} \sum_{t=1}^{n} \frac{2|A_t - F_t|}{|A_t| + |F_t|}$$
+**MAPE (Mean Absolute Percentage Error):** Absoluttfeil som prosent av faktisk verdi. Utbredt, men Hyndman og Koehler (2006) advarer mot bruk ved lav etterspørsel – små nevnere gir ekstreme utslag.
 
-* **WAPE (Weighted Absolute Percentage Error):** Total absoluttfeil vektet med totalvolum. Egnet for volumprioritert logistikk.
-    $$WAPE = 100\% \cdot \frac{\sum_{t=1}^{n} |A_t - F_t|}{\sum_{t=1}^{n} |A_t|}$$
+$$MAPE = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{A_t - F_t}{A_t} \right|$$
 
-* **Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Seiringer et al. (2024) påpeker at systematisk bias har større operasjonell konsekvens enn tilfeldig varians.
-    $$\text{Bias} = \frac{1}{n} \sum_{t=1}^{n} (F_t - A_t)$$
+**sMAPE (Symmetric MAPE):** Skalainvariant og robust mot lave nevnere. Verdier ligger i intervallet [0, 200 %].
+
+$$sMAPE = \frac{100\%}{n} \sum_{t=1}^{n} \frac{2|A_t - F_t|}{|A_t| + |F_t|}$$
+
+**WAPE (Weighted Absolute Percentage Error):** Total absoluttfeil vektet med totalvolum. Egnet for volumprioritert logistikk.
+
+$$WAPE = 100\% \cdot \frac{\sum_{t=1}^{n} |A_t - F_t|}{\sum_{t=1}^{n} |A_t|}$$
+
+**Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Seiringer et al. (2024) påpeker at systematisk bias har større operasjonell konsekvens enn tilfeldig varians.
+
+$$\text{Bias} = \frac{1}{n} \sum_{t=1}^{n} (F_t - A_t)$$
 
 I rapporteringen brukes alle fem for å gi et nyansert bilde. sMAPE og WAPE supplerer MAPE spesielt på lavt volum, der MAPE alene gir misvisende bilder.
 
@@ -180,8 +187,6 @@ Tabell 1 oppsummerer nøkkeltall for virkedagsserien som danner grunnlag for mod
 
 <div align="center">
 
-*Tabell 1: Beskrivende statistikk for Lasagne Familiepakning (virkedager, mars 2025 – feb 2026)*
-
 | Mål | Verdi (stk) |
 | :--- | :--- |
 | Antall virkedager (N) | 260 |
@@ -194,6 +199,8 @@ Tabell 1 oppsummerer nøkkeltall for virkedagsserien som danner grunnlag for mod
 | 90. persentil | 91,1 |
 | 95. persentil | 300,1 |
 | Maksimum (29. okt 2025, pre-Crazy Days) | 2 172 |
+
+*Tabell 1: Beskrivende statistikk for Lasagne Familiepakning (virkedager, mars 2025 – feb 2026)*
 
 </div>
 
@@ -403,8 +410,6 @@ For å svare på problemstillingens delproblem 3 – *i hvilken grad kampanjeakt
 
 <div align="center">
 
-*Tabell 2: MAE (stk) på testsettet per scenario og modell*
-
 | Modell | Scenario 1 (blind) | Scenario 2 (med kampanjeinfo) | Endring |
 | :--- | ---: | ---: | ---: |
 | Seasonal Naïve | 227,12 | 227,12 | 0,0 % |
@@ -413,6 +418,8 @@ For å svare på problemstillingens delproblem 3 – *i hvilken grad kampanjeakt
 | Random Forest | 183,48 | 192,09 | +4,7 % |
 | RF uten lag_1 | 178,99 | **169,11** | −5,5 % |
 | Gradient Boosting | 268,23 | 294,28 | +9,7 % |
+
+*Tabell 2: MAE (stk) på testsettet per scenario og modell*
 
 </div>
 
@@ -431,8 +438,6 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 
 <div align="center">
 
-*Tabell 3: Global evaluering — Scenario 2 (alle testdager)*
-
 | Modell | MAE | MAPE | sMAPE | WAPE | Bias |
 | :--- | ---: | ---: | ---: | ---: | ---: |
 | Seasonal Naive | 227,1 | 1 913 % | 122 % | 129 % | −0,6 |
@@ -444,6 +449,8 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 | Hybrid (kampanje) | 177,7 | 371 % | 159 % | 101 % | −118,7 |
 | **Hybrid (terskel)** | 176,2 | 1 217 % | 144 % | 100 % | **+9,4** |
 
+*Tabell 3: Global evaluering — Scenario 2 (alle testdager)*
+
 </div>
 
 MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+9,4), hvilket er operasjonelt attraktivt.
@@ -452,8 +459,6 @@ MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk v
 Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (> 69,3 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
 
 <div align="center">
-
-*Tabell 4: Segmentert evaluering — MAE og Bias per segment, Scenario 2*
 
 | Segment | Modell | MAE | Bias |
 | :--- | :--- | ---: | ---: |
@@ -470,6 +475,8 @@ Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (>
 | | **RF uten lag_1** | **290,2** | **−70,3** |
 | | Hybrid (terskel) | 305,5 | −85,5 |
 
+*Tabell 4: Segmentert evaluering — MAE og Bias per segment, Scenario 2*
+
 </div>
 
 Analysen avdekker en klart segmentert modellvinner-struktur:
@@ -485,8 +492,6 @@ For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-
 
 <div align="center">
 
-*Tabell 5: Ljung-Box Q-test på testresidualer (10 lags, Scenario 2)*
-
 | Modell | Q-statistikk | p-verdi | Avviser H0 (autokorrelasjon)? |
 | :--- | ---: | ---: | :--- |
 | Seasonal Naive | 63,4 | < 0,001 | Ja (mønster) |
@@ -497,6 +502,8 @@ For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-
 | Gradient Boosting | 30,0 | < 0,001 | Ja (mønster) |
 | Hybrid (kampanje) | 12,9 | 0,231 | Nei (hvit støy) |
 | Hybrid (terskel) | 13,0 | 0,223 | Nei (hvit støy) |
+
+*Tabell 5: Ljung-Box Q-test på testresidualer (10 lags, Scenario 2)*
 
 </div>
 
