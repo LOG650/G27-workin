@@ -287,14 +287,14 @@ Dette kapittelet redegjør for studiens metodiske tilnærming, datagrunnlaget og
 ## 5.1 Metodevalg og forskningsstruktur
 Studien benytter et **kvantitativt forskningsdesign** basert på en case-studie av REMA 1000 Distribusjon Trondheim. Valget av kvantitativ metode er begrunnet i behovet for å analysere store mengder historiske transaksjonsdata for å identifisere mønstre og evaluere numerisk nøyaktighet i prognoser. 
 
-Arbeidet er strukturert som en lineær prosess der målet er å identifisere den mest robuste modellen for å håndtere "Lumpy Demand". Ved å kombinere klassisk statistikk (SARIMA) med maskinlæring (Random Forest), oppnår vi en metodisk triangulering som øker studiens faglige tyngde og gir et mer nyansert bilde av prediksjonsevnen.
+Arbeidet er strukturert som en lineær prosess der målet er å identifisere den mest robuste modellen for å håndtere "Lumpy Demand". Ved å kombinere klassisk statistikk (SARIMA; Box & Jenkins, 1976) med maskinlæring (Random Forest; Breiman, 2001), oppnår vi en metodisk triangulering som øker studiens faglige tyngde og gir et mer nyansert bilde av prediksjonsevnen.
 
 ## 5.2 Den analytiske prosessen
 Analysen er gjennomført i fire hovedfaser ved bruk av **Python 3** og bibliotekene **Pandas**, **Statsmodels** og **Scikit-learn**:
 
 1. **Dataklargjøring (vask):** RELEX-eksporten (bredt format med 365 dagskolonner) pivoteres til langt format og filtreres til 260 virkedager. Rå ERP-uttrekket brukes som kryssjekk (se kap. 4.3).
 2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Dette inkluderer *grid-search* (systematisk rutenettsøk) over (p,d,q)(P,D,Q)_5 for SARIMA (144 kombinasjoner), *feature engineering* (variabelutvikling) og *kryssvalidert hyperparameter-tuning* (3-fold TimeSeriesSplit) for Gradient Boosting.
-3. **Validering:** Modellene testes på det uavhengige testsettet. Residualene evalueres med både visuell ACF-analyse og formell **Ljung-Box-test** (H0: residualer uavhengige). **ADF-test** (Augmented Dickey-Fuller) vurderer stasjonariteten i treningsserien.
+3. **Validering:** Modellene testes på det uavhengige testsettet. Residualene evalueres med både visuell ACF-analyse og formell **Ljung-Box-test** (Ljung & Box, 1978; H0: residualer uavhengige). **ADF-test** (Augmented Dickey-Fuller; Dickey & Fuller, 1979) vurderer stasjonariteten i treningsserien.
 4. **Evaluering:** Modellene sammenlignes med MAE, MAPE, sMAPE, WAPE og Bias, segmentert på normale dager og toppdager. De robuste målene (sMAPE og WAPE) supplerer MAPE for å gi et ærlig bilde ved lavt volum (Hyndman & Koehler, 2006).
 
 ## 5.3 Datagrunnlag, struktur og lagerstatus
@@ -315,7 +315,7 @@ Dataene anses som høyt reliable. De representerer faktiske fysiske bevegelser v
 
 ## 5.5 Oppdeling av data (trening og test)
 For å simulere en reell prognosesituasjon og sikre at vi måler modellenes generaliseringsevne (out-of-sample), er datasettet delt inn slik:
-* **Treningssett:** 1. mars 2025 – 31. desember 2025 (218 virkedager rå, 208 effektivt etter at de 10 første droppes fordi lag- og rolling-features ikke er definert der).
+* **Treningssett:** 1. mars 2025 – 31. desember 2025, 218 virkedager. SARIMA og baseliner (Seasonal Naïve, Holt-Winters) trenes på hele settet. For ML-modeller med lag- og rolling-features (RF, GBM) reduseres effektivt treningssett til 208 dager fordi de 10 første dagene mangler komplette features.
 * **Testsett:** 1. januar 2026 – 28. februar 2026 (42 virkedager).
 
 Splitten tilsvarer ~83/17 % av de tilgjengelige observasjonene. Testperioden inneholder Crazy Days uke 5/2026, noe som gir anledning til å evaluere modellenes evne til å prediktere kampanjeeffekter som ikke overlapper treningssettet fullt ut.
@@ -327,6 +327,28 @@ Vi rapporterer fem komplementære mål:
 * **sMAPE** (symmetric MAPE): skalainvariant og robust mot lave nevnere, verdier i [0, 200 %].
 * **WAPE** (Weighted Absolute Percentage Error): total absoluttfeil vektet med totalt volum, egnet for volumprioritert logistikkbeslutning.
 * **Bias**: gjennomsnittlig signert feil. Positiv verdi = overestimering; negativ = underestimering. Sentralt mål for sikkerhetslagerdimensjonering (Seiringer et al., 2024).
+
+## 5.7 Oppsummering — tekniske nøkkeltall
+Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Tallene gir leseren en kompakt referanse for hva modellene faktisk skal predikere, og hvor stor variasjonen er mellom segmentene.
+
+<div align="center">
+
+| Statistikk | Treningssett (218 dager) | Testsett (42 dager) |
+| :--- | ---: | ---: |
+| Min | 0 | 0 |
+| Maks | 2 172 | 1 378 |
+| Gjennomsnitt | 61,1 | 175,6 |
+| Median | 19,5 | 26,0 |
+| Standardavvik | 239,3 | 320,9 |
+| 90. persentil | 70,6 | 508,8 |
+| Toppdager (>P90 trening) | 22 | 5 |
+| Sum | 13 327 | 7 374 |
+
+</div>
+
+**Tabell 2.** Beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Kilde: `004 data/vasket_salg_daglig.csv`.
+
+Testsettet inneholder Crazy Days uke 5/2026 og har derfor høyere gjennomsnitt og maksverdi relativt til antall dager enn treningssettet. Forskjellen i 90. persentil (70,6 vs 508,8 stk) illustrerer at testperioden er kampanjedrevet og dermed et krevende, men relevant scenario for å måle modellenes generaliseringsevne mot toppdager.
 
 # 6. Modellering
 Dette kapittelet definerer og begrunner modellrammeverket. Modellvalget er et resultat av en iterativ utvalgsprosess basert på etterspørselsdataens struktur: sterk virkedags-sesongvariasjon, kraftige kampanje- og høytidstopper, og 208 treningsobservasjoner.
@@ -627,6 +649,8 @@ Box, G. E. P., & Jenkins, G. M. (1976). *Time series analysis: Forecasting and c
 
 Breiman, L. (2001). Random forests. *Machine Learning*, 45(1), 5-32. https://doi.org/10.1023/A:1010933404324
 
+Dickey, D. A., & Fuller, W. A. (1979). Distribution of the estimators for autoregressive time series with a unit root. *Journal of the American Statistical Association*, 74(366a), 427-431. https://doi.org/10.1080/01621459.1979.10482531
+
 Fildes, R., Goodwin, P., Lawrence, M., & Nikolopoulos, K. (2009). Effective forecasting and judgmental adjustments: an empirical evaluation and strategies for improvement in supply-chain planning. *International Journal of Forecasting*, 25(1), 3-23. https://doi.org/10.1016/j.ijforecast.2008.11.010
 
 Fildes, R., Ma, S., & Kolassa, S. (2022). Retail forecasting: Research and practice. *International Journal of Forecasting*, 38(4), 1269-1295. https://doi.org/10.1016/j.ijforecast.2021.11.004
@@ -636,6 +660,8 @@ Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machi
 Hyndman, R. J., & Athanasopoulos, G. (2021). *Forecasting: Principles and practice* (3. utg.). OTexts. https://otexts.com/fpp3/
 
 Hyndman, R. J., & Koehler, A. B. (2006). Another look at measures of forecast accuracy. *International Journal of Forecasting*, 22(4), 679-688. https://doi.org/10.1016/j.ijforecast.2006.03.001
+
+Ljung, G. M., & Box, G. E. P. (1978). On a measure of lack of fit in time series models. *Biometrika*, 65(2), 297-303. https://doi.org/10.1093/biomet/65.2.297
 
 Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022). The M5 competition: Background, organization, and results. *International Journal of Forecasting*, 38(4), 1325-1346. https://doi.org/10.1016/j.ijforecast.2021.01.005
 
