@@ -163,12 +163,12 @@ I rapporteringen brukes alle fem for å gi et nyansert bilde. sMAPE og WAPE supp
 Dette kapittelet gir en forståelse av den operative konteksten og datagrunnlaget som danner fundamentet for analysen. Formålet er å beskrive beslutningssituasjonen ved REMA 1000 Distribusjon Trondheim og karakterisere etterspørselsmønstrene før selve modelleringen starter.
 
 ## 4.1 REMA 1000 Distribusjon Trondheim og beslutningssituasjonen
-REMA 1000 Distribusjon Trondheim (RDT) fungerer som det sentrale logistikknutepunktet for vareforsyning til butikker i Midt-Norge. Distribusjonssenterets primære oppgave er å sikre effektiv vareflyt fra produsenter til utsalgssteder. Virksomheten er åpen for ekspedisjon fem virkedager i uken (mandag–fredag); helgebestillinger akkumuleres og leveres på påfølgende mandag. Dette forklarer den systematiske mandagseffekten som dokumenteres i kap. 4.4.
+REMA 1000 Distribusjon Trondheim (heretter RD Trondheim) fungerer som det sentrale logistikknutepunktet for vareforsyning til butikker i Midt-Norge. Distribusjonssenterets primære oppgave er å sikre effektiv vareflyt fra produsenter til utsalgssteder. Virksomheten er åpen for ekspedisjon fem virkedager i uken (mandag–fredag); helgebestillinger akkumuleres og leveres på påfølgende mandag. Dette forklarer den systematiske mandagseffekten som dokumenteres i kap. 4.4.
 
 ### Bestillings- og leveranseprosess
-Butikkene legger inn bestillinger via et **automatisk ordreforslagssystem** (AOF, og fra 2026 det nye prognoseverktøyet RELEX). Systemet foreslår ordrekvantum basert på forventet etterspørsel, og butikken godkjenner eller justerer forslaget. Ifølge produkt-kategoriansvarlig (PK, REMA) er det for **tørre og frosne varer praksis at butikkene godkjenner nærmere 100 % av forslagene uten endring**. Dette er særlig relevant for lasagne familiepakning (tørrvare), hvor den operative bestillingskvantiteten derfor i stor grad styres av prognosemodellen. Kvaliteten på prognosen får tilsvarende stor direkte operasjonell betydning.
+Butikkene legger inn bestillinger via et **automatisk ordreforslagssystem** (AOF, og fra 2026 det nye prognoseverktøyet RELEX). Systemet foreslår ordrekvantum basert på forventet etterspørsel, og butikken godkjenner eller justerer forslaget. Ifølge produktkategoriansvarlig (PK, REMA) er det for tørre og frosne varer praksis at butikkene godkjenner nærmere 100 % av forslagene uten endring. Dette er særlig relevant for lasagne familiepakning (tørrvare), hvor den operative bestillingskvantiteten derfor i stor grad styres av prognosemodellen. Kvaliteten på prognosen får tilsvarende stor direkte operasjonell betydning.
 
-For **kampanjevarer** kan ordrer i tillegg "pushes" ut til butikkene fra regionskontor eller REMA sentralt, utenom den ordinære AOF-rytmen. RD Trondheim kan selv selge ut overskudd til rabatterte priser ved for stort kvantum eller kort holdbarhet. Lasagne familiepakning er ikke berørt av de siste mekanismene i vesentlig grad.
+For **kampanjevarer** kan ordrer i tillegg allokeres sentralt og fordeles ut til butikkene fra regionskontor eller REMA sentralt, utenom den ordinære AOF-rytmen. RD Trondheim kan selv selge ut overskudd til rabatterte priser ved for stort kvantum eller kort holdbarhet. Lasagne familiepakning er ikke berørt av de siste mekanismene i vesentlig grad.
 
 ### Beslutningssituasjoner
 Virksomheten står daglig overfor kritiske **beslutningssituasjoner** knyttet til:
@@ -178,7 +178,7 @@ Virksomheten står daglig overfor kritiske **beslutningssituasjoner** knyttet ti
 Uten robuste analyser er disse beslutningene svært vanskelige å ta. Den høye volatiliteten i dagligvaremarkedet gjør at manuelle skjønn ofte fører til systematiske feil (bias). Det er spesielt utfordrende å skille mellom tilfeldig variasjon ("støy") og reelle endringer i etterspørselsnivået før en kampanje inntreffer, noe som skaper et behov for objektive prognosemodeller.
 
 ## 4.2 Produktbeskrivelse: Lasagne Familiepakning
-Produktet som er valgt for denne studien er "Lasagne Familiepakning" (produktkode 885871, leverandør Orkla Foods Norge). Produktet er en tørrvare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn. Likevel er produktet preget av en dynamisk etterspørsel (med stabil grunnlinje og kraftige topper under Crazy Days-kampanjer) som gjør det velegnet for denne analysen. Pallestørrelse i RELEX er 115 stk per D-pakning.
+Produktet som er valgt for denne studien er "Lasagne Familiepakning" (produktkode 885871, leverandør Orkla Foods Norge). Produktet er en tørrvare med lang holdbarhet, noe som i utgangspunktet reduserer risikoen for fysisk matsvinn. Likevel er produktet preget av en dynamisk etterspørsel (med stabil grunnlinje og kraftige topper under Crazy Days-kampanjer) som gjør det velegnet for denne analysen.
 
 ## 4.3 Beskrivelse av datagrunnlaget
 Datamaterialet er hentet fra REMA 1000s prognoseverktøy RELEX og representerer daglig utlevert volum fra distribusjonssenteret til butikkene.
@@ -186,7 +186,7 @@ Datamaterialet er hentet fra REMA 1000s prognoseverktøy RELEX og representerer 
 * **Kilde:** RELEX Solutions-eksport, daglig aggregert per lokasjon og produkt.
 * **Datatype:** Tidsseriedata på dagsnivå, forhåndsaggregert til RD Trondheim + Lasagne Familiepakning.
 * **Periode:** 1. mars 2025 til 28. februar 2026 (365 kalenderdager).
-* **Variabel:** `Salg (stk)` per dag, tolket som utlevert volum.
+* **Variabel:** `Salg (stk)` per dag, dvs. volum utlevert fra distribusjonssenteret til REMA-butikkene (ikke butikkenes salg til sluttkunde).
 
 Distribusjonssenteret ekspederer ikke i helgene, og RELEX rapporterer derfor systematisk null i lør/søn-kolonnene. For modelleringsformål filtrerer vi bort helgedagene og arbeider videre med kun de 260 virkedagene (52 × 5 dager). Dette gir en ren, sammenhengende virkedagssyklus som er kompatibel med sesongmessig modellering med periode s=5 (se kap. 6).
 
@@ -240,7 +240,9 @@ Nivået ligger stabilt lavt i normalperioder, men brytes av kortsiktige og kraft
 
 Mandager har det desidert høyeste gjennomsnittet (113,6 stk), etterfulgt av tirsdag (97,3), onsdag (82,1), torsdag (67,4) og fredag (37,6). Den fallende profilen gjennom uka skyldes at helgebestillinger akkumuleres og ekspederes på mandag, slik at mandag i praksis rommer tre dagers utleveringsbehov, mens fredagen er lavest fordi butikkene unngår bestillinger de ikke rekker å motta før helgen. Denne systematiske variasjonen er en kritisk innsikt som modellene i kap. 6 må kunne fange opp.
 
-Det er viktig å skille mellom **bestillingsdato** (når butikken oppretter ordren) og **plukkdato/utleveringsdato** (når varene faktisk går ut fra distribusjonssenteret). Figur 2 viser plukkdato; det er denne serien modellene predikerer fordi den bestemmer plukk- og pakkekapasiteten ved DC. Utleveringer skjer så å si utelukkende på virkedager. Noen få lørdags- og søndagsutleveringer forekommer gjennom året, typisk i tilknytning til høytider som påske, og er derfor holdt utenfor figuren. Bestillinger registreres derimot hele uka, også lørdag og søndag, og har et helt annet ukedagsmønster. Dette synliggjøres i Figur 3.
+### Bestillingsdato vs plukkdato
+
+Det er viktig å skille mellom **bestillingsdato** (når butikken oppretter ordren) og **plukkdato/utleveringsdato** (når varene faktisk går ut fra distribusjonssenteret). Figur 2 viser plukkdato; det er denne serien modellene predikerer fordi den bestemmer plukk- og pakkekapasiteten ved distribusjonssenteret. Utleveringer skjer så å si utelukkende på virkedager. Noen få lørdags- og søndagsutleveringer forekommer gjennom året, typisk i tilknytning til høytider som påske, og er derfor holdt utenfor figuren. Bestillinger registreres derimot hele uka, også lørdag og søndag, og har et helt annet ukedagsmønster. Dette synliggjøres i Figur 3.
 
 <div align="center">
 
@@ -250,7 +252,7 @@ Det er viktig å skille mellom **bestillingsdato** (når butikken oppretter ordr
 
 </div>
 
-Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3). Lørdag (1,6) og søndag (6,1) er marginale. Onsdagstoppen reflekterer at butikkene legger inn hovedtyngden av ukens ordrer midt i uka, og at disse plukkes på torsdag/fredag og delvis på mandag påfølgende uke. Bestilling- og utleveringsprofilene er altså faseforskjøvet: bestillingssignalet kommer onsdag, kapasitetsbehovet på DC inntreffer mandag. Totalt bestilt i perioden er 20 934 stk, mot 20 697 stk faktisk utlevert, et avvik på 1,1 % som skyldes justering mellom opprinnelig bestilt og faktisk plukket antall.
+Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3). Lørdag (1,6) og søndag (6,1) er marginale. Onsdagstoppen reflekterer at butikkene legger inn hovedtyngden av ukens ordrer midt i uka, og at disse plukkes på torsdag/fredag og delvis på mandag påfølgende uke. Bestilling- og utleveringsprofilene er altså faseforskjøvet: bestillingssignalet kommer onsdag, kapasitetsbehovet på distribusjonssenteret inntreffer mandag. Totalt bestilt i perioden er 20 934 stk, mot 20 697 stk faktisk utlevert, et avvik på 1,1 % av bestilt volum som skyldes justering mellom opprinnelig bestilt og faktisk plukket antall (jf. `Justert antall` i 4.3).
 
 ## 4.5 Kampanjemekanikk og salgstopper
 To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025 (3.–9. november) og uke 5/2026 (26. januar–1. februar). Figur 4 viser ukentlig utlevert volum gjennom hele analyseperioden, med kampanje- og hendelsesmarkeringer.
@@ -265,11 +267,11 @@ To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025 (3.–9. 
 
 Det mest karakteristiske mønsteret er at **salgstoppen inntreffer i uken før selve kampanjen**, ikke under kampanjen. For Crazy Days høst ligger uke 44 (27.–30. oktober) på 7 131 stk totalt, med dagsverdier 1 082–2 172 stk og maksimum onsdag 29. oktober. Selve kampanjeuken 45 har bare 504 stk. For Crazy Days vinter er bildet todelt: kampanjeuken (uke 5) ligger på 2 140 stk, mens uken etter (uke 6, 2.–6. februar) topper seg på 4 180 stk med dagsverdier opp mot 1 378 stk.
 
-Dette reflekterer logistikken i distribusjonskjeden: butikkene legger inn kampanjeordrer i forkant for å ha varer i butikk ved kampanjestart, og DC plukker og ekspederer disse ordrene noen dager før kampanjen begynner. I praksis er det derfor **pre-campaign stocking** som er driveren bak de største utleveringsvolumene, ikke kampanjeuken i seg selv. For prognosemodellering innebærer dette at kampanjeflagget må være aktivt i uken(e) før selve kampanjeperioden, ikke bare under den (se kap. 6.3).
+Dette reflekterer logistikken i distribusjonskjeden: butikkene legger inn kampanjeordrer i forkant for å ha varer i butikk ved kampanjestart, og distribusjonssenteret plukker og ekspederer disse ordrene noen dager før kampanjen begynner. I praksis er det derfor **pre-campaign stocking** som er driveren bak de største utleveringsvolumene, ikke kampanjeuken i seg selv. For prognosemodellering innebærer dette at kampanjeflagget må være aktivt i uken(e) før selve kampanjeperioden, ikke bare under den (se kap. 6.3).
 
-I motsetning til det man kunne forvente, viser dataene **ingen julespike**. Dagsverdiene 22.–26. desember 2025 er 37, 18, 0, 0 og 0 stk, og uke 52 har totalt kun 55 stk. Dette skyldes trolig at DC stenger på helligdagene og at butikkene dekker julehandelen gjennom ekstraordinære leveranser i tidligere uker. Heller ikke påske (uke 16) eller skolestart (uke 33) gir noen tydelig salgstopp i data, selv om de er merket i REMAs hendelseskalender.
+I motsetning til det man kunne forvente, viser dataene **ingen julespike**. Dagsverdiene 22.–26. desember 2025 er 37, 18, 0, 0 og 0 stk, og uke 52 har totalt kun 55 stk. Dette skyldes trolig at distribusjonssenteret stenger på helligdagene og at butikkene dekker julehandelen gjennom ekstraordinære leveranser i tidligere uker. Heller ikke påske (uke 16) eller skolestart (uke 33) gir noen tydelig salgstopp i data, selv om de er merket i REMAs hendelseskalender.
 
-De observerte toppene reflekterer **reell, utlevert etterspørsel**, og inneholder ikke noe kapasitetstak ("Censored Demand"). Ifølge PK hos REMA har distribusjonslageret aldri vært utsolgt i perioden (se dokumentasjon i Vedlegg A8), og det er ingen "flate platåer" i datasettet som indikerer logistisk avskjæring. Volumet under Crazy Days styres i praksis av kombinasjonen butikkbestillinger (via AOF/RELEX) og sentralt pushet kampanjeallokering, og kan derfor variere kraftig fra én kampanje til en annen.
+De observerte toppene reflekterer **reell, utlevert etterspørsel**, og inneholder ikke noe kapasitetstak ("Censored Demand"). Ifølge PK hos REMA har distribusjonslageret aldri vært utsolgt i perioden (se dokumentasjon i Vedlegg A8), og det er ingen "flate platåer" i datasettet som indikerer logistisk avskjæring. Volumet under Crazy Days styres i praksis av kombinasjonen butikkbestillinger (via AOF/RELEX) og sentralt allokert kampanjevolum, og kan derfor variere kraftig fra én kampanje til en annen.
 
 ## 4.6 Konsekvenser og behov for modeller
 Mangelen på presise prognoser har direkte operative konsekvenser for REMA 1000:
@@ -277,7 +279,7 @@ Mangelen på presise prognoser har direkte operative konsekvenser for REMA 1000:
 * **Lagerbinding:** Ved overestimering øker lagerkostnadene og kapitalbindingen på distribusjonssenteret.
 * **Uforutsigbarhet:** Brå topper skaper press på transportkapasitet og bemanning.
 
-Siden butikkenes ordrer godkjennes med ~100 % aksept for tørrvarer, er prognosens kvalitet nærmest direkte bestemmende for bestilt volum. En modell som både håndterer den stabile virkedagssyklusen og de kraftige kampanje-/høytidstoppene, er derfor en konkret driver for operasjonell effektivitet. Dette danner grunnlaget for modellvalget i kap. 6.
+Siden butikkenes ordrer godkjennes med ~100 % aksept for tørrvarer, er prognosens kvalitet nærmest direkte bestemmende for bestilt volum. En modell som både håndterer den stabile virkedagssyklusen og de kraftige kampanje-/høytidstoppene, er derfor en konkret driver for operasjonell effektivitet. Dette danner grunnlaget for metodevalget (kap. 5) og modellvalget (kap. 6).
 
 # 5. Metode og data
 Dette kapittelet redegjør for studiens metodiske tilnærming, datagrunnlaget og den trinnvise prosessen som er benyttet for å besvare problemstillingen. Formålet er å sikre at analysen er transparent og etterprøvbar.
