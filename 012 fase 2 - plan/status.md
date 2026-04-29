@@ -177,13 +177,13 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 
 1. `schedule.json`, `wbs.md` og `risk.json` synkronisert til 2026-04-16 med arbeidskopien.
 2. Rapportens datering er 2026-04-15 — oppdateres ved ferdigstillelse i M-04/M-06.
-3. `requirements.txt` mangler fortsatt i repo-rot — planlagt opprettet før peer review (ref. R-010).
+3. `requirements.txt` opprettet i repo-rot 2026-04-18 med pinned versjoner (pandas 3.0.1, numpy 2.4.3, matplotlib 3.10.8, scikit-learn 1.8.0, statsmodels 0.14.6) — R-010 lukket.
 
 ## Viktigste risikoer (oppdatert 2026-04-16)
 
 1. **R-004 Tidsnød i sluttfasen (Lav):** Prosjektet ligger ~32 dager foran baseline for M-03. Rapporten er ~90 % ferdig, og peer review M-05 er 15 dager unna. *Tiltak:* Holde tempo i ACT-09 og bruke bufferen til kvalitetssikring. Residualrisiko redusert fra medium til lav.
 2. **R-005 Redusert teamkapasitet (Lav, åpen):** Ingen fravær rapportert. Følges opp løpende via Git-repo-synkronisering.
-3. **R-010 Etterprøvbarhet (Lav, åpen):** Kampanjedata eksternalisert og vedlegg utfylt. Gjenstår: opprette `requirements.txt` med pandas, statsmodels, scikit-learn, matplotlib.
+3. **R-010 Etterprøvbarhet (Lukket 2026-04-18):** Kampanjedata eksternalisert, vedlegg utfylt og `requirements.txt` opprettet i repo-rot med pinned versjoner.
 4. **R-001 Datakvalitet (Lukket 2026-04-15):** Undertelling i `vask_data.py` korrigert via RELEX-pipen.
 5. **R-002 Forsinket datatilgang (Lukket):** Alle data mottatt uten konsekvens.
 6. **R-003 Modellkonvergens (Lukket):** Åtte modeller estimert uten konvergensproblemer.
