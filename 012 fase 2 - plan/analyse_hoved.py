@@ -58,7 +58,10 @@ def main() -> None:
 
     train = df_clean[df_clean.index < SPLITT_DATO]
     test = df_clean[df_clean.index >= SPLITT_DATO].copy()
-    threshold_top = train['faktisk_ettersporsel'].quantile(KVANTIL_TOPP)
+    # P90 beregnes på det fulle treningssettet (218 virkedager), ikke det
+    # padding-reduserte ML-settet (208 dager), slik at terskelen er felles for
+    # alle modeller og uavhengig av hvilke features ML-modellene krever.
+    threshold_top = df[df.index < SPLITT_DATO]['faktisk_ettersporsel'].quantile(KVANTIL_TOPP)
 
     exog_cols = ['is_crazy_days', 'is_event']
     rf_features = (
