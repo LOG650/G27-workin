@@ -93,7 +93,7 @@ I tillegg til de statistiske modellene diskuterer Fildes et al. (2009) rollen ti
 ## 2.3 Evaluering og logistisk verdi
 Valg av feilmål er kritisk for å forstå modellens faktiske ytelse. Hyndman og Koehler (2006) kritiserer utbredt bruk av MAPE, spesielt i situasjoner med lav etterspørsel, og foreslår mer robuste mål som MAE for å gi et mer pålitelig bilde av prognosefeilen.
 
-Videre knytter Syntetos et al. (2009) prognosepresisjon direkte til operasjonell logistikk ved å vise hvordan nøyaktige prognoser er en forutsetning for effektiv lagerstyring. Denne sammenhengen utdypes i nyere forskning av Seiringer et al. (2024), som analyserer hvordan ulike typer prognosefeil og bias direkte påvirker dimensjoneringen av sikkerhetslager i forsyningskjeder. De påpeker at systematiske feil (bias) har en mer kritisk innvirkning på lagerbinding og kostnader enn tilfeldige avvik. Ved å forbedre presisjonen i distribusjonsleddet kan man redusere både lagerkostnader og risikoen for leveringssvikt (stock-outs), noe som utgjør den praktiske verdien av dette prosjektet for REMA 1000.
+Videre knytter Syntetos et al. (2009) prognosepresisjon direkte til operasjonell logistikk ved å vise hvordan nøyaktige prognoser er en forutsetning for effektiv lagerstyring. Denne sammenhengen utdypes i nyere forskning av Seiringer et al. (2022), som analyserer hvordan ulike typer prognosefeil og bias direkte påvirker dimensjoneringen av sikkerhetslager i forsyningskjeder. De påpeker at systematiske feil (bias) har en mer kritisk innvirkning på lagerbinding og kostnader enn tilfeldige avvik. Ved å forbedre presisjonen i distribusjonsleddet kan man redusere både lagerkostnader og risikoen for leveringssvikt (stock-outs), noe som utgjør den praktiske verdien av dette prosjektet for REMA 1000.
 
 Som metodisk støtte for valg, estimering og evaluering av tidsseriemodeller bygger denne rapporten på Hyndman og Athanasopoulos (2021), som gir en moderne lærebok-syntese der ETS-, ARIMA- og hybridmetoder presenteres innenfor et felles statistisk rammeverk.
 
@@ -153,7 +153,7 @@ $$sMAPE = \frac{100\%}{n} \sum_{t=1}^{n} \frac{2|A_t - F_t|}{|A_t| + |F_t|}$$
 
 $$WAPE = 100\% \cdot \frac{\sum_{t=1}^{n} |A_t - F_t|}{\sum_{t=1}^{n} |A_t|}$$
 
-**Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Seiringer et al. (2024) påpeker at systematisk bias har større operasjonell konsekvens enn tilfeldig varians.
+**Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Seiringer et al. (2022) påpeker at systematisk bias har større operasjonell konsekvens enn tilfeldig varians.
 
 $$\text{Bias} = \frac{1}{n} \sum_{t=1}^{n} (F_t - A_t)$$
 
@@ -305,7 +305,7 @@ Studien benytter et **kvantitativt forskningsdesign** basert på en case-studie 
 Arbeidet er strukturert som en lineær prosess der målet er å identifisere den mest robuste modellen for å håndtere "Lumpy Demand". Ved å kombinere klassisk statistikk (SARIMA; Box & Jenkins, 1976) med maskinlæring (Random Forest; Breiman, 2001), oppnår vi en metodisk triangulering som øker studiens faglige tyngde og gir et mer nyansert bilde av prediksjonsevnen.
 
 ## 5.2 Den analytiske prosessen
-Analysen er gjennomført i fire hovedfaser ved bruk av **Python 3** og bibliotekene **Pandas**, **Statsmodels** og **Scikit-learn**:
+Analysen er gjennomført i fire hovedfaser ved bruk av Python 3 og bibliotekene Pandas (McKinney, 2010), Statsmodels (Seabold & Perktold, 2010) og Scikit-learn (Pedregosa et al., 2011):
 
 1. **Dataklargjøring (vask):** RELEX-eksporten (bredt format med 365 dagskolonner) pivoteres til langt format og filtreres til 260 virkedager. Rå ERP-uttrekket brukes som kryssjekk (se kap. 4.3).
 2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Dette inkluderer *grid-search* (systematisk rutenettsøk) over (p,d,q)(P,D,Q)_5 for SARIMA (144 kombinasjoner), *feature engineering* (variabelutvikling) og *kryssvalidert hyperparameter-tuning* (3-fold TimeSeriesSplit) for Gradient Boosting.
@@ -341,7 +341,7 @@ Vi rapporterer fem komplementære mål:
 * **MAPE** (Mean Absolute Percentage Error): rapportert av tradisjon, men tolkes med forbehold. Dager med svært lavt volum gjør MAPE ustabil.
 * **sMAPE** (symmetric MAPE): skalainvariant og robust mot lave nevnere, verdier i [0, 200 %].
 * **WAPE** (Weighted Absolute Percentage Error): total absoluttfeil vektet med totalt volum, egnet for volumprioritert logistikkbeslutning.
-* **Bias**: gjennomsnittlig signert feil. Positiv verdi = overestimering; negativ = underestimering. Sentralt mål for sikkerhetslagerdimensjonering (Seiringer et al., 2024).
+* **Bias**: gjennomsnittlig signert feil. Positiv verdi = overestimering; negativ = underestimering. Sentralt mål for sikkerhetslagerdimensjonering (Seiringer et al., 2022).
 
 ## 5.7 Oppsummering — tekniske nøkkeltall
 Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Tallene gir leseren en kompakt referanse for hva modellene faktisk skal predikere, og hvor stor variasjonen er mellom segmentene.
@@ -450,7 +450,7 @@ Gitt den ekstreme forskjellen mellom rutine- og kampanjedager evalueres modellen
 ## 7.4 Validering: residualdiagnostikk
 For å validere at modellene har ekstrahert all systematisk informasjon fra datasettet, evalueres residualene på to komplementære måter i tråd med standard prognose-protokoll (Hyndman & Athanasopoulos, 2021). Den ene er en visuell ACF-inspeksjon, der residualer som ligger innenfor konfidensintervallet indikerer hvit støy, og selve plottet presenteres sammen med resultatene i kap. 8.3 (Figur 6). Den andre er Ljung-Box Q-testen (Ljung & Box, 1978) på ti etterslep (lags) i residualene, en formell test der nullhypotesen er at residualene er uavhengige; en p-verdi under 0,05 fører til at nullhypotesen forkastes og indikerer at residualene fortsatt har mønster.
 
-Som del av valideringsprotokollen inngår også systematisk bias per segment, som avdekker i hvilken grad en modell konsekvent over- eller underestimerer. Selve bias-tallene er presentert i kap. 8.3 sammen med MAE og MAPE, mens den prinsipielle begrunnelsen for å inkludere bias som validerings­indikator hører hjemme her: bias-skjevhet har direkte operasjonelle konsekvenser for sikkerhetslagerdimensjonering og påliteligheten i transportplanlegging (Seiringer et al., 2024), og en modell med lav MAE men stor systematisk bias er mindre operasjonelt brukbar enn en modell med moderat MAE og balansert bias.
+Som del av valideringsprotokollen inngår også systematisk bias per segment, som avdekker i hvilken grad en modell konsekvent over- eller underestimerer. Selve bias-tallene er presentert i kap. 8.3 sammen med MAE og MAPE, mens den prinsipielle begrunnelsen for å inkludere bias som validerings­indikator hører hjemme her: bias-skjevhet har direkte operasjonelle konsekvenser for sikkerhetslagerdimensjonering og påliteligheten i transportplanlegging (Seiringer et al., 2022), og en modell med lav MAE men stor systematisk bias er mindre operasjonelt brukbar enn en modell med moderat MAE og balansert bias.
 
 # 8. Resultater
 Dette kapittelet presenterer numeriske funn fra evalueringen av prognosemodellene på testsettet (januar–februar 2026, 42 virkedager). Resultatene er strukturert i fire deler: (8.1) sammenligning av Scenario 1 vs Scenario 2, (8.2) global modellytelse, (8.3) segmentert resultatanalyse, og (8.4) residualdiagnostikk.
@@ -546,7 +546,7 @@ For å vise SARIMAs ulike respons på kampanjeinformasjon i de to segmentene, sa
 
 Analysen avdekker en klart segmentert modellvinner-struktur. På normale dager er SARIMA best (MAE 29,4); kampanjeinformasjon reduserer feilen fra 46,0 (Scenario 1) til 29,4 (Scenario 2), en forbedring på 36 %, mens samme informasjon gir en svak forverring på toppdager (+7 %). På toppdager er RF uten lag_1 best (MAE 290,2), tett fulgt av Hybrid (terskel) (305,5), som har lavere absolutt bias.
 
-Andre modeller (Holt-Winters, full RF, SARIMA) har systematisk stor negativ eller positiv bias på toppdager, hvilket gir dem dårligere operasjonell robusthet. Fordi bias-skjevhet er mer kritisk for sikkerhetslagerdimensjonering enn tilfeldige avvik (Seiringer et al., 2024), er hybridens balanserte bias (−85 vs SARIMAs −432) et viktig resultat.
+Andre modeller (Holt-Winters, full RF, SARIMA) har systematisk stor negativ eller positiv bias på toppdager, hvilket gir dem dårligere operasjonell robusthet. Fordi bias-skjevhet er mer kritisk for sikkerhetslagerdimensjonering enn tilfeldige avvik (Seiringer et al., 2022), er hybridens balanserte bias (−85 vs SARIMAs −432) et viktig resultat.
 
 En slående observasjon er at både Holt-Winters og SARIMA har |Bias| = MAE på toppdager (487,2 og 432,3). Når Bias og MAE er like i absolutt verdi, må hver enkelt residual ha samme fortegn, det vil si at alle 15 toppdager undervurderes systematisk. Dette er ikke en beregningsartefakt, men et strukturelt kjennetegn ved klassisk sesongutjevning: modellene glatter mot historisk gjennomsnitt og kan ikke produsere de ekstreme nivåene kampanjer krever. Funnet underbygger at tidsseriemodeller alene er utilstrekkelige for kampanjevolum og motiverer hybridroutingen i kap. 9.4.
 
@@ -623,7 +623,7 @@ Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 ale
 
 Avveiningen er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir falske positive routinger der RF selv overpredikerer. Dette er en klassisk klassifikator-avveining: terskelbasert routing forbedrer toppdager på bekostning av noen normale dager.
 
-For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+6,6) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
+For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+6,6) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2022).
 
 ## 9.5 Praktiske implikasjoner for REMA 1000
 Siden butikkenes ordrer for tørrvarer godkjennes med nær 100 % aksept av AOF/RELEX-forslaget (kap. 4.1), er prognosens kvalitet direkte styrende for bestilt volum. De observerte MAE-tallene kan derfor oversettes direkte til operasjonelle konsekvenser:
@@ -692,7 +692,7 @@ Ljung, G. M., & Box, G. E. P. (1978). On a measure of lack of fit in time series
 
 Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022). The M5 competition: Background, organization, and results. *International Journal of Forecasting*, 38(4), 1325-1346. https://doi.org/10.1016/j.ijforecast.2021.01.005
 
-Seiringer, W., Brockmann, F., Altendorfer, K., & Felberbauer, T. (2024). Influence of Forecast Error and Forecast Bias on Safety Stock on a MRP System with Rolling Horizon Forecast Updates. *Proceedings of the International Conference on Production Research*.
+Seiringer, W., Brockmann, F., Altendorfer, K., & Felberbauer, T. (2022). Influence of Forecast Error and Forecast Bias on Safety Stock on a MRP System with Rolling Horizon Forecast Updates. I *Operations Research Proceedings 2021* (kap. 62). Springer. https://doi.org/10.1007/978-3-031-08623-6_62
 
 Syntetos, A. A., & Boylan, J. E. (2005). The accuracy of intermittent demand estimates. *International Journal of Forecasting*, 21(2), 303-314. https://doi.org/10.1016/j.ijforecast.2004.10.001
 
@@ -725,21 +725,21 @@ Augmented Dickey-Fuller-test (H0: enhetsrot, ikke-stasjonær). p < 0,05 → avvi
 Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering. AIC-minimerende grid-søk (kap. 7.2) valgte likevel en modell med både vanlig og sesongdifferensiering ($d=1, D=1$); risikoen for overdifferensiering på en allerede stasjonær serie er drøftet i kap. 9.6.
 
 ## A2 — SARIMA grid-search (utdrag: topp 5 og valgt modell)
-144 kombinasjoner av $(p,d,q)(P,D,Q)_5$ ble estimert på treningssettet med eksogene regressorer (`is_crazy_days`, `is_event`). Utvalg er minst AIC blant modeller som konvergerte.
+144 kombinasjoner av $(p,d,q)(P,D,Q)_5$ ble estimert på treningssettet med eksogene regressorer (`is_crazy_days`, `is_event`). Utvalg er minst AIC blant modeller som konvergerte (omtalt i kap. 7.2).
 
 <div align="center">
 
 | Rang | order | seasonal_order | AIC | BIC | Konvergerte |
 | ---: | :--- | :--- | ---: | ---: | :--- |
-| 1 (valgt) | (0,1,2) | (0,1,1,5) | 2 510,06 | 2 529,67 | Ja |
-| 2 | (0,1,2) | (1,1,1,5) | 2 511,96 | 2 534,83 | Ja |
-| 3 | (1,1,2) | (1,1,1,5) | 2 533,97 | 2 560,12 | Ja |
-| 4 | (1,0,2) | (0,0,1,5) | 2 537,94 | 2 561,02 | Ja |
-| 5 | (1,0,2) | (1,1,0,5) | 2 551,51 | 2 574,49 | Ja |
+| 1 (valgt) | (0,1,2) | (0,1,1)_5 | 2 510,06 | 2 529,67 | Ja |
+| 2 | (0,1,2) | (1,1,1)_5 | 2 511,96 | 2 534,83 | Ja |
+| 3 | (1,1,2) | (1,1,1)_5 | 2 533,97 | 2 560,12 | Ja |
+| 4 | (1,0,2) | (0,0,1)_5 | 2 537,94 | 2 561,02 | Ja |
+| 5 | (1,0,2) | (1,1,0)_5 | 2 551,51 | 2 574,49 | Ja |
 
 </div>
 
-Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original konfigurasjon (1,1,1)(1,1,1)_7 (AIC 2 558): 48 AIC-poeng. Merk: Flere ordner med numerisk lavere AIC (helt ned mot 2 480) hadde konvergensproblemer og ble derfor ikke valgt.
+Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original konfigurasjon $(1,1,1)(1,1,1)_7$ (AIC 2 558): 48 AIC-poeng. Merk: Flere ordner med numerisk lavere AIC (helt ned mot 2 481, jf. kap. 7.2) hadde konvergensproblemer og ble derfor ikke valgt. AIC-verdiene over er vist med to desimaler for presisjon; hovedteksten i kap. 7.2 bruker avrundede verdier (2 510, 2 558, 2 481) for lesbarhet.
 
 ## A3 — Gradient Boosting hyperparameter-tuning
 3-fold TimeSeriesSplit-kryssvalidering, scoring=neg_mean_absolute_error. 16 kombinasjoner.
@@ -750,9 +750,11 @@ Fullstendig grid i `004 data/sarima_diagnostikk.csv`. Forbedring mot original ko
 - `n_estimators` = 100
 - `subsample` = 1,0
 
-Fullstendig grid i `004 data/gbm_tuning.csv`. Tunet GBM gir ~30 % bedre MAE enn utunet standard.
+Fullstendig grid i `004 data/gbm_tuning.csv`. Tunet GBM gir ~30 % bedre MAE enn utunet standard (Sklearn-defaults: `learning_rate=0,1`, `max_depth=3`, `n_estimators=100`, jf. kap. 7.2).
 
 ## A4 — Feature importance i Random Forest-modellene
+
+Tabellen oppsummerer feature importance for de tre tre-baserte modellene; lag_1-dominansen i full RF-variant (84 %) og redistribusjonen i RF uten lag_1-varianten er omtalt i kap. 7.2 og kap. 9.3.
 
 <div align="center">
 
@@ -786,6 +788,8 @@ Fullstendig tabell i `004 data/rf_feature_importance.csv`.
 
 </div>
 
+`random_state=42` sikrer reproduserbarhet av tilfeldig utvalg i bootstrap og feature subsampling, slik at modellen gir identiske resultater ved gjentatte kjøringer.
+
 ## A6 — Kampanjekalender
 Lagret i `004 data/kampanjekalender.csv`, lest inn ved modellkjøring.
 
@@ -815,7 +819,7 @@ G27-workin/
 │   ├── adf_test.csv                       — stasjonaritetstest (A1)
 │   ├── residual_diagnostikk.csv           — Ljung-Box-test (Tabell 5)
 │   ├── modell_sammendrag.csv              — segmenterte feilmål
-│   ├── scenario_sammendrag.csv            — Scenario 1 vs 2 (Tabell 2)
+│   ├── scenario_sammendrag.csv            — Scenario 1 vs 2, alle modeller og segmenter (kilde for Tabell 2, 3, 4 og 4b)
 │   ├── analyse_resultater_stram.csv       — per-dag prediksjoner
 │   └── scenario_resultater.csv            — per-dag prediksjoner per scenario
 ├── 012 fase 2 - plan/
@@ -829,7 +833,7 @@ G27-workin/
     ├── fig2_ukedag.png
     ├── fig3_bestilling_ukedag.png
     ├── fig4_kampanjeoversikt.png
-    ├── fig3_lagerstatus.png            (RELEX-skjermbilde, Vedlegg A8)
+    ├── fig_a8_lagerstatus.png         (RELEX-skjermbilde, Vedlegg A8)
     ├── fig_scenario_sammenligning.png
     └── fig6_residual_acf.png
 ```
@@ -842,7 +846,7 @@ Skjermbildet nedenfor er hentet fra REMA 1000s RELEX-grensesnitt og viser lagers
 
 <div align="center">
 
-![Vedlegg A8: RELEX-skjermbilde av lagerstatus, salg og prognose](figurer/fig3_lagerstatus.png)
+![Vedlegg A8: RELEX-skjermbilde av lagerstatus, salg og prognose](figurer/fig_a8_lagerstatus.png)
 
 *Vedlegg A8: Skjermbilde fra RELEX-grensesnittet. Varebeholdning (sort strek), faktisk salg (blå strek) og eksisterende RELEX-prognose (grønn strek). Markeringer under x-aksen viser kampanjer (blå) og hendelser (oransje). Kilde: REMA 1000 RELEX-interface, mars 2026.*
 
