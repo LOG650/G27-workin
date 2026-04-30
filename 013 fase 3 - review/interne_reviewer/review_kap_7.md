@@ -12,7 +12,7 @@
 | Punkt | Status |
 |---|---|
 | Kap. 7 vurdert | Ja |
-| Tiltak besluttet | M1 (208/218) lukket 2026-04-30 som del av felles tallrydding. Øvrige tiltak åpne. |
+| Tiltak besluttet | Alle prioritet 1 og 2-tiltak lukket 2026-04-30. Bonus-rettelse av faktisk feil i ACF-omtale i 7.1 (sterke topper ved lag 5/10/15 stemte ikke med dataene; rå serie er AR(1)-dominert). |
 | Forholdet til kap. 6-revisjon | Inkonsistens 208/218 nå rettet i 7.3; P90-grunnlag flyttet til 218 (terskel 70,6) for konsistens på tvers av rapporten. |
 
 **Hovedfunn:** Kapittelet er teknisk dekkende og dokumenterer alle fire delkapitler i tråd med CLAUDE.md §11 (stasjonaritet, parametersøk, estimering/segmentering, residualdiagnostikk). Tre forhold trekker likevel kvaliteten ned: (1) en **faktisk inkonsistens** med kap. 5.5 og revidert kap. 6 om treningssettets størrelse (208 vs 218 virkedager), (2) **manglende in-tekst-sitater** for ADF-test (Dickey & Fuller, 1979), Ljung-Box-test (Ljung & Box, 1978) og ARIMA-rammeverket (Box & Jenkins, 1976) der testene faktisk anvendes, og (3) at **ACF-plottet av treningsserien** omtalt i 7.1 ikke er vist som figur — kun ACF-plottet av residualene (Figur 6) eksisterer, og det ligger først i kap. 8.3.
@@ -92,29 +92,29 @@
 ## 3. Identifiserte svakheter (med tiltakskoder)
 
 ### Faglige
-- **F1:** L. 418 — ADF-testen mangler in-tekst-sitering (Dickey & Fuller, 1979) der testen anvendes.
-- **F2:** L. 442 — Ljung-Box-testen mangler in-tekst-sitering (Ljung & Box, 1978) der testen anvendes.
-- **F3:** L. 427 — «Ca. 30 % bedre MAE enn utunet standard-konfigurasjon» mangler tabell- eller vedleggsreferanse og definisjon av «utunet».
-- **F4:** L. 423 — MLE-konvergensvurdering er udokumentert pedagogisk; én setning om hvorfor ikke-konvergens kvalifiserer for kassasjon mangler.
-- **F5:** L. 444 — Hyndman & Athanasopoulos (2021) som residualdiagnostikk-referanse mangler.
+- **F1:** L. 418 — ADF-testen mangler in-tekst-sitering (Dickey & Fuller, 1979) der testen anvendes. **Status: lukket 2026-04-30.**
+- **F2:** L. 442 — Ljung-Box-testen mangler in-tekst-sitering (Ljung & Box, 1978) der testen anvendes. **Status: lukket 2026-04-30.**
+- **F3:** L. 427 — «Ca. 30 % bedre MAE enn utunet standard-konfigurasjon» mangler tabell- eller vedleggsreferanse og definisjon av «utunet». **Status: lukket 2026-04-30** — utunet referanse definert som Sklearn-defaults (`learning_rate=0,1`, `max_depth=3`, `n_estimators=100`) og henvisning til vedlegg A3 lagt til.
+- **F4:** L. 423 — MLE-konvergensvurdering er udokumentert pedagogisk; én setning om hvorfor ikke-konvergens kvalifiserer for kassasjon mangler. **Status: lukket 2026-04-30.**
+- **F5:** L. 444 — Hyndman & Athanasopoulos (2021) som residualdiagnostikk-referanse mangler. **Status: lukket 2026-04-30.**
 
 ### Metodiske
 - **M1:** L. 430 — «Modellene trenes på 208 virkedager» er feil for SARIMA, Holt-Winters og Seasonal Naive (218 dager, jf. kap. 5.5 og kap. 6.0). Faktisk inkonsistens som må rettes. **Status: lukket 2026-04-30.** Rettet til presisering om 218 (statistisk) og 208 (ML) med kryssreferanse til 5.5. Som del av samme rydding ble også P90-terskelen flyttet fra 69,3 (208 ML) til 70,6 (218 fullt treningssett) i koden, og rapporttall i sammendrag, abstract, Tabell 2–4 samt kap. 9 oppdatert.
-- **M2:** L. 420 — ACF-plottet av treningsserien er omtalt verbalt, men ikke vist som figur. Brudd på CLAUDE.md §7 om aktiv bruk av figurer.
-- **M3:** L. 444 — Bias-analyse er plassert i 7.4 (validering), men hører strengt tatt hjemme i kap. 8 (resultater) jf. CLAUDE.md §11-skillet mellom prosess og resultat.
-- **M4:** L. 423 — «Den opprinnelige $(1,1,1)(1,1,1)_7$» mangler kontekst og kryssreferanse til kap. 9.1 (overgangen fra $s=7$ til $s=5$).
-- **M5:** L. 432 — 27/15-segmenteringen bruker P90 fra trening, men kap. 5.5/Tabell 2 bruker P90 fra testet selv. Forskjellen er ikke forklart og kan forvirre leseren.
+- **M2:** L. 420 — ACF-plottet av treningsserien er omtalt verbalt, men ikke vist som figur. Brudd på CLAUDE.md §7 om aktiv bruk av figurer. **Status: lukket 2026-04-30** — i stedet for nytt plott er konkrete ACF-verdier (lag 1 = 0,79, lag 2 = 0,51, lag 3 = 0,20, lag 5 etter sesongdifferensiering = −0,51) lagt inn i 7.1, og det opprinnelige feilaktige utsagnet om «sterke topper ved lag 5, 10, 15» korrigert.
+- **M3:** L. 444 — Bias-analyse er plassert i 7.4 (validering), men hører strengt tatt hjemme i kap. 8 (resultater) jf. CLAUDE.md §11-skillet mellom prosess og resultat. **Status: lukket 2026-04-30** — 7.4 begrunner nå bias som validerings­indikator og deferrer tabelldata til 8.3.
+- **M4:** L. 423 — «Den opprinnelige $(1,1,1)(1,1,1)_7$» mangler kontekst og kryssreferanse til kap. 9.1 (overgangen fra $s=7$ til $s=5$). **Status: lukket 2026-04-30.**
+- **M5:** L. 432 — 27/15-segmenteringen bruker P90 fra trening, men kap. 5.5/Tabell 2 bruker P90 fra testet selv. Forskjellen er ikke forklart og kan forvirre leseren. **Status: lukket 2026-04-30** — løst ved at terskelen nå er 70,6 fra 218 dager (felles for hele rapporten).
 
 ### Strukturelle
-- **S1:** L. 430 — Manglende kryssreferanse til kap. 5.5 der trenings-/testsplitten er definert.
-- **S2:** L. 441 — Figur 6 introduseres i 7.4 men vises først i kap. 8.3. På grensen til brudd på CLAUDE.md §7.
-- **S3:** Kap. 7 mangler egne figurer/tabeller. Tre kandidater (trenings-ACF, AIC-tabell, segmenteringsoversikt) bør vurderes.
+- **S1:** L. 430 — Manglende kryssreferanse til kap. 5.5 der trenings-/testsplitten er definert. **Status: lukket 2026-04-30.**
+- **S2:** L. 441 — Figur 6 introduseres i 7.4 men vises først i kap. 8.3. På grensen til brudd på CLAUDE.md §7. **Status: lukket 2026-04-30** — Figur 6-referansen er nå eksplisitt: «(presenteres sammen med resultatene i kap. 8.3, Figur 6)».
+- **S3:** Kap. 7 mangler egne figurer/tabeller. Tre kandidater (trenings-ACF, AIC-tabell, segmenteringsoversikt) bør vurderes. **Status: lukket 2026-04-30** — løst ved tydeligere henvisninger til vedlegg A2 (AIC-topp-5), A3 (GBM-tuning) og A4 (RF feature importance) i 7.2, og konkrete ACF-tall i 7.1. Ingen ny figur lagt til, fordi vedleggene allerede inneholder de relevante tabellene.
 
 ### Formidling
-- **P1:** L. 432, 444 — Fet skrift inni løpende tekst («**segmentert**», «**systematisk bias**») bryter med CLAUDE.md §1 (ny typografi-regel 2026-04-30).
-- **P2:** L. 423 — Inkonsistent tallpresisjon for AIC (2 510,06 vs 2 558).
-- **P3:** L. 442 — Engelsk «lags» uten norsk parafrase ved første bruk i 7.4.
-- **P4:** Punktlister i 7.3 (Normale/Toppdager) og 7.4 (ACF/Ljung-Box) kan vurderes konvertert til løpende prosa, i tråd med stilen som ble valgt for revidert kap. 6. Mindre kritisk fordi punktene her er korte og funksjonelle.
+- **P1:** L. 432, 444 — Fet skrift inni løpende tekst («**segmentert**», «**systematisk bias**») bryter med CLAUDE.md §1 (ny typografi-regel 2026-04-30). **Status: lukket 2026-04-30.**
+- **P2:** L. 423 — Inkonsistent tallpresisjon for AIC (2 510,06 vs 2 558). **Status: lukket 2026-04-30** — alle AIC-tall i 7.2 rundet til hele AIC-poeng (2 510, 2 558, 2 481).
+- **P3:** L. 442 — Engelsk «lags» uten norsk parafrase ved første bruk i 7.4. **Status: lukket 2026-04-30** — endret til «ti etterslep (lags)».
+- **P4:** Punktlister i 7.3 (Normale/Toppdager) og 7.4 (ACF/Ljung-Box) kan vurderes konvertert til løpende prosa, i tråd med stilen som ble valgt for revidert kap. 6. **Status: lukket 2026-04-30** — begge punktlister konvertert til prosa.
 
 ---
 
