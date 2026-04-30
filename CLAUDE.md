@@ -44,6 +44,8 @@ G27-workin/
 - **Tone i rapporten:** Saklig, konsist og profesjonelt fagspråk (akademisk standard for LOG650). Unngå overforklaringer av grunnleggende begreper med mindre det er strengt nødvendig for analysen.
 - **Tone i chat:** Vær pedagogisk, forklar logistikkmessige og metodiske valg underveis, og fungér som mentor/peer-programmerer for å fremme læring.
 - **Format:** Alle tekstfiler i UTF-8. Markdown for all løpende dokumentasjon.
+- **Typografi (rapporttekst):** Ikke bruk fet skrift inne i løpende tekst. Fet skrift er forbeholdt overskrifter, og kan unntaksvis brukes som etikett i tabeller eller liste-elementer der det er nødvendig for struktur.
+- **Setningsoppdeling:** Ikke bruk bindestrek eller tankestrek til å dele opp setninger. Bruk i stedet komma, punktum, kolon eller eksplisitte konjunksjoner (og, men, fordi, slik at, osv.).
 - **Referanser:** APA 7. utgave.
 
 ## 2. Retningslinjer for Rapportskriving
@@ -83,6 +85,8 @@ G27-workin/
 - **Aktiv bruk:** Figurer skal brukes aktivt for å visualisere mønstre, trender og avvik.
 - **Figurtekster:** Korte, nøkterne og forklare hva figuren viser.
 - **Introduksjon:** Alle tabeller og figurer skal introduseres og forklares i teksten *før* de vises.
+- **Plassering:** Tabeller og figurer skal midtstilles i dokumentet.
+- **Bildetekst og tabelltekst:** Skal settes i kursiv og med mindre skriftstørrelse enn brødteksten.
 
 ## 8. Stegvis Analysearbeid
 

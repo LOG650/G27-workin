@@ -16,10 +16,10 @@
 ---
 
 ## Sammendrag
-Denne rapporten undersøker prognosepresisjon for daglig etterspørsel ved REMA 1000 Distribusjon Trondheim. Formålet er å evaluere i hvilken grad tidsserie-baserte modeller kan predikere etterspørselen for produktet "Lasagne Familiepakning", og hvordan kampanjeinformasjon påvirker nøyaktigheten. Åtte modeller (Seasonal Naive, Holt-Winters, SARIMA, Random Forest, RF uten lag_1, Gradient Boosting, og to hybridvarianter) er estimert i to scenarier på 260 virkedager (mars 2025 – februar 2026) og evaluert med MAE, MAPE, sMAPE, WAPE og Bias. Analysen viser at SARIMA med grid-søkt parametervalg er mest presis i normaldrift (MAE 29,4 stk), mens Random Forest uten lag_1 presterer best på kampanje- og høytidsdager (MAE 290,2 stk). Binært kampanjeflagg gir marginal global forbedring, noe som peker mot behov for rikere kampanjerepresentasjon. En terskelbasert hybridmodell med balansert bias (+11 stk) anbefales for operasjonelle beslutninger som krever konsistens over tid.
+Denne rapporten undersøker prognosepresisjon for daglig etterspørsel ved REMA 1000 Distribusjon Trondheim. Formålet er å evaluere i hvilken grad tidsserie-baserte modeller kan predikere etterspørselen for produktet "Lasagne Familiepakning", og hvordan kampanjeinformasjon påvirker nøyaktigheten. Åtte modeller (Seasonal Naive, Holt-Winters, SARIMA, Random Forest, RF uten lag_1, Gradient Boosting, og to hybridvarianter) er estimert i to scenarier på 260 virkedager (mars 2025 – februar 2026) og evaluert med MAE, MAPE, sMAPE, WAPE og Bias. Analysen viser at SARIMA med grid-søkt parametervalg er mest presis i normaldrift (MAE 29,4 stk), mens Random Forest uten lag_1 presterer best på kampanje- og høytidsdager (MAE 290,2 stk). Binært kampanjeflagg gir marginal global forbedring, noe som peker mot behov for rikere kampanjerepresentasjon. En terskelbasert hybridmodell med nesten balansert bias (+6,6 stk) anbefales for operasjonelle beslutninger som krever konsistens over tid.
 
 ## Abstract
-This report investigates the forecast accuracy of daily demand at REMA 1000 Distribution Trondheim for the product "Lasagne Familiepakning". Eight models (Seasonal Naive, Holt-Winters, SARIMA, Random Forest, RF without lag_1, Gradient Boosting, and two hybrid variants) are estimated in two scenarios (with/without campaign information) across 260 business days (March 2025 – February 2026) and evaluated using MAE, MAPE, sMAPE, WAPE, and Bias. Results show that grid-searched SARIMA achieves highest accuracy in routine operations (MAE 29.4 units), while Random Forest without lag_1 performs best on campaign and holiday peaks (MAE 290.2 units). Binary campaign flags yield only marginal global improvements, indicating the need for richer campaign representations. A threshold-based hybrid model with near-zero global bias (+11 units) is recommended for operational decisions requiring consistency over time.
+This report investigates the forecast accuracy of daily demand at REMA 1000 Distribution Trondheim for the product "Lasagne Familiepakning". Eight models (Seasonal Naive, Holt-Winters, SARIMA, Random Forest, RF without lag_1, Gradient Boosting, and two hybrid variants) are estimated in two scenarios (with/without campaign information) across 260 business days (March 2025 – February 2026) and evaluated using MAE, MAPE, sMAPE, WAPE, and Bias. Results show that grid-searched SARIMA achieves highest accuracy in routine operations (MAE 29.4 units), while Random Forest without lag_1 performs best on campaign and holiday peaks (MAE 290.2 units). Binary campaign flags yield only marginal global improvements, indicating the need for richer campaign representations. A threshold-based hybrid model with near-zero global bias (+6.6 units) is recommended for operational decisions requiring consistency over time.
 
 ---
 
@@ -192,7 +192,22 @@ Distribusjonssenteret ekspederer ikke i helgene, og RELEX rapporterer derfor sys
 
 Det finnes 12 helgedager i perioden med registrert salg > 0 (totalt 100 stk, 0,5 % av volumet), fordelt rundt påske, skolestart, jul og nyttår. Disse ekskluderes sammen med de øvrige helgedagene, da inkludering ville bryte virkedagssyklusen og bidra til minimal informasjonsverdi i modellene.
 
-En viktig **datakildekontroll** ble gjennomført underveis: et parallelt ERP-uttrekk på transaksjonsnivå (ordreordrer per butikk) summerer til 20 934 stk for perioden (`Bestilt antall`), mens RELEX sin aggregerte daglige eksport summerer til 20 801 stk. Avviket på 133 stk (0,6 %) lar seg forklare med ulike justeringer mellom bestilt og justert volum (`Justert antall` = 20 697 stk), samt at ERP-uttrekket bruker `Opprettelsesdato` mens RELEX bruker salgs-/leveringsdato. Det lille avviket bekrefter datakildenes konsistens.
+En viktig datakildekontroll ble gjennomført underveis. Volumet kan måles på fire ulike steder i informasjonsflyten, og samsvaret mellom dem gir et samlet bilde av datakvaliteten:
+
+<div align="center">
+
+| Mål | Sum (stk) | Definisjon |
+| :--- | ---: | :--- |
+| ERP `Bestilt antall` | 20 934 | Butikkenes opprinnelige ordrer (transaksjonsnivå, opprettelsesdato) |
+| ERP `Justert antall` | 20 697 | Faktisk plukket og levert volum etter eventuelle justeringer |
+| RELEX virkedager | 20 701 | Aggregert daglig utlevering, kun de 260 virkedagene (analysebasis) |
+| RELEX hele perioden | 20 801 | Aggregert daglig utlevering inkl. 12 helgedager med salg (100 stk) |
+
+</div>
+
+*Datakildekontroll: fire mål for samme volum gjennom flyten butikkordre → DC-leveranse → RELEX-rapport.*
+
+Flyten leses ovenfra og ned: butikkene bestiller (20 934 stk), DC justerer ordrer ved kanselleringer eller endringer (20 697 stk), DC plukker og leverer (≈ 20 697 stk), og RELEX rapporterer aggregert daglig utlevering (20 701 stk på virkedager, 20 801 stk medregnet helger). Avviket på 4 stk mellom `Justert antall` og `RELEX virkedager` skyldes at ERP bruker opprettelsesdato mens RELEX bruker leveringsdato, slik at noen ordrer havner i ulike dager. Avviket på 100 stk mellom de to RELEX-tallene tilsvarer eksakt summen av helgesalg som filtreres bort. Den samlede kryssjekken bekrefter datakildenes konsistens, og analysen bygger på `RELEX virkedager` (20 701 stk) som primærtall.
 
 Tabell 1 oppsummerer nøkkeltall for virkedagsserien som danner grunnlag for modelleringen.
 
@@ -252,7 +267,7 @@ Det er viktig å skille mellom **bestillingsdato** (når butikken oppretter ordr
 
 </div>
 
-Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3). Lørdag (1,6) og søndag (6,1) er marginale. Onsdagstoppen reflekterer at butikkene legger inn hovedtyngden av ukens ordrer midt i uka, og at disse plukkes på torsdag/fredag og delvis på mandag påfølgende uke. Bestilling- og utleveringsprofilene er altså faseforskjøvet: bestillingssignalet kommer onsdag, kapasitetsbehovet på distribusjonssenteret inntreffer mandag. Totalt bestilt i perioden er 20 934 stk, mot 20 697 stk faktisk utlevert, et avvik på 1,1 % av bestilt volum som skyldes justering mellom opprinnelig bestilt og faktisk plukket antall (jf. `Justert antall` i 4.3).
+Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3). Lørdag (1,6) og søndag (6,1) er marginale. Onsdagstoppen reflekterer at butikkene legger inn hovedtyngden av ukens ordrer midt i uka, og at disse plukkes på torsdag/fredag og delvis på mandag påfølgende uke. Bestilling- og utleveringsprofilene er altså faseforskjøvet: bestillingssignalet kommer onsdag, kapasitetsbehovet på distribusjonssenteret inntreffer mandag. Totalt bestilt i perioden er 20 934 stk, mot 20 697 stk faktisk plukket og levert (`Justert antall`, jf. datakildekontrollen i 4.3), et avvik på 1,1 % av bestilt volum som skyldes justering mellom opprinnelig bestilt og faktisk plukket antall.
 
 ## 4.5 Kampanjemekanikk og salgstopper
 To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025 (3.–9. november) og uke 5/2026 (26. januar–1. februar). Figur 4 viser ukentlig utlevert volum gjennom hele analyseperioden, med kampanje- og hendelsesmarkeringer.
@@ -311,7 +326,7 @@ Dataene anses som høyt reliable. De representerer faktiske fysiske bevegelser v
 * **Virkedagsfiltrering:** Helgedager (lør/søn) ekskluderes. Dette gir en ren 5-dagers syklus som er kompatibel med SARIMA med periode s=5 og med virkedagsbaserte lag-features. Tapet på 100 stk (12 helgdager med observert salg > 0) utgjør 0,5 % av totalen og endrer ikke konklusjonene.
 * **Etterspørsel = utlevert volum:** Fordi lageret aldri var utsolgt, antar vi at utlevert volum reflekterer den faktiske etterspørselen fra butikkene. Det er ingen "Censored Demand"-effekter i datagrunnlaget.
 * **Kampanjeeffekter:** Kampanjekalender med to Crazy Days-perioder (uke 45/2025, uke 5/2026) og tre hendelser (påske, skolestart, jul) er lagret i `004 data/kampanjekalender.csv` og leses inn ved modellkjøring.
-* **Oppdaget datafeil korrigert:** Et tidligere vaskeskript (`vask_data.py`) produserte et feil aggregert datasett (sum 6 201 stk i stedet for faktiske ~20 900 stk). Feilen ble oppdaget ved kryssjekk mot RELEX-eksport og er rettet. Detaljer er dokumentert i kap. 9.1.
+* **Oppdaget datafeil korrigert:** Et tidligere vaskeskript (`vask_data.py`) produserte et feil aggregert datasett (sum 6 201 stk i stedet for de faktiske 20 701 stk i RELEX-virkedagsserien, jf. 4.3). Feilen ble oppdaget ved kryssjekk mot RELEX-eksport og er rettet. Detaljer er dokumentert i kap. 9.1.
 
 ## 5.5 Oppdeling av data (trening og test)
 For å simulere en reell prognosesituasjon og sikre at vi måler modellenes generaliseringsevne (out-of-sample), er datasettet delt inn slik:
@@ -341,7 +356,7 @@ Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i tr
 | Median | 19,5 | 26,0 |
 | Standardavvik | 239,3 | 320,9 |
 | 90. persentil | 70,6 | 508,8 |
-| Toppdager (>P90 trening) | 22 | 5 |
+| Toppdager (>P90 trening) | 22 | 15 |
 | Sum | 13 327 | 7 374 |
 
 </div>
@@ -351,57 +366,66 @@ Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i tr
 Testsettet inneholder Crazy Days uke 5/2026 og har derfor høyere gjennomsnitt og maksverdi relativt til antall dager enn treningssettet. Forskjellen i 90. persentil (70,6 vs 508,8 stk) illustrerer at testperioden er kampanjedrevet og dermed et krevende, men relevant scenario for å måle modellenes generaliseringsevne mot toppdager.
 
 # 6. Modellering
-Dette kapittelet definerer og begrunner modellrammeverket. Modellvalget er et resultat av en iterativ utvalgsprosess basert på etterspørselsdataens struktur: sterk virkedags-sesongvariasjon, kraftige kampanje- og høytidstopper, og 208 treningsobservasjoner.
+Dette kapittelet definerer og begrunner modellrammeverket. Modellvalget er et resultat av en iterativ utvalgsprosess basert på etterspørselsdataens struktur slik den er kartlagt i kap. 4: en sterk virkedags-sesongvariasjon, kraftige kampanje- og høytidstopper, og en treningsperiode på 218 virkedager (208 for maskinlæringsmodellene, etter at de ti første dagene faller bort på grunn av lag-padding, jf. kap. 5.5).
 
 ## 6.1 Arbeidsprosess og modellutvalg
-I den innledende fasen vurderte vi **Moving Average (MA)** og enkle eksponensielle utglatningsmetoder. MA (MA5, MA10, MA21) ble forkastet som primærmodell fordi den utviste treghet ved brå volumendringer og glattet ut nettopp de kampanjetoppene som er kritiske for logistikkplanleggingen. **Holt-Winters** (eksponensiell utglatning med trend og sesong) ble beholdt som en klassisk baseline fordi den er enkel, rask å estimere og tilbyr et prinsipielt alternativ til Seasonal Naive.
+I den innledende fasen vurderte vi flere klasser av enklere prognosemodeller før vi avgjorde det endelige rammeverket. **Moving Average (MA)** ble testet i tre vindusstørrelser — MA5, MA10 og MA21, det vil si glidende gjennomsnitt over henholdsvis fem, ti og 21 virkedager — for å se om en ren utglattingsbasert tilnærming kunne gi en akseptabel baseline. Modellen ble forkastet som primærkandidat fordi den per konstruksjon utviser treghet ved brå volumendringer og glatter ut nettopp de kampanjetoppene som er mest kritiske for logistikkplanleggingen. **Holt-Winters** ble derimot beholdt som klassisk baseline ved siden av Seasonal Naive: metoden er enkel og rask å estimere, og den representerer den klassiske eksponensielle utglattingsfamilien (Hyndman & Athanasopoulos, 2021, kap. 8) på en måte som komplementerer SARIMA uten å overlappe den.
 
-Vi vurderte også **Prophet** (Facebook) og **LSTM-nevralnettverk**. Prophet ble vurdert mindre nødvendig gitt at SARIMA allerede tilbyr en robust statistisk struktur for sesong, trend og eksogene regressorer. LSTM krever typisk flere tusen observasjoner for å oppveie for økt modellkompleksitet, og anses som uegnet på 208 treningsdager.
+Vi vurderte også å inkludere ren **ARMA(p,q)** uten sesongledd som egen kandidat, gitt at ADF-testen i kap. 7.1 viser at den rå virkedagsserien er stasjonær. ARMA er imidlertid et spesialtilfelle av SARIMA-strukturen $(p,d,q)(P,D,Q)_s$: kombinasjonen $d=0$, $D=0$ inngår i grid-søket beskrevet i kap. 7.2, slik at en ren ARMA-modell vil bli valgt automatisk dersom AIC-kriteriet favoriserer den. Vi anså det derfor som lite hensiktsmessig å føre opp ARMA som separat kandidatmodell.
+
+På den mer komplekse siden vurderte vi **Prophet** og **LSTM-nevralnettverk**. Prophet ble vurdert som mindre nødvendig gitt at SARIMA allerede tilbyr en robust statistisk struktur for sesong, trend og eksogene regressorer, og at vi ønsket en parametrisert modell vi kunne tolke direkte mot ACF/PACF-diagnostikken. LSTM ble forkastet på prinsipielt grunnlag: dype rekurrente nett krever typisk fra noen tusen til titusener av observasjoner for å oppveie for sin økte modellkompleksitet, og er erfaringsmessig sjelden konkurransedyktige med klassiske modeller på korte serier (Hyndman & Athanasopoulos, 2021; Makridakis et al., 2022). 218 treningsdager faller godt under den terskelen, og en LSTM ville her risikert å overtilpasse til de få kampanjetoppene i datasettet.
 
 ## 6.2 Valgte modeller og deres utfyllende roller
-Åtte modeller er estimert for å dekke et bredt metodisk spenn:
+Åtte modeller er estimert for å dekke et bredt metodisk spenn fra enkle baselines til hybride kombinasjoner. Tabell 4 oppsummerer modellene langs deres viktigste karakteristika; den underliggende prosaen forklarer hvorfor hver familie er representert.
 
-**Baselines:**
-1. **Seasonal Naïve:** prognosen for en dag settes lik faktisk volum fra samme ukedag forrige uke ($y_{t-5}$ på virkedagskalender). Fanger ukedagssyklusen direkte.
-2. **Holt-Winters (ETS):** additiv trend og additiv sesong med periode 5. Klassisk alternativ til SARIMA uten differensiering.
+De to **baselinene** etablerer en minimumsforventning som mer komplekse modeller må slå for å rettferdiggjøre sin kompleksitet. **Seasonal Naïve** setter prognosen for en dag lik faktisk volum fra samme ukedag forrige uke ($y_{t-5}$ på virkedagskalender) og fanger ukedagssyklusen direkte uten estimerte parametre. **Holt-Winters** med additiv trend og additiv sesongkomponent ($s=5$) er en parametrisk eksponensiell utjevning som gir et alternativ til SARIMA uten differensiering. Sammen illustrerer de hva en helt enkel modell og en klassisk parametrisk modell hver for seg kan oppnå.
 
-**Statistiske tidsseriemodeller:**
-3. **SARIMA (Seasonal Autoregressive Integrated Moving Average):** estimeres med eksogene variabler (is_crazy_days, is_event). Parametervalg gjøres ved grid-search (se kap. 7.2).
+Den **statistiske tidsseriemodellen** representeres av **SARIMA** ($(p,d,q)(P,D,Q)_5$) med eksogene regressorer for kampanjeperioder (`is_crazy_days`, `is_event`). SARIMA er i Box & Jenkins-tradisjonen (Box & Jenkins, 1976) den naturlige strukturelle modellen for serier med autoregressiv og glidende-gjennomsnitt-dynamikk og en sesongkomponent. Parametervalget skjer ved AIC-minimerende grid-search (kap. 7.2).
 
-**Maskinlæringsmodeller:**
-4. **Random Forest (RF):** full feature-sett (variabelsett) inkludert lag_1, lag_5, lag_10, rolling_mean_5 og kalenderfeatures.
-5. **Random Forest uten lag_1:** identisk feature-sett som (4) minus forrige dags volum. Diagnostisk variant for å undersøke hvor mye RF faktisk lærer utover "i morgen = i dag".
-6. **Gradient Boosting (GBM):** tunet via 3-fold TimeSeriesSplit over learning_rate, max_depth, n_estimators og subsample (16 kombinasjoner).
+**Maskinlæringsfamilien** dekkes av tre varianter. **Random Forest** (Breiman, 2001) trenes på et fullt feature-sett (variabelsett) bestående av lag_1, lag_5, lag_10, et 5-dagers glidende gjennomsnitt, kalenderfeatures og kampanjeflagg, og er motivert av tre-basert modellering sin evne til å fange ikke-lineære interaksjoner mellom ukedag og kampanjeeffekter. **Random Forest uten lag_1** er en diagnostisk variant som fjerner forrige dags volum fra feature-vektoren; hensikten er todelt. På den ene siden lar den oss undersøke hvor mye en RF faktisk lærer utover en triviell "i morgen = i dag"-strategi, og på den andre siden viser senere analyse (kap. 8.3) at varianten i praksis fungerer som operasjonell prognose for toppdager. Den er altså samtidig et diagnostisk verktøy og en kandidatmodell. **Gradient Boosting** (Friedman, 2001) bruker samme feature-vektor som Random Forest, men sekvensiell tre-bygging i stedet for ensemble-snitt; hyperparametrene velges ved 3-fold TimeSeriesSplit-kryssvalidering over 16 kombinasjoner av læringsrate, treedybde, antall estimatorer og subsamplingsandel.
 
-**Hybridmodeller:**
-7. **Hybrid (kampanje-router):** SARIMA på rutinedager, RF uten lag_1 på dager markert i kampanjekalenderen. Regelbasert routing (ruting mellom modeller basert på regler) for å kombinere SARIMAs presisjon i normaldrift med RFs robusthet i topper.
-8. **Hybrid (terskelbasert):** SARIMA er default; hvis RF uten lag_1 selv predikerer over 90. persentilen (terskel 69,3 stk fra trening), rutes dagen til RF uten lag_1. Alternativ routing som ikke krever eksplisitt kampanjeflagg.
+To **hybridmodeller** er konstruert for å teste om en kombinasjon kan utnytte modellenes komplementære styrker. Den **kampanje-baserte hybriden** ruter trafikken regelbasert: SARIMA brukes på rutinedager, og RF uten lag_1 brukes på dager markert i kampanjekalenderen. Den **terskelbaserte hybriden** lar prediksjonsapparatet selv bestemme rutingen — SARIMA er default, men dersom RF uten lag_1 selv predikerer over 90.-persentilen i treningssettet (terskel 70,6 stk), overtar RF-modellen for den dagen. Den siste varianten har den praktiske fordelen at den ikke krever eksplisitt kampanjeflagg ved prediksjonstidspunktet.
+
+
+<div align="center">
+
+| # | Modell | Familie | Sesongstruktur | Eksogene | Lag-features | Hyperparametersøk |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Seasonal Naïve | Baseline | $y_{t-5}$ | – | – | – |
+| 2 | Holt-Winters | Baseline (ETS-familien) | additiv, $s=5$ | – | – | – |
+| 3 | SARIMA | Statistisk | $(P,D,Q)_5$ | `is_crazy_days`, `is_event` | implisitt via AR-ledd | grid-search, 144 kombinasjoner (kap. 7.2) |
+| 4 | Random Forest | Maskinlæring | via lags og kalender | kampanjeflagg | $y_{t-1}$, $y_{t-5}$, $y_{t-10}$, rolling_mean_5 | – (faste defaults) |
+| 5 | RF uten lag_1 | Maskinlæring (diagnostisk + operasjonell) | via lags og kalender | kampanjeflagg | $y_{t-5}$, $y_{t-10}$, rolling_mean_5 | – |
+| 6 | Gradient Boosting | Maskinlæring | via lags og kalender | kampanjeflagg | samme som RF | 3-fold TimeSeriesSplit, 16 kombinasjoner (kap. 7.2) |
+| 7 | Hybrid (kampanje-router) | Hybrid | arvet fra delmodell | regelbasert ruting | arvet | arvet |
+| 8 | Hybrid (terskelbasert) | Hybrid | arvet fra delmodell | – | arvet | terskel = 70,6 stk (P90 trening, 218 dager) |
+
+</div>
+
+**Tabell 4.** Oversikt over de åtte estimerte modellene. Tabellen tjener som referanse for kap. 7 (gjennomføring) og kap. 8 (resultater).
 
 ## 6.3 Datastrukturens påvirkning på modellarkitekturen
-Modellene er konfigurert for tre identifiserte strukturelle trekk:
+Tre strukturelle trekk i datagrunnlaget styrer modellarkitekturen, og argumentene henger sammen som en sammenhengende begrunnelseskjede.
 
-* **Sesongvariasjon ($s=5$):** Både SARIMAs sesongledd og Random Forests lags speiler den 5-dagers virkedagssyklusen. I tidligere iterasjoner ble $s=7$ brukt, men fordi datagrunnlaget kun inneholder virkedager er dette endret til $s=5$ (se kap. 9.1 for bakgrunnen).
-* **Topper og ikke-lineæritet:** Random Forest er direkte motivert av kampanjetoppene. Tre-basert modellering fanger ikke-lineære interaksjoner mellom ukedag, lag-features og kampanjeflagg bedre enn lineære modeller.
-* **Stasjonaritet:** ADF-test (kap. 7.1) bekrefter at den rå virkedagsserien er stasjonær (p < 0,001). SARIMA's differensiering (d=1) er derfor konservativt valgt, ikke strengt nødvendig.
+Den tydeligste strukturen er **virkedags-sesongvariasjonen**. ACF-plott av treningsserien (kap. 7.1) viser sterke topper ved lag 5, 10 og 15, og dette mønsteret reflekteres direkte i modellvalgene: SARIMAs sesongledd $(P,D,Q)_5$, Holt-Winters' `seasonal_periods=5`, og Random Forests bruk av $y_{t-5}$ og $y_{t-10}$ som lag-features speiler alle den samme 5-dagers virkedagssyklusen. I tidligere iterasjoner ble en 7-dagers syklus brukt, men den introduserte falske helgemønstre fordi datagrunnlaget kun inneholder virkedager (jf. kap. 4.2 og kap. 5.4); overgangen til $s=5$ er nærmere drøftet i kap. 9.1.
+
+Et tilsvarende viktig trekk er **kampanje- og høytidstoppenes ikke-lineære karakter**. Som kap. 4.3 dokumenterer, varierer dagsvolumet på lasagne-pakningen med flere størrelsesordener mellom rutinedager og kampanjedager, og effektene varierer på tvers av kampanjetyper. Tre-baserte modeller fanger denne typen interaksjoner mellom ukedag, lag-features og kampanjeflagg bedre enn lineære modeller, og dette er den direkte motivasjonen for å inkludere Random Forest og Gradient Boosting som primærmodeller for toppsegmentet.
+
+Det tredje trekket er **stasjonariteten**. ADF-testen (kap. 7.1) viser at både rå, første-ordens og sesongdifferensiert serie avviser nullhypotesen om enhetsrot (alle p < 0,001), og den rå virkedagsserien er altså stasjonær uten differensiering. SARIMAs differensieringsledd ($d$, $D$) er likevel ikke fastsatt på forhånd, men inngår som søkeparametre i grid-søket beskrevet i kap. 7.2. Den endelige modellen $(0,1,2)(0,1,1)_5$ er altså et resultat av AIC-minimering, ikke et konservativt valg fra vår side. Hvorvidt AIC-kriteriet straffer overdifferensiering tilstrekkelig på en allerede stasjonær serie er en metodisk åpen problemstilling som drøftes i kap. 9.6.
 
 ## 6.4 Modellspesifikasjon
-* **SARIMA-struktur:** $(p,d,q)(P,D,Q)_5$ med eksogene regressorer `is_crazy_days` og `is_event`. Valg av parametere gjøres ved AIC-minimerende grid-search (se kap. 7.2).
-* **Random Forest-vektor:** Modellen mottar lag-features ($y_{t-1}, y_{t-5}, y_{t-10}$), et 5-dagers glidende gjennomsnitt, kalenderfeatures (`is_monday`, `month`, `week_of_month`, `days_since_last_order`), ukedag-dummier og kampanjeflagg.
-* **Gradient Boosting:** Samme feature-sett som RF. Hyperparametere velges ved kryssvalidert søk.
-* **Holt-Winters:** `trend='add'`, `seasonal='add'`, `seasonal_periods=5`.
-* **Evalueringsprotokoll:** Alle modeller evalueres som **én-steg-frem-prognoser**. For hver testdag har modellen tilgang til faktiske observerte verdier fra foregående dager. Featurene `lag_1`, `lag_5`, `lag_10` og `rolling_mean_5` bygges én gang på hele serien og vurderes derfor ikke som datalekkasje, men som realistisk operasjonell informasjon. Dette reflekterer REMAs dag-for-dag-bestillingsprosess, men betyr at resultatene ikke uten videre kan sammenlignes med en rullerende multi-step-prognose der modellen kun ser testdata rekursivt.
+For de **statistiske modellene** spesifiseres SARIMA som $(p,d,q)(P,D,Q)_5$ med de eksogene regressorene `is_crazy_days` og `is_event`. Parametersettet velges ved AIC-minimerende grid-search beskrevet i kap. 7.2. Holt-Winters konfigureres med additiv trend og additiv sesong (`trend='add'`, `seasonal='add'`, `seasonal_periods=5`); initialisering av nivå- og trendkomponenten skjer ved maksimum-likelihood-estimering på treningssettet (`initialization_method='estimated'`).
+
+For **maskinlæringsmodellene** (Random Forest, Random Forest uten lag_1, Gradient Boosting) deles en felles feature-vektor med ett unntak. Vektoren inneholder lag-features ($y_{t-1}$, $y_{t-5}$, $y_{t-10}$), et 5-dagers glidende gjennomsnitt (`rolling_mean_5`), kalenderfeatures (`is_monday`, `month`, `week_of_month`, `days_since_last_order`), ukedag-dummier og kampanjeflagg. Random Forest uten lag_1 mottar samme vektor minus $y_{t-1}$. Gradient Boosting deler vektor med Random Forest, men hyperparametrene (læringsrate, treedybde, antall estimatorer og subsamplingsandel) tunes ved kryssvalidert søk (kap. 7.2).
+
+**Evalueringsprotokollen** følger en blandet logikk som det er viktig å være transparent om, fordi den får direkte konsekvenser for hvordan resultatene i kap. 8 skal tolkes. SARIMA og Holt-Winters trenes én gang på treningssettet (1. mars – 31. desember 2025) og produserer deretter en sammenhengende **multi-step-prognose** for hele testperioden på 42 virkedager. Modellene refittes ikke underveis, og ingen testdata flyter inn i parameterestimatet. Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting bruker derimot lag-features som er bygd én gang på den fullstendige tidsserien. Dette betyr at modellen for hver testdag har tilgang til faktiske observerte verdier fra foregående dager via lag_1, lag_5, lag_10 og rolling_mean_5. I praksis gir disse fire modellene altså en **én-steg-frem-prognose** med ekte observert lag, mens SARIMA og Holt-Winters gir en multi-step-prognose uten oppdatering av observasjoner.
+
+Begrunnelsen for å bruke faktiske lag-verdier i ML-modellene er at dette reflekterer den operasjonelle virkeligheten i REMAs dag-for-dag-bestillingsprosess (kap. 4.1): når dagens prognose lages, er gårsdagens utleverte volum allerede observert. Praksisen er i tråd med Hyndman og Athanasopoulos (2021) sin anbefaling om å la prognoseprotokollen speile beslutningssituasjonen. Konsekvensen er likevel at SARIMA og Holt-Winters konkurrerer på en strengere protokoll enn ML-modellene, fordi de må predikere 42 dager fram uten å se observasjoner underveis. Dette må has i mente når MAE/MAPE/Bias sammenlignes på tvers av modellfamilier i kap. 8.
 
 ## 6.5 Metodisk refleksjon
-Åtte modeller er flere enn minimum nødvendig, men gir en sterk **metodisk triangulering**:
-- **Baselines** (1, 2) definerer minimum-forventninger.
-- **Statistisk modell** (3) gir et tolkbart, parametrisk utgangspunkt.
-- **Maskinlæringsvarianter** (4, 5, 6) utforsker ikke-lineære avhengigheter.
-- **Hybrider** (7, 8) tester om en kombinasjon kan utnytte modellenes komplementære styrker.
+Åtte modeller er valgt for å spenne over tre faglig distinkte tilnærminger — enkle baselines, en parametrisk statistisk modell og ikke-parametriske maskinlæringsmodeller — supplert med to hybridvarianter. Hensikten er ikke utelukkende å maksimere prognosepresisjon, men å gjennomføre en **metodisk triangulering** som lar oss skille mellom feil som skyldes modellbegrensninger og feil som skyldes egenskaper ved datagrunnlaget selv. M5-konkurransen (Makridakis et al., 2022) viser nettopp at familie-diversitet og enkle baselines er essensielle for å vurdere hva mer avanserte modeller faktisk tilfører.
 
-Dette gjør det mulig å skille mellom feil som skyldes modellbegrensninger og feil som skyldes mangler i datagrunnlaget. Valget er ikke bare et forsøk på høyest presisjon, men også et verktøy for å diagnostisere etterspørselens natur ved REMA 1000.
-
-## 6.6 Oppsummering og videre steg
-Kapittelet har etablert det metodiske grunnlaget og begrunnet valget av åtte modeller. Neste kapittel dokumenterer den tekniske gjennomføringen: stasjonaritetstester, grid-search-resultater og valideringsmetodikk.
+Trianguleringen tjener tre konkrete diagnostiske formål. Baselinene definerer en minimumsforventning som de øvrige modellene må slå for å rettferdiggjøre kompleksiteten. SARIMA gir et tolkbart, parametrisk utgangspunkt der koeffisienter, AIC og residualstruktur kan inspiseres direkte. Maskinlæringsvariantene utforsker ikke-lineære avhengigheter som lineære modeller per definisjon ikke fanger, og den diagnostiske RF-varianten uten lag_1 gjør det mulig å vurdere hvor mye av Random Forests prestasjon som faktisk skyldes læring av sesong- og kampanjestruktur, og hvor mye som er en effekt av at $y_{t-1}$ alene er en sterk prediktor. Hybridmodellene tester den siste hypotesen — at en kombinasjon av komplementære modeller på rett segment kan slå hver enkelt modell isolert. Til sammen gjør modellporteføljen analysen til både et presisjonsestimat og et verktøy for å diagnostisere etterspørselens natur ved REMA 1000.
 
 # 7. Analyse
 Dette kapittelet dokumenterer den operative gjennomføringen av analysen: stasjonaritetsvurdering, parameter-tuning, estimering og validering.
@@ -419,11 +443,11 @@ ACF-plott av treningsserien viste sterke topper ved lag 5, 10 og 15, konsistent 
 **Gradient Boosting:** 16 kombinasjoner ble evaluert med 3-fold TimeSeriesSplit-kryssvalidering (`gbm_tuning.csv`, vedlegg A3). Beste hyperparametere: `learning_rate=0,05`, `max_depth=2`, `n_estimators=100`, `subsample=1,0`. Tunet GBM gir ca. 30 % bedre MAE enn utunet standard-konfigurasjon.
 
 ## 7.3 Estimering og segmentering
-Modellene trenes på 208 virkedager (mars–desember 2025) og evalueres på 42 virkedager (januar–februar 2026).
+Statistiske modeller (Seasonal Naive, Holt-Winters, SARIMA) trenes på 218 virkedager, og maskinlæringsmodellene (Random Forest, RF uten lag_1, Gradient Boosting) trenes på 208 virkedager etter at de ti første dagene faller bort på grunn av lag-padding (jf. kap. 5.5). Alle modeller evalueres på samme testsett på 42 virkedager (januar–februar 2026).
 
-Gitt den ekstreme forskjellen mellom rutine- og kampanjedager evalueres modellene **segmentert** basert på 90. persentilen fra treningssettet (terskel 69,3 stk):
-1. **Normale dager** (27 av 42 i test): modellens presisjon i den daglige, stabile vareflyten.
-2. **Toppdager** (15 av 42): modellens evne til å håndtere kampanjer og ekstreme utslag.
+Gitt den ekstreme forskjellen mellom rutine- og kampanjedager evalueres modellene segmentert basert på 90. persentilen fra hele treningssettet (terskel 70,6 stk på 218 dager):
+1. Normale dager (27 av 42 i test): modellens presisjon i den daglige, stabile vareflyten.
+2. Toppdager (15 av 42): modellens evne til å håndtere kampanjer og ekstreme utslag.
 
 Denne splittingen er avgjørende for å gi REMA 1000 et nyansert beslutningsgrunnlag, da en modells styrke i ett segment kan overskygge kritiske svakheter i et annet.
 
@@ -482,16 +506,16 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 | **RF uten lag_1** | **169,1** | 1 308 % | 108 % | **96 %** | +38,9 |
 | Gradient Boosting | 294,3 | 1 629 % | 107 % | 168 % | +253,6 |
 | Hybrid (kampanje) | 177,7 | 371 % | 159 % | 101 % | −118,7 |
-| **Hybrid (terskel)** | 176,2 | 1 217 % | 144 % | 100 % | **+9,4** |
+| **Hybrid (terskel)** | 175,9 | 1 212 % | 145 % | 100 % | **+6,6** |
 
 *Tabell 3: Global evaluering — Scenario 2 (alle testdager)*
 
 </div>
 
-MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+9,4), hvilket er operasjonelt attraktivt.
+MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+6,6), hvilket er operasjonelt attraktivt.
 
 ## 8.3 Segmentert resultatanalyse
-Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (> 69,3 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
+Den segmenterte analysen separerer normale dager (≤ 70,6 stk) fra toppdager (> 70,6 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
 
 <div align="center">
 
@@ -502,7 +526,7 @@ Den segmenterte analysen separerer normale dager (≤ 69,3 stk) fra toppdager (>
 | | **SARIMA** | **29,4** | **−25,1** |
 | | Random Forest | 64,0 | +59,1 |
 | | RF uten lag_1 | 101,8 | +99,5 |
-| | Hybrid (terskel) | 104,4 | +62,1 |
+| | Hybrid (terskel) | 104,0 | +57,8 |
 | **Toppdager** (n=15) | Seasonal Naive | 326,0 | −292,5 |
 | | Holt-Winters | 487,2 | −487,2 |
 | | SARIMA | 432,3 | −432,3 |
@@ -591,13 +615,13 @@ Residualdiagnostikken (Tabell 5) supplerer dette bildet. SARIMA har lavest MAE p
 ## 9.4 Hybridenes routing-utfordring
 To hybridvarianter ble testet:
 - **Kampanjebasert hybrid:** ruter etter kampanjeflagget (is_crazy_days eller is_event).
-- **Terskelbasert hybrid:** ruter etter RF uten lag_1 sin egen prediksjon (hvis > 69,3 stk → bruk RF uten lag_1).
+- **Terskelbasert hybrid:** ruter etter RF uten lag_1 sin egen prediksjon (hvis > 70,6 stk → bruk RF uten lag_1).
 
-Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 alene på 290). Analysen viste at **kampanjedager og toppdager ikke er samme mengde**. I testsettet er det toppdager utenfor kampanjeperioder (f.eks. mandag etter nyttår), og disse rutes feil til SARIMA. Den terskelbaserte hybriden korrigerer dette ved å la selve prediksjonsapparatet avgjøre. Resultatet er MAE 305 på toppdager og nesten null systematisk bias (+11 totalt).
+Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 alene på 290). Analysen viste at **kampanjedager og toppdager ikke er samme mengde**. I testsettet er det toppdager utenfor kampanjeperioder (f.eks. mandag etter nyttår), og disse rutes feil til SARIMA. Den terskelbaserte hybriden korrigerer dette ved å la selve prediksjonsapparatet avgjøre. Resultatet er MAE 305 på toppdager og nesten null systematisk bias (+6,6 totalt).
 
 Tradeoff-en (avveiningen) er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir "false positive"-routinger (feilaktig positive) der RF selv overpredikerer. Dette er et klassisk klassifikator-tradeoff: **terskelbasert routing forbedrer toppdager på bekostning av noen normale dager**.
 
-For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+11) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
+For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+6,6) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
 
 ## 9.5 Praktiske implikasjoner for REMA 1000
 Siden butikkenes ordrer for tørrvarer godkjennes med nær 100 % aksept av AOF/RELEX-forslaget (kap. 4.1), er prognosens kvalitet direkte styrende for bestilt volum. De observerte MAE-tallene kan derfor oversettes direkte til operasjonelle konsekvenser:
@@ -632,11 +656,11 @@ Hovedkonklusjonene er:
 
 2. **Informasjonsdeling har begrenset og ujevn effekt.** Tillegg av binær kampanjeinfo (Scenario 2) gir tydelig gevinst kun på SARIMA i normaldrift (−36 % MAE). På toppdager gir kampanjeflagg marginal eller negativ gevinst for fire av fem modeller. Binær kampanjerepresentasjon er for grov til å fange den faktiske varians i kampanjerespons. For å realisere full verdi av informasjonsdeling anbefales rikere kampanjedata (forventet volum, priseffekter).
 
-3. **Hybridmodeller viser potensiale men krever presis routing.** En kampanjebasert routing feilet fordi kampanjedager og toppdager ikke er samme mengde. En terskelbasert routing (baserer rutingen på RF uten lag_1 sin egen prediksjon) leverer balansert ytelse med nesten null global bias (+11 stk), og er operasjonelt attraktiv for sikkerhetslagerdimensjonering.
+3. **Hybridmodeller viser potensiale men krever presis routing.** En kampanjebasert routing feilet fordi kampanjedager og toppdager ikke er samme mengde. En terskelbasert routing (baserer rutingen på RF uten lag_1 sin egen prediksjon) leverer balansert ytelse med nesten null global bias (+6,6 stk), og er operasjonelt attraktiv for sikkerhetslagerdimensjonering.
 
 4. **Residualdiagnostikk differensierer modellvaliditeten.** Ljung-Box-test (10 lags) avslører at tidsseriemodellene (Naive, Holt-Winters, SARIMA) og GBM har signifikant autokorrelasjon i residualene, og at de ikke har fanget all systematisk struktur. RF, RF uten lag_1 og hybridene har residualer som passerer testen, og ekstraherer dermed informasjonen fullstendig. Dette er et sterkt argument for de tre-baserte modellenes validitet, selv når de ikke har lavest MAE.
 
-5. **Metodisk erfaring: datakryssjekk er kritisk.** Oppdagelsen av en datafeil i første iterasjon (feil aggregert totalsum på 6 201 stk vs faktisk 20 934 stk) understreker behovet for systematisk kryssjekk mot uavhengige datakilder. Metodisk infrastruktur (grid-search, kryssvalidert tuning, formelle residualtester) bør være på plass fra starten av, ikke legges til retrospektivt.
+5. **Metodisk erfaring: datakryssjekk er kritisk.** Datafeilen oppdaget tidlig i prosjektet (jf. kap. 9.1) understreker behovet for systematisk kryssjekk mot uavhengige datakilder, og at metodisk infrastruktur (grid-search, kryssvalidert tuning, formelle residualtester) bør være på plass fra starten av analysen.
 
 Samlet viser prosjektet at tidsserie-baserte metoder gir akseptabel presisjon i normaldrift for dette produktet ved RD Trondheim, men at kampanjer og høytider krever både rikere eksogen informasjon og segmentbaserte modellvalg. Når butikkenes ordrer godkjennes med nær 100 % aksept av AOF/RELEX-forslag (kap. 4.1), får prognosekvaliteten direkte operativ betydning for bestilte volum, lagerbinding og leveringssikkerhet.
 
@@ -695,7 +719,7 @@ Augmented Dickey-Fuller-test (H0: enhetsrot, ikke-stasjonær). p < 0,05 → avvi
 
 </div>
 
-Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering, og SARIMAs `d=1` er derfor konservativt valgt.
+Kilde: `004 data/adf_test.csv`. Serien er stasjonær uten differensiering. AIC-minimerende grid-søk (kap. 7.2) valgte likevel en modell med både vanlig og sesongdifferensiering ($d=1, D=1$); risikoen for overdifferensiering på en allerede stasjonær serie er drøftet i kap. 9.6.
 
 ## A2 — SARIMA grid-search (utdrag: topp 5 og valgt modell)
 144 kombinasjoner av $(p,d,q)(P,D,Q)_5$ ble estimert på treningssettet med eksogene regressorer (`is_crazy_days`, `is_event`). Utvalg er minst AIC blant modeller som konvergerte.
