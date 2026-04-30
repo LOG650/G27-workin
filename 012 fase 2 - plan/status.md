@@ -1,6 +1,6 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000 (G27)
 
-**Statusdato:** 2026-04-30 (intern review av kap. 6 lukket)
+**Statusdato:** 2026-04-30 (intern review av kap. 9 lukket)
 **Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport ~92 % ferdig)
 
 Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
@@ -10,7 +10,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 - **Datagrunnlag regenerert:** Oppdaget datafeil i `vask_data.py`-utdata (undertelling ~70 %). Nytt `vask_relex.py` bygger datasett fra RELEX-eksport (260 virkedager, sum 20 701). Dokumentert i rapportens kap. 5.4 og 9.1.
 - **Modellering utvidet:** Åtte modeller estimert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner) med `s=5`, GBM CV-tuning (16 kombinasjoner × 3-fold TimeSeriesSplit), ADF og Ljung-Box-diagnostikk utført. `is_monday` og `days_since_last_order`-features lagt til i RF (`modeller.py`).
 - **Scenario 1 vs 2** sammenlignet på seks modeller. Kampanjeinformasjon gir størst gevinst på SARIMA i normaldrift (MAE 46 → 29, −36 %), marginal eller negativ gevinst ellers.
-- **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg A1–A7) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert.
+- **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg A1–A7) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert. Interne reviewer av kap. 6, 8 og 9 lukket 2026-04-30.
 - **Review-tiltak fra 2026-04-14:** Alle 6 høyprioriterte og de viktigste mediumtiltakene er lukket: helgedata/mandagseffekt dokumentert, `s=5`, kampanjekalender som fil (`004 data/kampanjekalender.csv`), Scenario 2 eksplisitt presentert i kap. 8.1, konsistent «Scenario 1/2»-terminologi, Tabell 2/3 introdusert i tekst, kap. 12 Vedlegg utfylt, Pandas/Statsmodels/Scikit-learn sitert i kap. 11. Figur 3 renamed til `fig3_lagerstatus.png`. Rapportdato 2026-04-15.
 - **M-03 Ferdig analyse:** Oppnådd 2026-04-16 (baseline 2026-04-27, 11 dager foran skjema).
 - **Neste steg:** Forberede peer review M-05 (2026-05-01) — eksportere rapport til PDF/DOCX, dele med medstudenter, opprette `requirements.txt` for etterprøvbarhet. Formalia (egenerklæring, publiseringsavtale) fylles ved M-06 (2026-05-31).
@@ -153,8 +153,8 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 | 5 Metode og data | Ferdig | 5.1–5.6 inkl. grid-search-detaljer |
 | 6 Modellering | Ferdig | 6.1–6.5 inkl. Tabell 4 (modelloversikt), in-tekst-sitater for SARIMA/RF/GBM/HW, presisert blandet evalueringsprotokoll og rettet d=1-framstilling. Redundant 6.6 fjernet. Intern review lukket 2026-04-30 |
 | 7 Analyse | Ferdig | 7.1–7.4 med residualdiagnostikk |
-| 8 Resultater | Ferdig | 8.1 (Scenario 1 vs 2) og 8.2 (åtte modeller globalt) |
-| 9 Diskusjon | 90 % | 9.1–9.4; mangler konkrete implementeringsanbefalinger (ryddes etter peer review) |
+| 8 Resultater | Ferdig | 8.1 (Scenario 1 vs 2 med Tabell 2/Figur 5), 8.2 (åtte modeller globalt, Tabell 3), 8.3 (segmentert, Tabell 4 + ny Tabell 4b for SARIMA scenario-sammenligning), 8.4 (residualdiagnostikk, Tabell 5/Figur 6). Hybridmodellene definert ved første presentasjon. Intern review lukket 2026-04-30 (alle 12 tiltak). |
+| 9 Diskusjon | Ferdig | 9.1–9.6 inkl. praktiske implikasjoner (9.5) og metodiske begrensninger (9.6 med ærlig dokumentasjon av forkastet leveranse). Avsnitt-etiketter i 9.6 konvertert til prosa-intro. Intern review lukket 2026-04-30 (12 av 13 tiltak gjennomført; P4 vurdert ikke utført pga konsistens med øvrige tallreferanser). |
 | 10 Konklusjon | 90 % | Utfylles endelig etter peer review |
 | 11 Bibliografi | Ferdig | APA 7; Pandas, Statsmodels, Scikit-learn sitert |
 | 12 Vedlegg | Ferdig | A1–A7 utfylt |
@@ -179,6 +179,8 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 2. Rapportens datering er 2026-04-15 — oppdateres ved ferdigstillelse i M-04/M-06.
 3. `requirements.txt` opprettet i repo-rot 2026-04-18 med pinned versjoner (pandas 3.0.1, numpy 2.4.3, matplotlib 3.10.8, scikit-learn 1.8.0, statsmodels 0.14.6) — R-010 lukket.
 4. Tallrydding gjennomført 2026-04-30: P90-terskel flyttet fra 208 ML-trening (69,3) til 218 statistisk trening (70,6) i `analyse_hoved.py` og `scenario_analyse.py`; analysen rekjørt og berørte tabeller/sammendrag oppdatert. Volumtall i kap. 4.3 strukturert som flytkjede (Bestilt → Justert → RELEX virkedager → RELEX hele perioden) med eksplisitte definisjoner. F1 (kap. 4) og M1 (kap. 7) lukket.
+5. Intern review av kap. 8 (Resultater) gjennomført og lukket 2026-04-30: 4 prioritet 1, 4 prioritet 2 og 4 prioritet 3-tiltak adressert. Hovedendringer: hybridmodellene definert ved Tabell 3, MAE-par i stk lagt til Tabell 2-tolking, ny Tabell 4b for SARIMA Scenario 1 vs 2-sammenligning, MAPE-note og Hyndman & Koehler (2006)-sitat lagt til Tabell 3-bildetekst, fet skrift inni løpende tekst fjernet, kongruensfeil rettet, kryssreferanser til kap. 7.3 (P90-terskel) og kap. 7.4 (Ljung-Box) lagt til, punktliste i 8.3 konvertert til prosa.
+6. Intern review av kap. 9 (Diskusjon) gjennomført og lukket 2026-04-30: 4 prioritet 1, 5 prioritet 2 og 4 prioritet 3-tiltak adressert (P4 vurdert ikke utført). Hovedendringer: ti forekomster av fet skrift inni løpende tekst fjernet, avsnitt-etiketter i 9.6 konvertert til prosa-intro, forvirrende parentes om 27/42 vs 90 % omformulert, tallinkonsistens 45,97/29,40 → 46,0/29,4 harmonisert med kap. 8, anglisismer (mental pause, false positive, tradeoff) byttet til ren norsk, kryssreferanser til kap. 4.3 (ERP-uttrekket og median) og vedlegg A4 (lag_1 = 84 %) lagt til, Hyndman & Athanasopoulos (2021) sitert ved overdifferensieringsdrøfting i 9.6, bro-setning til kap. 10 lagt til, punktlister i 9.4 og 9.5 konvertert til prosa. Bonus-rettelse: kongruensfeil «et konkret anbefaling» → «en konkret anbefaling» i 9.2 l. 606.
 
 ## Viktigste risikoer (oppdatert 2026-04-16)
 

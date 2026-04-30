@@ -475,7 +475,7 @@ For å svare på problemstillingens delproblem 3, *i hvilken grad kampanjeaktivi
 
 </div>
 
-Scenario 2 gir bare marginal global forbedring på SARIMA (−0,4 %) og moderat forbedring på RF uten lag_1 (−5,5 %). For Random Forest og GBM blir globalytelsen dårligere med kampanjeinfo. Den segmenterte analysen (kap. 8.3) viser at dette skyldes hvordan modellene fordeler forbedringer mellom normale dager og toppdager. Figur 5 viser en sammenligning av faktisk etterspørsel og prediksjoner fra utvalgte modeller i Scenario 1 og 2.
+Scenario 2 gir kun marginal global forbedring på SARIMA, som reduseres med under 1 stk per dag (174,0 → 173,3 stk, −0,4 %). RF uten lag_1 forbedres mer markant (179,0 → 169,1 stk, −5,5 %, drøyt 9 stk per dag), mens Random Forest og GBM får dårligere globalytelse med kampanjeinfo. Den segmenterte analysen (kap. 8.3) viser at dette skyldes hvordan modellene fordeler forbedringer mellom normale dager og toppdager. Figur 5 illustrerer dette ved å vise faktisk etterspørsel (sort) sammen med RF Scenario 1 (rødt), RF uten lag_1 Scenario 2 (oransje) og Hybrid terskelbasert Scenario 2 (grønn) over testperioden.
 
 <div align="center">
 
@@ -486,7 +486,7 @@ Scenario 2 gir bare marginal global forbedring på SARIMA (−0,4 %) og moderat 
 </div>
 
 ## 8.2 Global modellytelse
-Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for åtte modeller i Scenario 2, med fem feilmål. Hybridmodellene er kun definert i Scenario 2.
+Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for åtte modeller i Scenario 2, med fem feilmål. Hybridmodellene er kun definert i Scenario 2 og kombinerer styrker fra to enkelt­modeller: Hybrid (kampanje) bruker SARIMA på dager uten kampanje­indikator og RF uten lag_1 på kampanjedager, mens Hybrid (terskel) velger SARIMA på normale dager (≤ 70,6 stk) og RF uten lag_1 på toppdager (> 70,6 stk) basert på P90-terskelen fra treningssettet (definert i detalj i kap. 9.4).
 
 <div align="center">
 
@@ -501,14 +501,14 @@ Tabell 3 sammenfatter den globale ytelsen (hele testsettet, 42 virkedager) for �
 | Hybrid (kampanje) | 177,7 | 371 % | 159 % | 101 % | −118,7 |
 | **Hybrid (terskel)** | 175,9 | 1 212 % | 145 % | 100 % | **+6,6** |
 
-*Tabell 3: Global evaluering — Scenario 2 (alle testdager)*
+*Tabell 3: Global evaluering — Scenario 2 (alle testdager). MAPE-verdier er gjennomgående svært høye fordi små nevnere på lavvolum-dager forsterker prosentfeilen; sMAPE og WAPE er mer robuste tolkningsmål for denne typen serier (Hyndman & Koehler, 2006).*
 
 </div>
 
 MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF uten lag_1 har lavest globale MAE (169,1) og WAPE (96 %), og terskelbasert hybrid har nesten null bias (+6,6), hvilket er operasjonelt attraktivt.
 
 ## 8.3 Segmentert resultatanalyse
-Den segmenterte analysen separerer normale dager (≤ 70,6 stk) fra toppdager (> 70,6 stk). Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
+Den segmenterte analysen separerer normale dager (≤ 70,6 stk) fra toppdager (> 70,6 stk). Terskelen er 90.-persentilen av treningssettet (218 virkedager), jf. kap. 7.3. Tabell 4 viser segmentert MAE og Bias for de seks best presterende modellene under Scenario 2.
 
 <div align="center">
 
@@ -531,16 +531,27 @@ Den segmenterte analysen separerer normale dager (≤ 70,6 stk) fra toppdager (>
 
 </div>
 
-Analysen avdekker en klart segmentert modellvinner-struktur:
-- **På normale dager** er SARIMA best (MAE 29,4). Bruk av kampanjeinformasjon reduserer feilen fra 45,97 (Scenario 1) til 29,40 (Scenario 2), en forbedring på 36 %.
-- **På toppdager** er RF uten lag_1 best (MAE 290,2). Hybrid (terskel) er nesten like presis (305,5) og har lavere absolutt bias.
+For å vise SARIMAs ulike respons på kampanjeinformasjon i de to segmentene, sammenligner Tabell 4b modellen på tvers av Scenario 1 og Scenario 2.
+
+<div align="center">
+
+| Segment | Scenario 1 MAE | Scenario 2 MAE | Endring |
+| :--- | ---: | ---: | ---: |
+| Normale dager (n=27) | 46,0 | **29,4** | −36 % |
+| Toppdager (n=15) | 404,5 | 432,3 | +7 % |
+
+*Tabell 4b: SARIMA segmentert MAE — Scenario 1 vs Scenario 2*
+
+</div>
+
+Analysen avdekker en klart segmentert modellvinner-struktur. På normale dager er SARIMA best (MAE 29,4); kampanjeinformasjon reduserer feilen fra 46,0 (Scenario 1) til 29,4 (Scenario 2), en forbedring på 36 %, mens samme informasjon gir en svak forverring på toppdager (+7 %). På toppdager er RF uten lag_1 best (MAE 290,2), tett fulgt av Hybrid (terskel) (305,5), som har lavere absolutt bias.
 
 Andre modeller (Holt-Winters, full RF, SARIMA) har systematisk stor negativ eller positiv bias på toppdager, hvilket gir dem dårligere operasjonell robusthet. Fordi bias-skjevhet er mer kritisk for sikkerhetslagerdimensjonering enn tilfeldige avvik (Seiringer et al., 2024), er hybridens balanserte bias (−85 vs SARIMAs −432) et viktig resultat.
 
-Et slående observasjon er at både **Holt-Winters og SARIMA har |Bias| = MAE på toppdager** (487,2 og 432,3). Når Bias og MAE er like i absolutt verdi, må hver enkelt residual ha samme fortegn, det vil si at alle 15 toppdager undervurderes systematisk. Dette er ikke en beregningsartefakt, men et strukturelt kjennetegn ved klassisk sesongutjevning: modellene glatter mot historisk gjennomsnitt og kan ikke produsere de ekstreme nivåene kampanjer krever. Funnet underbygger at tidsseriemodeller alene er utilstrekkelige for kampanjevolum og motiverer hybridroutingen i kap. 9.4.
+En slående observasjon er at både Holt-Winters og SARIMA har |Bias| = MAE på toppdager (487,2 og 432,3). Når Bias og MAE er like i absolutt verdi, må hver enkelt residual ha samme fortegn, det vil si at alle 15 toppdager undervurderes systematisk. Dette er ikke en beregningsartefakt, men et strukturelt kjennetegn ved klassisk sesongutjevning: modellene glatter mot historisk gjennomsnitt og kan ikke produsere de ekstreme nivåene kampanjer krever. Funnet underbygger at tidsseriemodeller alene er utilstrekkelige for kampanjevolum og motiverer hybridroutingen i kap. 9.4.
 
 ## 8.4 Residualdiagnostikk og modellvaliditet
-For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-Box Q-test (10 lags) og ACF-plott evaluert (Figur 6).
+For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-Box Q-test (10 etterslep / lags, jf. kap. 7.4) og ACF-plott evaluert (Figur 6).
 
 <div align="center">
 
@@ -555,7 +566,7 @@ For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-
 | Hybrid (kampanje) | 12,9 | 0,231 | Nei (hvit støy) |
 | Hybrid (terskel) | 13,0 | 0,223 | Nei (hvit støy) |
 
-*Tabell 5: Ljung-Box Q-test på testresidualer (10 lags, Scenario 2)*
+*Tabell 5: Ljung-Box Q-test på testresidualer (10 etterslep, Scenario 2)*
 
 </div>
 
@@ -563,11 +574,11 @@ For å teste om modellene har ekstrahert all systematisk informasjon, ble Ljung-
 
 ![Figur 6: ACF-plott av residualene](figurer/fig6_residual_acf.png)
 
-*Figur 6: ACF-plott av residualene for fem sentrale modeller (Seasonal Naive, Holt-Winters, SARIMA, RF uten lag_1 og Hybrid terskel). Blått felt indikerer konfidensintervall for hvit støy.*
+*Figur 6: ACF-plott av residualene for fem sentrale modeller (Seasonal Naive, Holt-Winters, SARIMA, RF uten lag_1 og Hybrid terskel). Blått felt indikerer konfidensintervall for hvit støy; residualer som holder seg innenfor feltet betyr at modellen har ekstrahert all systematisk informasjon.*
 
 </div>
 
-Tabell 5 og Figur 6 viser et markant skille: **tidsseriemodellene (Naive, HW, SARIMA) og GBM har signifikant autokorrelasjon** i residualene, det vil si at de ikke har fanget opp all struktur. **RF, RF uten lag_1 og hybridene har residualer som er statistisk uavhengige**, og disse modellene har ekstrahert den systematiske informasjonen fra datasettet. Dette er et sterkt argument for de tre-baserte modellenes validitet, selv om SARIMA har bedre MAE på normale dager.
+Tabell 5 og Figur 6 viser et markant skille: tidsseriemodellene (Naive, HW, SARIMA) og GBM har signifikant autokorrelasjon i residualene, det vil si at de ikke har fanget opp all struktur. RF, RF uten lag_1 og hybridene har residualer som er statistisk uavhengige, og disse modellene har ekstrahert den systematiske informasjonen fra datasettet. Dette er et sterkt argument for de tre-baserte modellenes validitet, selv om SARIMA har bedre MAE på normale dager.
 
 Oppsummert viser resultatene at modellene tilbyr *komplementære styrker*: SARIMA gir best presisjon i normaldrift, RF uten lag_1 gir best ytelse på kampanje- og toppdager, og hybridene kombinerer styrkene med balanserte bias. Dette gir grunnlag for en nyansert diskusjon i kap. 9.
 
@@ -577,7 +588,7 @@ Dette kapittelet drøfter funnene fra analysen og vurderer de operasjonelle kons
 ## 9.1 Datakvalitet og metodisk erfaring
 En viktig metodisk erfaring i prosjektet var oppdagelsen av en datafeil i det opprinnelige vaskeskriptet. Første iterasjon av analysen brukte en aggregert tidsserie med sum 6 201 stk, mens faktisk `Bestilt antall` i råfilen summerer til 20 934 stk, en undertelling på ~70 %. Feilen ble oppdaget ved kryssjekk mot en uavhengig RELEX-eksport (20 801 stk), og skyldtes sannsynligvis en utdatert versjon av den vaskede filen som ikke ble regenerert etter at råfilen ble oppdatert. Vaskeskriptet selv produserer korrekte tall når det kjøres på dagens rådata.
 
-Denne erfaringen understøtter et metodisk hovedpoeng: **kryssjekk mot uavhengige datakilder er essensielt i prognosearbeid**. Totalsummer og dagsgjennomsnitt bør valideres tidlig i prosessen, ikke tolkes som gitt. Resultatene i rapporten bygger på den verifiserte RELEX-eksporten, som krysstemmer innen 0,6 % mot ERP-uttrekket på transaksjonsnivå.
+Denne erfaringen understøtter et metodisk hovedpoeng: kryssjekk mot uavhengige datakilder er essensielt i prognosearbeid. Totalsummer og dagsgjennomsnitt bør valideres tidlig i prosessen, ikke tolkes som gitt. Resultatene i rapporten bygger på den verifiserte RELEX-eksporten, som krysstemmer innen 0,6 % mot ERP-uttrekket på transaksjonsnivå (jf. kap. 4.3, datakildekontrolltabell).
 
 Oppdagelsen førte også til andre metodiske justeringer:
 - Overgang fra 7-dagers til 5-dagers sesongsyklus (virkedager), siden RD Trondheim ikke ekspederer i helg.
@@ -585,42 +596,39 @@ Oppdagelsen førte også til andre metodiske justeringer:
 - Formell residualdiagnostikk med Ljung-Box-test som supplement til visuell ACF-inspeksjon.
 
 ## 9.2 Verdien av informasjonsdeling (Scenario 1 vs 2)
-Sammenligningen mellom Scenario 1 (blind) og Scenario 2 (med kampanjeinfo) viser en **nyansert** effekt av informasjonsdeling. Effekten varierer kraftig mellom modeller og segmenter:
+Sammenligningen mellom Scenario 1 (blind) og Scenario 2 (med kampanjeinfo) viser en nyansert effekt av informasjonsdeling. Effekten varierer kraftig mellom modeller og segmenter:
 
-- **SARIMA på normale dager:** stor forbedring, MAE reduseres fra 45,97 (S1) til 29,40 (S2), en nedgang på 36 %. Modellen nyter godt av at kampanjeflagg gir den en "mental pause" fra å forklare unormale verdier med historikk.
+- **SARIMA på normale dager:** stor forbedring, MAE reduseres fra 46,0 (S1) til 29,4 (S2), en nedgang på 36 %. Kampanjeflagget gir SARIMA et signal om å suspendere ren historisk inferens på markerte dager, slik at sesongmønsteret de øvrige dagene blir tydeligere.
 - **RF uten lag_1 totalt:** moderat forbedring, MAE 179 → 169 (5,5 % bedre).
 - **Random Forest, Gradient Boosting totalt:** *dårligere* med kampanjeinfo. Scenario 2 øker RF-feilen fra 183 til 192, og GBM fra 268 til 294.
 - **SARIMA på toppdager:** *dårligere* med kampanjeinfo (MAE 405 → 432). Binært kampanjeflagg er for grovt, ettersom modellen lærer at "kampanje = høy", men responsen på Crazy Days vs jul vs påske varierer dramatisk.
 
-Resultatene understøtter Trapero et al. (2015)s generelle poeng om at kampanjekalender-integrasjon reduserer systematiske feil, men legger til et nyanserende funn: **binære kampanjeindikatorer er ikke nok**. For å realisere gevinstene fullt ut trenger modellene rikere kampanjerepresentasjon, for eksempel forventet volum eller priseffekter. Dette er et konkret anbefaling for videre arbeid.
+Resultatene understøtter Trapero et al. (2015)s generelle poeng om at kampanjekalender-integrasjon reduserer systematiske feil, men legger til et nyanserende funn: binære kampanjeindikatorer er ikke nok. For å realisere gevinstene fullt ut trenger modellene rikere kampanjerepresentasjon, for eksempel forventet volum eller priseffekter. Dette er en konkret anbefaling for videre arbeid.
 
 ## 9.3 Modellenes komplementære roller
 Analysen viser at det ikke finnes én beste modell, og at ulike modeller vinner på ulike segmenter:
 
-- **SARIMA (grid)** er best i **normaldrift** (MAE 29,4 på normale dager). Den fanger ukedagssyklusen og rutinemessig sesongvariasjon presist.
-- **RF uten lag_1** er best på **toppdager** (MAE 290,2). Når `lag_1` utelates, tvinges modellen til å bruke bredere sesongkontekst (`rolling_mean_5`, `lag_5`, `lag_10`), som gjør den robust mot ekstreme utslag.
-- Den opprinnelige **Random Forest med lag_1** har feature importance-dominans (lag_1 = 84 %) og fungerer i praksis som en forsterket "i morgen = i dag"-modell. Dette forklarer både hvorfor den har uavhengige residualer (lag_1 fanger autoregressiv struktur) og hvorfor den feiler på toppdager (lag_1 er ikke-informativ når etterspørselen plutselig hopper).
+- **SARIMA (grid)** er best i normaldrift (MAE 29,4 på normale dager). Den fanger ukedagssyklusen og rutinemessig sesongvariasjon presist.
+- **RF uten lag_1** er best på toppdager (MAE 290,2). Når `lag_1` utelates, tvinges modellen til å bruke bredere sesongkontekst (`rolling_mean_5`, `lag_5`, `lag_10`), som gjør den robust mot ekstreme utslag.
+- Den opprinnelige Random Forest med lag_1 har feature importance-dominans (lag_1 = 84 %, jf. vedlegg A4) og fungerer i praksis som en forsterket "i morgen = i dag"-modell. Dette forklarer både hvorfor den har uavhengige residualer (lag_1 fanger autoregressiv struktur) og hvorfor den feiler på toppdager (lag_1 er ikke-informativ når etterspørselen plutselig hopper).
 
-Dette er et sterkt argument for at **modellvalg bør styres av segmentet man prognoserer for**. En retail-virksomhet som REMA kan ha stor nytte av å operere med ulike modeller for rutineprognoser vs kampanjeprognoser, heller enn å tvinge én modell til å passe begge.
+Dette er et sterkt argument for at modellvalg bør styres av segmentet man prognoserer for. En retail-virksomhet som REMA kan ha stor nytte av å operere med ulike modeller for rutineprognoser vs kampanjeprognoser, heller enn å tvinge én modell til å passe begge.
 
 Residualdiagnostikken (Tabell 5) supplerer dette bildet. SARIMA har lavest MAE på normale dager, men residualene avviser Ljung-Box (Q=53,6, p<0,001), og modellen har altså ikke fanget all struktur. RF uten lag_1 har residualer som passerer Ljung-Box (p=0,24), men dårligere punktprognoser på normale dager. Dette kan tolkes som at SARIMA er "optimal parametrisk" innen sine lineære antagelser, mens RF uten lag_1 faktisk ekstraherer mer informasjon fra dataene, men med høyere prediksjonsvarians.
 
 ## 9.4 Hybridenes routing-utfordring
-To hybridvarianter ble testet:
-- **Kampanjebasert hybrid:** ruter etter kampanjeflagget (is_crazy_days eller is_event).
-- **Terskelbasert hybrid:** ruter etter RF uten lag_1 sin egen prediksjon (hvis > 70,6 stk → bruk RF uten lag_1).
+To hybridvarianter ble testet. Den kampanjebaserte hybriden ruter etter kampanjeflagget (is_crazy_days eller is_event), mens den terskelbaserte hybriden ruter etter RF uten lag_1 sin egen prediksjon (hvis > 70,6 stk → bruk RF uten lag_1).
 
-Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 alene på 290). Analysen viste at **kampanjedager og toppdager ikke er samme mengde**. I testsettet er det toppdager utenfor kampanjeperioder (f.eks. mandag etter nyttår), og disse rutes feil til SARIMA. Den terskelbaserte hybriden korrigerer dette ved å la selve prediksjonsapparatet avgjøre. Resultatet er MAE 305 på toppdager og nesten null systematisk bias (+6,6 totalt).
+Den kampanjebaserte hybriden feilet på toppdager (MAE 445 mot RF uten lag_1 alene på 290). Analysen viste at kampanjedager og toppdager ikke er samme mengde. I testsettet er det toppdager utenfor kampanjeperioder (f.eks. mandag etter nyttår), og disse rutes feil til SARIMA. Den terskelbaserte hybriden korrigerer dette ved å la selve prediksjonsapparatet avgjøre. Resultatet er MAE 305 på toppdager og nesten null systematisk bias (+6,6 totalt).
 
-Tradeoff-en (avveiningen) er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir "false positive"-routinger (feilaktig positive) der RF selv overpredikerer. Dette er et klassisk klassifikator-tradeoff: **terskelbasert routing forbedrer toppdager på bekostning av noen normale dager**.
+Avveiningen er tap av presisjon på noen normale dager (MAE 104 vs SARIMAs 29), fordi terskelen gir falske positive routinger der RF selv overpredikerer. Dette er en klassisk klassifikator-avveining: terskelbasert routing forbedrer toppdager på bekostning av noen normale dager.
 
 For operasjonell bruk er den terskelbaserte hybridens balanserte bias (+6,6) mer attraktiv enn SARIMAs sterke negative bias (−170), fordi bias-skjevhet har større konsekvens for sikkerhetslagerkostnader enn tilfeldige avvik (Seiringer et al., 2024).
 
 ## 9.5 Praktiske implikasjoner for REMA 1000
 Siden butikkenes ordrer for tørrvarer godkjennes med nær 100 % aksept av AOF/RELEX-forslaget (kap. 4.1), er prognosens kvalitet direkte styrende for bestilt volum. De observerte MAE-tallene kan derfor oversettes direkte til operasjonelle konsekvenser:
 
-- **I normaldrift** (27 dager av 42, ca. 90 % av året) gir SARIMA en MAE på 29 stk. Med median normalt salg på ca. 20 stk er dette et grovt nivå, men fortsatt brukbart, og kan reduseres til mer enn halvparten med presis modellvalg.
-- **På toppdager** (15 dager av 42, primært kampanjer og høytider) gir RF uten lag_1 MAE 290 stk. Det betyr at i et absoluttvolum på 1 000–2 000 stk feilestimerer modellen typisk 15–20 %. Dette er en kritisk feilmargin som må suppleres med menneskelig skjønn og nær koordinasjon mellom distribusjonslageret, regionskontor og kampanjeplanleggerne hos REMA sentralt.
+I normaldrift, som utgjør 27 av 42 testdager og typisk ca. 90 % av dagene i et representativt år, gir SARIMA en MAE på 29 stk. Med median normalt salg på ca. 20 stk (jf. kap. 4.3) er dette et grovt nivå, men fortsatt brukbart, og kan reduseres med mer enn halvparten ved presist modellvalg. På toppdager (15 av 42 testdager, primært kampanjer og høytider) gir RF uten lag_1 MAE 290 stk. Med et absoluttvolum på 1 000–2 000 stk innebærer dette en typisk relativ feil på 15–30 %. Dette er en kritisk feilmargin som må suppleres med menneskelig skjønn og nær koordinasjon mellom distribusjonslageret, regionskontor og kampanjeplanleggerne hos REMA sentralt.
 
 **Konkret anbefaling:** REMA 1000 bør bruke ulike modeller for ulike beslutningskontekster:
 1. Daglig volumbestilling i normaldrift: SARIMA med kampanjeflagg.
@@ -631,13 +639,15 @@ Dette er i tråd med Fildes et al. (2009) sin observasjon om at menneskelige ove
 
 ## 9.6 Metodiske begrensninger
 
-**Testsettets sammensetning.** Januar–februar 2026 inneholder Crazy Days vinter (uke 5) og den etterfølgende toppuken (uke 6, med dagsverdier opp mot 1 378 stk). Av 42 testdager er 15 (36 %) klassifisert som toppdager, betydelig over den forventede andelen på ca. 10 % i et representativt år. De globale feilmålene i Tabell 3 er derfor sterkt påvirket av toppdagene, og sammenligninger mellom modeller på globalt nivå må tolkes med varsomhet. Den **segmenterte analysen i kap. 8.3 er rapportens primære lens** for modellvalg, nettopp fordi den isolerer normaldrift og kampanjedrift.
+Den første begrensningen gjelder testsettets sammensetning. Januar–februar 2026 inneholder Crazy Days vinter (uke 5) og den etterfølgende toppuken (uke 6, med dagsverdier opp mot 1 378 stk). Av 42 testdager er 15 (36 %) klassifisert som toppdager, betydelig over den forventede andelen på ca. 10 % i et representativt år. De globale feilmålene i Tabell 3 er derfor sterkt påvirket av toppdagene, og sammenligninger mellom modeller på globalt nivå må tolkes med varsomhet. Den segmenterte analysen i kap. 8.3 er rapportens primære lens for modellvalg, nettopp fordi den isolerer normaldrift og kampanjedrift.
 
-**Fravær av walk-forward-validering.** Evalueringen bygger på en enkelt fast trenings-/testsplitt (83/17 %). Med kun 42 testdager er resultatene sårbare for tilfeldigheter i hvilke datoer som faller i testperioden. En walk-forward-validering (expanding window) ville gitt mer robuste estimater og mulighet til å kvantifisere prognoseusikkerhet over tid. Dette er et naturlig neste steg for videre arbeid (se kap. 10).
+En andre begrensning er fraværet av walk-forward-validering. Evalueringen bygger på en enkelt fast trenings-/testsplitt (83/17 %). Med kun 42 testdager er resultatene sårbare for tilfeldigheter i hvilke datoer som faller i testperioden. En walk-forward-validering (expanding window) ville gitt mer robuste estimater og mulighet til å kvantifisere prognoseusikkerhet over tid. Dette er et naturlig neste steg for videre arbeid (se kap. 10).
 
-**Risiko for overdifferensiering i SARIMA.** ADF-testen (kap. 7.1, Tabell A1) indikerer at treningsserien allerede er stasjonær (p < 0,001). Likevel valgte AIC-minimerende grid-søk en modell med både vanlig og sesongdifferensiering ($d=1, D=1$). Grid-søket inkluderte også $d=0, D=0$-kombinasjoner, så valget er datastyrt, men AIC straffer ikke overdifferensiering per se. Double differencing på en allerede stasjonær serie kan introdusere kunstig MA-struktur (MA-koeffisient nær $-1$), noe som delvis kan forklare den systematiske underestimeringen på toppdager (jf. kap. 8.3). En parsimonisk $(p,0,q)(P,0,Q)_5$-modell bør vurderes i et videre arbeid som sensitivitetssjekk.
+En tredje vurdering knytter seg til risikoen for overdifferensiering i SARIMA. ADF-testen (kap. 7.1, Tabell A1) indikerer at treningsserien allerede er stasjonær (p < 0,001). Likevel valgte AIC-minimerende grid-søk en modell med både vanlig og sesongdifferensiering ($d=1, D=1$). Grid-søket inkluderte også $d=0, D=0$-kombinasjoner, så valget er datastyrt, men AIC straffer ikke overdifferensiering per se. Double differencing på en allerede stasjonær serie kan introdusere kunstig MA-struktur (MA-koeffisient nær $-1$), noe som delvis kan forklare den systematiske underestimeringen på toppdager (jf. kap. 8.3 og Hyndman & Athanasopoulos, 2021). En parsimonisk $(p,0,q)(P,0,Q)_5$-modell bør vurderes i et videre arbeid som sensitivitetssjekk.
 
-**Forkastet leveranse: utvidet kampanjekalender.** I prosjektets løp vurderte vi å utvikle en mer detaljert kampanjekalenderfil som leveranse, med forventet volum, varighet per dag og prismetadata, slik at den kunne brukes som rik eksogen input i modellene. Vi forkastet dette fordi det tilgjengelige datagrunnlaget kun dekker 12 måneder med to Crazy Days-sykluser og tre kalenderhendelser. Det gir for få observasjoner til å kalibrere parametre per kampanjetype, og en slik fil ville i praksis vært dominert av subjektive antagelser fremfor empirisk grunnlag. Vi anbefaler likevel generelt at en strukturert, levende kampanjekalender med flerårig historikk og rikere kampanjemetadata (forventet volum, varighet, priskontekst) bygges opp som operativ artefakt i prognosearbeid med kampanjedrevet etterspørsel, slik at den statistiske informasjonen akkumulerer over tid og kan tas i bruk når datagrunnlaget tillater meningsfull parametrisering.
+En siste betraktning er en forkastet leveranse: en utvidet kampanjekalender. I prosjektets løp vurderte vi å utvikle en mer detaljert kampanjekalenderfil som leveranse, med forventet volum, varighet per dag og prismetadata, slik at den kunne brukes som rik eksogen input i modellene. Vi forkastet dette fordi det tilgjengelige datagrunnlaget kun dekker 12 måneder med to Crazy Days-sykluser og tre kalenderhendelser. Det gir for få observasjoner til å kalibrere parametre per kampanjetype, og en slik fil ville i praksis vært dominert av subjektive antagelser fremfor empirisk grunnlag. Vi anbefaler likevel generelt at en strukturert, levende kampanjekalender med flerårig historikk og rikere kampanjemetadata (forventet volum, varighet, priskontekst) bygges opp som operativ artefakt i prognosearbeid med kampanjedrevet etterspørsel, slik at den statistiske informasjonen akkumulerer over tid og kan tas i bruk når datagrunnlaget tillater meningsfull parametrisering.
+
+Disse begrensningene danner grunnlaget for anbefalingene om videre arbeid i kap. 10.
 
 
 # 10. Konklusjon
