@@ -1,7 +1,7 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000 (G27)
 
-**Statusdato:** 2026-04-16 (synkronisert med `schedule.json`, `wbs.md` og `risk.json`)
-**Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport 90 % ferdig)
+**Statusdato:** 2026-04-30 (intern review av kap. 6 lukket)
+**Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport ~92 % ferdig)
 
 Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
 
@@ -151,7 +151,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 | 3 Teori | Ferdig | 3.1–3.3 |
 | 4 Casebeskrivelse | Ferdig | 4.1–4.6 inkl. helgedata/mandagseffekt |
 | 5 Metode og data | Ferdig | 5.1–5.6 inkl. grid-search-detaljer |
-| 6 Modellering | Ferdig | 6.1–6.6 inkl. RF-hyperparametere og AIC-tabell |
+| 6 Modellering | Ferdig | 6.1–6.5 inkl. Tabell 4 (modelloversikt), in-tekst-sitater for SARIMA/RF/GBM/HW, presisert blandet evalueringsprotokoll og rettet d=1-framstilling. Redundant 6.6 fjernet. Intern review lukket 2026-04-30 |
 | 7 Analyse | Ferdig | 7.1–7.4 med residualdiagnostikk |
 | 8 Resultater | Ferdig | 8.1 (Scenario 1 vs 2) og 8.2 (åtte modeller globalt) |
 | 9 Diskusjon | 90 % | 9.1–9.4; mangler konkrete implementeringsanbefalinger (ryddes etter peer review) |
@@ -178,6 +178,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 1. `schedule.json`, `wbs.md` og `risk.json` synkronisert til 2026-04-16 med arbeidskopien.
 2. Rapportens datering er 2026-04-15 — oppdateres ved ferdigstillelse i M-04/M-06.
 3. `requirements.txt` opprettet i repo-rot 2026-04-18 med pinned versjoner (pandas 3.0.1, numpy 2.4.3, matplotlib 3.10.8, scikit-learn 1.8.0, statsmodels 0.14.6) — R-010 lukket.
+4. Tallrydding gjennomført 2026-04-30: P90-terskel flyttet fra 208 ML-trening (69,3) til 218 statistisk trening (70,6) i `analyse_hoved.py` og `scenario_analyse.py`; analysen rekjørt og berørte tabeller/sammendrag oppdatert. Volumtall i kap. 4.3 strukturert som flytkjede (Bestilt → Justert → RELEX virkedager → RELEX hele perioden) med eksplisitte definisjoner. F1 (kap. 4) og M1 (kap. 7) lukket.
 
 ## Viktigste risikoer (oppdatert 2026-04-16)
 

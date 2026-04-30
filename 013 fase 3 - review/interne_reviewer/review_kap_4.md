@@ -12,7 +12,7 @@
 | Punkt | Status |
 |---|---|
 | Kap. 4 vurdert | Ja |
-| Tiltak besluttet | Alle prioritet 1, 2 og 3 unntatt F1 (avventer manuell gjennomgang av totalsummer) |
+| Tiltak besluttet | Alle prioritet 1, 2 og 3 inkludert F1 lukket 2026-04-30 etter felles tallrydding (P90 + volumtall) |
 
 **Hovedfunn:** Kapittelet er strukturelt godt komponert og dekker alle krav fra CLAUDE.md §11. Største faglige svakhet er inkonsistens i totalsummer mellom RELEX og ERP (F1), som behandles separat. Resterende endringer omfatter standardisering av forkortelser, mindre språklige presiseringer og typografi.
 
@@ -89,7 +89,7 @@ Knapp og effektiv. Tre punkter (stock-outs, lagerbinding, uforutsigbarhet) er ti
 ## 3. Identifiserte svakheter (status og tiltak)
 
 ### Faglige svakheter
-- **F1: Inkonsistente totalsummer** (20 697 vs 20 701 vs 20 801 vs 20 934). Lag en samlet oversikt i 4.3 og bruk konsekvent terminologi. **Status: utsatt — bruker går manuelt gjennom tallene først.**
+- **F1: Inkonsistente totalsummer** (20 697 vs 20 701 vs 20 801 vs 20 934). Lag en samlet oversikt i 4.3 og bruk konsekvent terminologi. **Status: lukket 2026-04-30** — alle fire tall presenteres nå i flytkjede-tabell i 4.3 (Bestilt → Justert → RELEX virkedager → RELEX hele perioden), med 20 701 stk som primærtall for analysen. «~20 900» fjernet fra 5.4. Datakildekontrollen er nå koherent.
 - **F2: «D-pakning» ikke forklart** (4.2 linje 181). Forklare termen eller fjerne setningen hvis pall-/D-pakning ikke brukes videre i analysen. **Status: rettes nå.**
 - **F3: «Salg» vs B2B-utlevering** (4.3 linje 189). Presisere at `Salg (stk)` her betyr DC → butikk-utlevering. **Status: rettes nå.**
 
