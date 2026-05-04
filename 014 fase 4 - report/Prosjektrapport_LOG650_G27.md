@@ -113,7 +113,7 @@ I denne studien er **Variasjonskoeffisienten (Coefficient of Variation, CV)** et
 
 $$CV = \frac{\sigma}{\mu}$$
 
-En verdi for CV > 1,0 indikerer i forenklet form det som Syntetos og Boylan (2005) klassifiserer som **"Lumpy Demand"** (ujevn etterspørsel) basert på CV² > 0,49 og gjennomsnittlig intervall mellom etterspørselshendelser (ADI) > 1,32. Vi bruker CV som primærindikator i denne studien fordi datasettet ikke inneholder null-perioder mellom etterspørselshendelser (alle virkedager har observert volum), noe som gjør ADI mindre informativ. Lumpy demand er typisk for produkter der etterspørselen er preget av store, sporadiske topper etterfulgt av perioder med lavt eller null salg, noe som gjør lineære og utglattende metoder (f.eks. Moving Average eller enkel eksponensiell utglatning) mindre treffsikre, jf. kap. 6.1.
+En verdi for CV > 1,0 indikerer i forenklet form det som Syntetos og Boylan (2005) klassifiserer som **"Lumpy Demand"** (ujevn etterspørsel), jf. kap. 2.1. Vi bruker CV som primærindikator i denne studien fordi datasettet ikke inneholder null-perioder mellom etterspørselshendelser (alle virkedager har observert volum), noe som gjør den alternative ADI-indikatoren mindre informativ. Lumpy demand gjør lineære og utglattende metoder (f.eks. Moving Average eller enkel eksponensiell utglatning) mindre treffsikre, jf. kap. 6.1.
 
 ## 3.2 Prognosemetoder for tidsserier
 Prosjektet benytter fire nivåer av modellkompleksitet: enkle baselines, en statistisk hovedmodell, maskinlæringsmodeller og hybridkombinasjoner.
@@ -141,7 +141,7 @@ For å evaluere prognosens kvalitet benyttes fem komplementære feilmål, tolket
 
 $$MAE = \frac{1}{n} \sum_{t=1}^{n} |A_t - F_t|$$
 
-**MAPE (Mean Absolute Percentage Error):** Absoluttfeil som prosent av faktisk verdi. Utbredt, men Hyndman og Koehler (2006) advarer mot bruk ved lav etterspørsel, ettersom små nevnere gir ekstreme utslag.
+**MAPE (Mean Absolute Percentage Error):** Absoluttfeil som prosent av faktisk verdi. Ustabil ved lavt volum (jf. kap. 2.3), ettersom små nevnere gir ekstreme utslag.
 
 $$MAPE = \frac{100\%}{n} \sum_{t=1}^{n} \left| \frac{A_t - F_t}{A_t} \right|$$
 
@@ -153,7 +153,7 @@ $$sMAPE = \frac{100\%}{n} \sum_{t=1}^{n} \frac{2|A_t - F_t|}{|A_t| + |F_t|}$$
 
 $$WAPE = 100\% \cdot \frac{\sum_{t=1}^{n} |A_t - F_t|}{\sum_{t=1}^{n} |A_t|}$$
 
-**Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Seiringer et al. (2022) påpeker at systematisk bias har større operasjonell konsekvens enn tilfeldig varians.
+**Bias (Mean Error):** Gjennomsnittlig signert feil. Positiv = overestimering. Operasjonell betydning er drøftet i kap. 2.3 og kap. 9.4.
 
 $$\text{Bias} = \frac{1}{n} \sum_{t=1}^{n} (F_t - A_t)$$
 

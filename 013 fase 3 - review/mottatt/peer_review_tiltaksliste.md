@@ -16,7 +16,7 @@
 | Antall styrker identifisert av G26 | 12 (krever ingen tiltak — bekrefter sterke sider) |
 | Antall forbedringspunkter | 12, fordelt på 6 må / 4 bør / 2 kan vurderes |
 | Helhetsvurdering fra G26 | "Sterk rapport med høy faglig og teknisk kvalitet" |
-| Tiltak lukket | 11 av 12 (T-01 til T-11) |
+| Tiltak lukket | 12 av 12 (alle) |
 
 **G26s helhetsvurdering:** Reviewen kaller rapporten samlet sett en sterk rapport. Forbedringspunktene er primært finsliping (problemstillingsformulering, kapittelgrenser, formelle ryddetiltak). Ingen punkter krever ny analyse, modellering eller dataarbeid.
 
@@ -141,10 +141,11 @@
 
 ### T-12: Reduser overlapp litteratur/teori
 
-- [ ] Status: åpen — vurderes, kan medføre større omskriving
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 2; oppsummering s. 6 punkt 6.
 - **Mål-kapittel:** Kap. 2 (Litteratur) og kap. 3 (Teori).
 - **Vurdering:** G26 nevner særlig overlapp i prognosemetoder og feilmål. Vurder kirurgisk fjerning av duplikat-omtaler heller enn full omstrukturering.
+- **Lukket:** Skarpere skille mellom kap. 2 (empirisk syntese) og kap. 3 (formler og operasjonalisering). Tre kirurgiske trim i kap. 3: (1) 3.1 fjernet utvidet Syntetos & Boylan-utdypning (CV² > 0,49 og ADI > 1,32) — beholdt "Lumpy Demand"-begrepet med peker til kap. 2.1. (2) 3.3 ved MAPE-formelen fjernet Hyndman & Koehler-advarselsavsnitt — erstattet med kort peker "ustabil ved lavt volum (jf. kap. 2.3)". (3) 3.3 ved Bias-formelen fjernet Seiringer-referanse-paragraf — erstattet med "Operasjonell betydning er drøftet i kap. 2.3 og kap. 9.4". Kap. 2 forblir urørt; ingen kilder forsvinner fra in-text-siteringer (begge fortsatt sitert i kap. 2.3, og Hyndman & Koehler i kap. 8.2-figurtekst og kap. 9.1, Seiringer i kap. 5.8 og kap. 9.4). Kap. 3 leser nå tettere som ren formel- og operasjonaliseringsguide.
 
 ---
 
@@ -161,3 +162,4 @@
 - **T-09 lukket 2026-05-04:** Ny femte begrensning om generaliserbarhet i kap. 9.6: drøfter overføring til andre tørrvarer (sannsynlig), ferskvarer (modellrangering kan endres) og produkter uten lumpy-komponent (segmentert tilnærming mister verdi). Eksisterende kampanjekalender-betraktning renummerert til sjette.
 - **T-10 lukket 2026-05-04:** Mekanismeavsnitt lagt til i kap. 9.2 som eksplisitt binder binær-flagg-svakhet (uniform koding av heterogene kampanjer) til topp-spesifikke residualer.
 - **T-11 lukket 2026-05-04:** Evalueringsprotokoll flyttet fra kap. 6.4 til ny kap. 5.7. Renummerert: 5.7→5.8 (Evalueringsmål), 5.8→5.9 (Oppsummering). Kryssreferanser i kap. 1.2, 2 og kap. 8-påminnelsen oppdatert. Kap. 5.2 strammet til ren oversikt med kapittel-pekere; teknikk-detaljer fjernet og litteraturreferanser flyttet til der teknikkene anvendes.
+- **T-12 lukket 2026-05-04:** Tre kirurgiske trim i kap. 3 for skarpere skille mot kap. 2 (empirisk syntese vs. formler og operasjonalisering): (1) 3.1 lumpy demand-utdypning trimmet, (2) 3.3 Hyndman & Koehler MAPE-advarsel fjernet til peker, (3) 3.3 Seiringer bias-referanse fjernet til peker. Kap. 2 urørt; alle kilder fortsatt in-text-sitert flere steder.
