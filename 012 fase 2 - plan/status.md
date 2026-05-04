@@ -109,9 +109,10 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 #### ACT-10 Peer review og kvalitetssikring
 - [ ] Eksportere rapport til PDF/DOCX for distribusjon (mal i `000 templates/Mal prosjekt LOG650 v2.docx`)
 - [ ] Dele rapport og `scenario_resultater.csv` med medstudenter
-- [ ] Innhente tilbakemelding fra medstudenter
-- [ ] Oppsummere funn og forbedringspunkter
-- [ ] Revidere analyse, tekst og figurer
+- [x] Levert peer review av medstudentgruppe (Hovden & Lunde, «Datadrevet kapasitetsvarsling – Motive Offshore Group») 2026-05-03 — utført i isolert mappe utenfor G27
+- [x] Innhente tilbakemelding fra medstudenter (mottatt fra G26 2026-05-03, arkivert i `013 fase 3 - review/mottatt/Peer-review_Rema1000.pdf`)
+- [x] Oppsummere funn og forbedringspunkter (12 styrker / 12 forbedringspunkter klassifisert i `013 fase 3 - review/mottatt/peer_review_tiltaksliste.md` 2026-05-04: 6 må / 4 bør / 2 kan vurderes)
+- [ ] Revidere analyse, tekst og figurer (jobbe gjennom T-01 til T-06 i tiltakslogen)
 - [ ] Gjennomføre review og lukke aktiviteten (M-05)
 
 #### ACT-11 Ferdigstillelse av rapportutkast
