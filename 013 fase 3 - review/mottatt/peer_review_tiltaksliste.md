@@ -16,7 +16,7 @@
 | Antall styrker identifisert av G26 | 12 (krever ingen tiltak — bekrefter sterke sider) |
 | Antall forbedringspunkter | 12, fordelt på 6 må / 4 bør / 2 kan vurderes |
 | Helhetsvurdering fra G26 | "Sterk rapport med høy faglig og teknisk kvalitet" |
-| Tiltak lukket | 10 av 12 (T-01 til T-10) |
+| Tiltak lukket | 11 av 12 (T-01 til T-11) |
 
 **G26s helhetsvurdering:** Reviewen kaller rapporten samlet sett en sterk rapport. Forbedringspunktene er primært finsliping (problemstillingsformulering, kapittelgrenser, formelle ryddetiltak). Ingen punkter krever ny analyse, modellering eller dataarbeid.
 
@@ -133,10 +133,11 @@
 
 ### T-11: Skille metode/modellering strammes
 
-- [ ] Status: åpen — vurderes, kan medføre større omstrukturering
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF oppsummering s. 6 punkt 2.
 - **Mål-kapittel:** Kap. 5 (Metode) og kap. 6 (Modellering).
 - **Vurdering:** Større omflytting kan skape mye churn så sent i prosjektet. Hvis det gjøres, bør det være kirurgisk og målrettet, ikke en omskriving.
+- **Lukket:** To kirurgiske endringer gjennomført. (1) Evalueringsprotokoll flyttet fra kap. 6.4 til ny kap. 5.7, slik at multi-step vs. én-steg-frem-distinksjonen står som metodisk kapittel-nivå-valg fremfor som avsnitt i modellspesifikasjon. Renummerert: 5.7 Evalueringsmål → 5.8, 5.8 Oppsummering → 5.9. Kort peker satt inn i 6.4. Kryssreferanser oppdatert i kap. 1.2 (l. 59), kap. 2 (l. 79) og kap. 8-påminnelsen. (2) Kap. 5.2 "Den analytiske prosessen" strammet til ren oversikt — fjernet teknikk-detaljer (grid-search 144 kombinasjoner, TimeSeriesSplit 3-fold, Ljung-Box-test og ADF-test med inline-definisjoner), erstattet med kapittel-pekere til kap. 6, 7.1, 7.2, 7.4, 5.7 og 5.8. Litteraturreferanser (Ljung & Box 1978, Dickey & Fuller 1979, Hyndman & Koehler 2006) flyttet bort fra 5.2 — alle er fortsatt sitert in-text der teknikkene faktisk anvendes.
 
 ### T-12: Reduser overlapp litteratur/teori
 
@@ -159,3 +160,4 @@
 - **T-08 lukket 2026-05-04:** Tre tolkningsblokker fjernet/komprimert i kap. 8.2, 8.3 og 8.4 (operasjonelle/normative vurderinger, Seiringer-referanse, "viktig resultat"-formuleringer). Strukturforklaring av tidsseriemodellenes systematiske toppdag-underestimering flyttet til kap. 9.3.
 - **T-09 lukket 2026-05-04:** Ny femte begrensning om generaliserbarhet i kap. 9.6: drøfter overføring til andre tørrvarer (sannsynlig), ferskvarer (modellrangering kan endres) og produkter uten lumpy-komponent (segmentert tilnærming mister verdi). Eksisterende kampanjekalender-betraktning renummerert til sjette.
 - **T-10 lukket 2026-05-04:** Mekanismeavsnitt lagt til i kap. 9.2 som eksplisitt binder binær-flagg-svakhet (uniform koding av heterogene kampanjer) til topp-spesifikke residualer.
+- **T-11 lukket 2026-05-04:** Evalueringsprotokoll flyttet fra kap. 6.4 til ny kap. 5.7. Renummerert: 5.7→5.8 (Evalueringsmål), 5.8→5.9 (Oppsummering). Kryssreferanser i kap. 1.2, 2 og kap. 8-påminnelsen oppdatert. Kap. 5.2 strammet til ren oversikt med kapittel-pekere; teknikk-detaljer fjernet og litteraturreferanser flyttet til der teknikkene anvendes.

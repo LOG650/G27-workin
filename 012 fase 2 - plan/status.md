@@ -112,8 +112,8 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 - [x] Levert peer review av medstudentgruppe (Hovden & Lunde, «Datadrevet kapasitetsvarsling – Motive Offshore Group») 2026-05-03 — utført i isolert mappe utenfor G27
 - [x] Innhente tilbakemelding fra medstudenter (mottatt fra G26 2026-05-03, arkivert i `013 fase 3 - review/mottatt/Peer-review_Rema1000.pdf`)
 - [x] Oppsummere funn og forbedringspunkter (12 styrker / 12 forbedringspunkter klassifisert i `013 fase 3 - review/mottatt/peer_review_tiltaksliste.md` 2026-05-04: 6 må / 4 bør / 2 kan vurderes)
-- [x] Revidere analyse, tekst og figurer — alle 6 må-tiltak (T-01 til T-06) og 4 bør-tiltak (T-07 til T-10) lukket 2026-05-04: justert problemstilling, multi-step/én-steg-frem-asymmetri eksplisitt, tabellnummerering renummerert konsistent, sentence-case fikset i 4 APA-poster, ny etikk-seksjon i kap. 5.5, konklusjon utvidet med delproblem 1, variabeloversikt i kap. 6.4, kampanjeflagg-mekanisme i kap. 9.2, generaliserbarhet i kap. 9.6, og resultat/diskusjon-rydd
-- [ ] Gjennomføre review og lukke aktiviteten (M-05) — gjenstår: vurdere kan-vurderes (T-11, T-12) og eksportere ny PDF før innlevering
+- [x] Revidere analyse, tekst og figurer — alle 6 må-tiltak (T-01 til T-06), 4 bør-tiltak (T-07 til T-10) og 1 kan-vurderes-tiltak (T-11) lukket 2026-05-04: justert problemstilling, multi-step/én-steg-frem flyttet til ny kap. 5.7 Evalueringsprotokoll, tabellnummerering renummerert konsistent, sentence-case fikset i 4 APA-poster, ny etikk-seksjon i kap. 5.5, konklusjon utvidet med delproblem 1, variabeloversikt i kap. 6.4, kampanjeflagg-mekanisme i kap. 9.2, generaliserbarhet i kap. 9.6, resultat/diskusjon-rydd, og kap. 5.2 strammet til ren oversikt
+- [ ] Gjennomføre review og lukke aktiviteten (M-05) — gjenstår: vurdere T-12 (overlapp litteratur/teori) og eksportere ny PDF før innlevering
 
 #### ACT-11 Ferdigstillelse av rapportutkast
 - [ ] Sammenstille alle kapitler til komplett hovedutkast

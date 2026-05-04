@@ -56,7 +56,7 @@ Underveis i prosjektarbeidet mottok vi utvidet informasjon om kampanjekalendere 
 ## 1.2 Delproblemer
 For å strukturere analysen har vi definert følgende deloppgaver:
 1. Hvordan karakteriseres de historiske etterspørselsmønstrene for det valgte produktet?
-2. Hvilke tidsserie-baserte og maskinlæringsbaserte modeller gir lavest feilrate (målt ved MAE, MAPE, sMAPE, WAPE og Bias, jf. kap. 5.7), totalt og segmentert på normale dager vs toppdager?
+2. Hvilke tidsserie-baserte og maskinlæringsbaserte modeller gir lavest feilrate (målt ved MAE, MAPE, sMAPE, WAPE og Bias, jf. kap. 5.8), totalt og segmentert på normale dager vs toppdager?
 3. I hvilken grad bidrar kampanjeinformasjon (Scenario 1 vs Scenario 2) til å forbedre prognosepresisjonen, og hvordan varierer effekten mellom modeller og segmenter?
 
 ## 1.3 Avgrensninger
@@ -76,7 +76,7 @@ I arbeidet legges følgende antagelser til grunn:
 - **Stabilitet:** Vi forutsetter at det ikke har vært vesentlige strukturelle endringer i analyseperioden, herunder produktrelanseringer, varige prisendringer eller introduksjon av nye konkurrentprodukter i samme kategori, ut over de kampanjer og hendelser som er eksplisitt modellert.
 
 # 2. Litteratur
-Dette kapittelet presenterer en gjennomgang av sentrale bidrag innen retail forecasting (dagligvareprognoser) og etterspørselsplanlegging. Litteraturgjennomgangen er strukturert tematisk for å belyse utfordringene ved dagligvareprognoser, effekten av kampanjer og valg av evalueringsmetoder, og danner det faglige grunnlaget for valg av modellutvalg (kap. 6), scenariodesign (kap. 5) og evalueringsmål (kap. 5.7).
+Dette kapittelet presenterer en gjennomgang av sentrale bidrag innen retail forecasting (dagligvareprognoser) og etterspørselsplanlegging. Litteraturgjennomgangen er strukturert tematisk for å belyse utfordringene ved dagligvareprognoser, effekten av kampanjer og valg av evalueringsmetoder, og danner det faglige grunnlaget for valg av modellutvalg (kap. 6), scenariodesign (kap. 5) og evalueringsmål (kap. 5.8).
 
 ## 2.1 Kompleksitet i dagligvareprognoser
 Fildes et al. (2022) gir en omfattende oversikt over gapet mellom akademisk teori og praktisk anvendelse i varehandelen. De påpeker at tradisjonelle statistiske modeller ofte kommer til kort i møte med den ekstreme volatiliteten og de store datamengdene som karakteriserer moderne retail. Denne kompleksiteten understøttes av Makridakis et al. (2022) i deres analyse av M5-konkurransen. Her dokumenteres det at moderne maskinlæringsmodeller og hybridmetoder ofte utkonkurrerer klassiske tidsseriemetoder på dagligvaredata, spesielt når dataene er preget av diskontinuitet og mange nullverdier.
@@ -305,12 +305,12 @@ Studien benytter et **kvantitativt forskningsdesign** basert på en case-studie 
 Arbeidet er strukturert som en lineær prosess der målet er å identifisere den mest robuste modellen for å håndtere "Lumpy Demand". Ved å kombinere klassisk statistikk (SARIMA; Box & Jenkins, 1976) med maskinlæring (Random Forest; Breiman, 2001), oppnår vi en metodisk triangulering som øker studiens faglige tyngde og gir et mer nyansert bilde av prediksjonsevnen.
 
 ## 5.2 Den analytiske prosessen
-Analysen er gjennomført i fire hovedfaser ved bruk av Python 3 og bibliotekene Pandas (McKinney, 2010), Statsmodels (Seabold & Perktold, 2010) og Scikit-learn (Pedregosa et al., 2011):
+Analysen er gjennomført i fire hovedfaser ved bruk av Python 3 og bibliotekene Pandas (McKinney, 2010), Statsmodels (Seabold & Perktold, 2010) og Scikit-learn (Pedregosa et al., 2011). Dette delkapittelet gir en oversikt over flyten; tekniske detaljer er beskrevet der teknikkene faktisk anvendes.
 
-1. **Dataklargjøring (vask):** RELEX-eksporten (bredt format med 365 dagskolonner) pivoteres til langt format og filtreres til 260 virkedager. Rå ERP-uttrekket brukes som kryssjekk (se kap. 4.3).
-2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Dette inkluderer *grid-search* (systematisk rutenettsøk) over (p,d,q)(P,D,Q)_5 for SARIMA (144 kombinasjoner), *feature engineering* (variabelutvikling) og *kryssvalidert hyperparameter-tuning* (3-fold TimeSeriesSplit) for Gradient Boosting.
-3. **Validering:** Modellene testes på det uavhengige testsettet. Residualene evalueres med både visuell ACF-analyse og formell **Ljung-Box-test** (Ljung & Box, 1978; H0: residualer uavhengige). **ADF-test** (Augmented Dickey-Fuller; Dickey & Fuller, 1979) vurderer stasjonariteten i treningsserien.
-4. **Evaluering:** Modellene sammenlignes med MAE, MAPE, sMAPE, WAPE og Bias, segmentert på normale dager og toppdager. De robuste målene (sMAPE og WAPE) supplerer MAPE for å gi et ærlig bilde ved lavt volum (Hyndman & Koehler, 2006).
+1. **Dataklargjøring (vask):** RELEX-eksporten pivoteres fra bredt til langt format og filtreres til virkedager; ERP-uttrekket brukes som uavhengig kryssjekk (kap. 4.3).
+2. **Modellering og estimering:** Åtte modeller trenes på treningssettet. Modellutvalg og feature engineering er beskrevet i kap. 6, og parametersøk og kryssvalidert tuning i kap. 7.2.
+3. **Validering:** Modellene testes på det uavhengige testsettet, og residualstrukturen vurderes med formelle tester. Stasjonaritetstest av treningsserien er beskrevet i kap. 7.1, og residualdiagnostikk i kap. 7.4.
+4. **Evaluering:** Modellene sammenlignes med fem komplementære feilmål, segmentert på normale dager og toppdager. Evalueringsprotokoll og feilmål er beskrevet i kap. 5.7 og 5.8.
 
 ## 5.3 Datagrunnlag, struktur og lagerstatus
 Primærdataene er daglig salg hentet fra REMA 1000s prognoseverktøy **RELEX**. For å bekrefte at salgsdataene er et pålitelig mål for etterspørsel, har vi i tillegg gjennomgått lagerstatus for hele analyseperioden via et skjermbilde fra RELEX-grensesnittet (Vedlegg A8). Oversikten viser at lagernivået aldri når null, og at distribusjonssenteret aldri har vært utsolgt på Lasagne Familiepakning i analyseperioden. Dette validerer antagelsen om at observerte salgstall reflekterer faktisk utlevert etterspørsel, ikke en kapasitetsbegrenset restetterspørsel.
@@ -338,7 +338,12 @@ For å simulere en reell prognosesituasjon og sikre at vi måler modellenes gene
 
 Splitten tilsvarer ~83/17 % av de tilgjengelige observasjonene. Testperioden inneholder Crazy Days uke 5/2026, noe som gir anledning til å evaluere modellenes evne til å prediktere kampanjeeffekter som ikke overlapper treningssettet fullt ut.
 
-## 5.7 Evalueringsmål
+## 5.7 Evalueringsprotokoll
+Evalueringsprotokollen følger en blandet logikk som er viktig å være transparent om, fordi den får direkte konsekvenser for hvordan resultatene i kap. 8 skal tolkes. SARIMA og Holt-Winters trenes én gang på treningssettet (1. mars – 31. desember 2025) og produserer deretter en sammenhengende **multi-step-prognose** for hele testperioden på 42 virkedager. Modellene refittes ikke underveis, og ingen testdata flyter inn i parameterestimatet. Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting bruker derimot lag-features som er bygd én gang på den fullstendige tidsserien. Dette betyr at modellen for hver testdag har tilgang til faktiske observerte verdier fra foregående dager via lag_1, lag_5, lag_10 og rolling_mean_5. I praksis gir disse fire modellene altså en **én-steg-frem-prognose** med ekte observert lag, mens SARIMA og Holt-Winters gir en multi-step-prognose uten oppdatering av observasjoner.
+
+Begrunnelsen for å bruke faktiske lag-verdier i ML-modellene er at dette reflekterer den operasjonelle virkeligheten i REMAs dag-for-dag-bestillingsprosess (kap. 4.1): når dagens prognose lages, er gårsdagens utleverte volum allerede observert. Praksisen er i tråd med Hyndman og Athanasopoulos (2021) sin anbefaling om å la prognoseprotokollen speile beslutningssituasjonen. Konsekvensen er at modellene ikke konkurrerer på helt like vilkår: SARIMA og Holt-Winters må predikere 42 dager fram uten å se observasjoner underveis, mens Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting har tilgang til faktiske observerte verdier fra foregående dager via lag- og rolling-features. Asymmetrien er sentral for tolkningen av resultatene i kap. 8 og kan påvirke hvilken modell som fremstår som best i de aggregerte feilmålene. En streng sammenligning mellom modellfamilier krever derfor at protokollforskjellen leses sammen med tabellene, og hybridmodellene i kap. 6.2 er konstruert nettopp for å utnytte den komplementære styrken hver familie viser under sin egen protokoll.
+
+## 5.8 Evalueringsmål
 Vi rapporterer fem komplementære mål:
 * **MAE** (Mean Absolute Error): gjennomsnittlig absoluttfeil i stk. Enkel å kommunisere, og gir ikke skjeve utslag ved lave verdier.
 * **MAPE** (Mean Absolute Percentage Error): rapportert av tradisjon, men tolkes med forbehold. Dager med svært lavt volum gjør MAPE ustabil.
@@ -346,7 +351,7 @@ Vi rapporterer fem komplementære mål:
 * **WAPE** (Weighted Absolute Percentage Error): total absoluttfeil vektet med totalt volum, egnet for volumprioritert logistikkbeslutning.
 * **Bias**: gjennomsnittlig signert feil. Positiv verdi = overestimering; negativ = underestimering. Sentralt mål for sikkerhetslagerdimensjonering (Seiringer et al., 2022).
 
-## 5.8 Oppsummering — tekniske nøkkeltall
+## 5.9 Oppsummering — tekniske nøkkeltall
 Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Tallene gir leseren en kompakt referanse for hva modellene faktisk skal predikere, og hvor stor variasjonen er mellom segmentene.
 
 <div align="center">
@@ -445,9 +450,7 @@ Variabeloversikten under sammenfatter symboler og features brukt i modellene, sl
 
 </div>
 
-**Evalueringsprotokollen** følger en blandet logikk som det er viktig å være transparent om, fordi den får direkte konsekvenser for hvordan resultatene i kap. 8 skal tolkes. SARIMA og Holt-Winters trenes én gang på treningssettet (1. mars – 31. desember 2025) og produserer deretter en sammenhengende **multi-step-prognose** for hele testperioden på 42 virkedager. Modellene refittes ikke underveis, og ingen testdata flyter inn i parameterestimatet. Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting bruker derimot lag-features som er bygd én gang på den fullstendige tidsserien. Dette betyr at modellen for hver testdag har tilgang til faktiske observerte verdier fra foregående dager via lag_1, lag_5, lag_10 og rolling_mean_5. I praksis gir disse fire modellene altså en **én-steg-frem-prognose** med ekte observert lag, mens SARIMA og Holt-Winters gir en multi-step-prognose uten oppdatering av observasjoner.
-
-Begrunnelsen for å bruke faktiske lag-verdier i ML-modellene er at dette reflekterer den operasjonelle virkeligheten i REMAs dag-for-dag-bestillingsprosess (kap. 4.1): når dagens prognose lages, er gårsdagens utleverte volum allerede observert. Praksisen er i tråd med Hyndman og Athanasopoulos (2021) sin anbefaling om å la prognoseprotokollen speile beslutningssituasjonen. Konsekvensen er at modellene ikke konkurrerer på helt like vilkår: SARIMA og Holt-Winters må predikere 42 dager fram uten å se observasjoner underveis, mens Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting har tilgang til faktiske observerte verdier fra foregående dager via lag- og rolling-features. Asymmetrien er sentral for tolkningen av resultatene i kap. 8, og kan påvirke hvilken modell som fremstår som best i de aggregerte feilmålene. En streng sammenligning mellom modellfamilier krever derfor at protokollforskjellen leses sammen med tabellene, og hybridmodellene i kap. 6.2 er konstruert nettopp for å utnytte den komplementære styrken hver familie viser under sin egen protokoll.
+Modellspesifikasjonene over definerer parametre og features, men beskriver ikke selve evalueringsoppsettet. Den blandede protokollen, der SARIMA og Holt-Winters opererer som multi-step-prognoser uten oppdatering, mens ML-modellene opererer som én-steg-frem-prognoser med faktisk observert lag, er forklart i kap. 5.7. Asymmetrien er sentral for tolkningen av resultatene i kap. 8.
 
 ## 6.5 Metodisk refleksjon
 Åtte modeller er valgt for å spenne over tre faglig distinkte tilnærminger — enkle baselines, en parametrisk statistisk modell og ikke-parametriske maskinlæringsmodeller — supplert med to hybridvarianter. Hensikten er ikke utelukkende å maksimere prognosepresisjon, men å gjennomføre en **metodisk triangulering** som lar oss skille mellom feil som skyldes modellbegrensninger og feil som skyldes egenskaper ved datagrunnlaget selv. M5-konkurransen (Makridakis et al., 2022) viser nettopp at familie-diversitet og enkle baselines er essensielle for å vurdere hva mer avanserte modeller faktisk tilfører.
@@ -482,7 +485,7 @@ Som del av valideringsprotokollen inngår også systematisk bias per segment, so
 # 8. Resultater
 Dette kapittelet presenterer numeriske funn fra evalueringen av prognosemodellene på testsettet (januar–februar 2026, 42 virkedager). Resultatene er strukturert i fire deler: (8.1) sammenligning av Scenario 1 vs Scenario 2, (8.2) global modellytelse, (8.3) segmentert resultatanalyse, og (8.4) residualdiagnostikk.
 
-Før tabellene presenteres minner vi om protokollforskjellen redegjort for i kap. 6.4: SARIMA og Holt-Winters opererer som multi-step-prognoser uten oppdatering av observasjoner gjennom testperioden, mens Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting opererer som én-steg-frem-prognoser med faktiske observerte lag-verdier. Modellene konkurrerer derfor ikke på helt like vilkår, og rangering basert på MAE alene må tolkes med dette forbeholdet.
+Før tabellene presenteres minner vi om protokollforskjellen redegjort for i kap. 5.7: SARIMA og Holt-Winters opererer som multi-step-prognoser uten oppdatering av observasjoner gjennom testperioden, mens Seasonal Naïve, Random Forest, Random Forest uten lag_1 og Gradient Boosting opererer som én-steg-frem-prognoser med faktiske observerte lag-verdier. Modellene konkurrerer derfor ikke på helt like vilkår, og rangering basert på MAE alene må tolkes med dette forbeholdet.
 
 Alle tall i resultattabellene bygger på `scenario_sammendrag.csv` fra `scenario_analyse.py`, som kjører Scenario 1 og 2 konsistent på samme datagrunnlag. Ljung-Box-diagnostikken stammer fra en parallell kjøring i `analyse_hoved.py`; RF-variantene har identiske features i begge skript (kun ulik rekkefølge), så de kvalitative konklusjonene om residualstruktur er robuste.
 
