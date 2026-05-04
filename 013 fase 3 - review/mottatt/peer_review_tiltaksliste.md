@@ -16,7 +16,7 @@
 | Antall styrker identifisert av G26 | 12 (krever ingen tiltak — bekrefter sterke sider) |
 | Antall forbedringspunkter | 12, fordelt på 6 må / 4 bør / 2 kan vurderes |
 | Helhetsvurdering fra G26 | "Sterk rapport med høy faglig og teknisk kvalitet" |
-| Tiltak lukket | 6 av 12 (T-01 til T-06) |
+| Tiltak lukket | 10 av 12 (T-01 til T-10) |
 
 **G26s helhetsvurdering:** Reviewen kaller rapporten samlet sett en sterk rapport. Forbedringspunktene er primært finsliping (problemstillingsformulering, kapittelgrenser, formelle ryddetiltak). Ingen punkter krever ny analyse, modellering eller dataarbeid.
 
@@ -97,31 +97,35 @@
 
 ### T-07: Symbol-/variabeltabell i modellkapittel
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 3, "Modellering"; oppsummering s. 6 punkt 4.
 - **Mål-kapittel:** Kap. 6 (Modellering), tidlig i kapittelet.
 - **Handling:** Legg inn kort tabell som forklarer y_t, lag_1, lag_5, rolling_mean_5, is_crazy_days, is_event, og terskelverdien 70,6. Hjelper lesere uten dyp tidsserie-bakgrunn.
+- **Lukket:** Variabeloversikt lagt til i kap. 6.4 mellom feature-vektor-paragrafen og evalueringsprotokollen. Dekker $y_t$, lag_1/5/10, rolling_mean_5, kalenderfeatures (is_monday, month, week_of_month, days_since_last_order), kampanjeflagg (is_crazy_days, is_event), SARIMA-parameterstruktur og terskelverdi 70,6. Tabellen er presentert som unummerert "Variabeloversikt" (i stedet for "Tabell 4") for å unngå renummerering av eksisterende Tabell 4–7 etablert under T-03.
 
 ### T-08: Resultat og diskusjon ryddes (separasjon)
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 3, "Analyse og resultater"; oppsummering s. 6 punkt 7.
 - **Mål-kapittel:** Kap. 8 (Resultater) og kap. 9 (Diskusjon).
 - **Handling:** Identifisér steder i kap. 8 der det trekkes konklusjoner om operasjonell robusthet eller modellvaliditet, og vurder å flytte slike vurderinger til kap. 9. Resultatdelen bør holde seg objektiv.
+- **Lukket:** Tre tolkningsblokker fjernet/komprimert i kap. 8 (kap. 8.2 "operasjonelt attraktivt" fjernet; kap. 8.3 Seiringer-referanse og "viktig resultat" flyttet, strukturforklaring om |Bias|=MAE på toppdager flyttet til kap. 9.3; kap. 8.4 "sterkt argument for validitet selv om SARIMA har bedre MAE" trimmet). Kap. 9.3 utvidet med strukturforklaring av tidsseriemodellenes systematiske toppdag-underestimering. Resultattabellene og observasjonene står som før — kun tolknings- og verdivurderingssetninger ble flyttet/trimmet.
 
 ### T-09: Generaliserbarhet diskuteres bredere
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 3–4, "Diskusjon"; oppsummering s. 6 punkt 8.
 - **Mål-kapittel:** Kap. 9 (Diskusjon), generaliserbarhetsavsnitt.
 - **Handling:** Kort drøfting: gjelder funnene andre kampanjedrevne tørrvarer? Ferskvarer? Frossenvarer? Produkter med jevnere etterspørsel? Tydeliggjør grenser for overførbarhet.
+- **Lukket:** Ny "femte begrensning" lagt til i kap. 9.6 som drøfter generaliserbarhet langs tre dimensjoner: (1) andre kampanjedrevne tørrvarer (sannsynligvis robust), (2) ferskvarer med kort holdbarhet (etterspørselssignal mer forbruksdrevet, modellrangering kan endres), (3) produkter med jevnere etterspørsel uten lumpy-komponent (segmentert tilnærming mister verdi). Eksisterende "siste betraktning" om kampanjekalender renummerert til "sjette betraktning".
 
 ### T-10: Kampanjeflagg-begrensning kobles tydeligere til modell-feil
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 3 (Diskusjon); oppsummering s. 6 punkt 12.
 - **Mål-kapittel:** Kap. 9 (Diskusjon), eventuelt kap. 8 (Resultater).
 - **Handling:** Rapporten sier at binært kampanjeflagg er for grovt — kobl dette tydeligere til *hvorfor* modellene feiler på toppdager (manglende kampanjeintensitet, type, varighet i features).
+- **Lukket:** Nytt mekanismeavsnitt lagt til i kap. 9.2 som eksplisitt forklarer kjeden: binært flagg → uniform koding av heterogene kampanjer (Crazy Days vinter > 1 300 stk vs. mindre hendelse 200–400 stk under samme verdi 1) → middelnivå-prediksjon → topp-spesifikke residualer. Avsnittet binder eksplisitt sammen kampanjerepresentasjons-svakheten med toppdag-feilen og grunngir anbefalingen om rikere kampanjedata.
 
 ---
 
@@ -151,3 +155,7 @@
 - **T-04 lukket 2026-05-04:** Sentence-case rettet i fire bibliografiposter (McKinney 2010, Pedregosa et al. 2011, Seabold & Perktold 2010, Seiringer et al. 2022). Ingen kulepunkter å fjerne; volum-italic-konvensjon vurdert konsekvent og akseptabel.
 - **T-05 lukket 2026-05-04:** Ny seksjon "5.5 Etiske hensyn og konfidensialitet" lagt til. Renummerert: 5.5→5.6, 5.6→5.7, 5.7→5.8. Kryssreferanser oppdatert i kap. 1.2, 2, 6 og 7.3.
 - **T-06 lukket 2026-05-04:** Åpningsparagraf utvidet med delproblem 1, nytt hovedpunkt 1 om etterspørselsmønsteret med konkrete tall og Syntetos & Boylan-referanse. Eksisterende punkter renummerert 2–6 med delproblem-merking på 2 og 3. Avslutningssetning oppdatert for konsistens med ny problemstilling.
+- **T-07 lukket 2026-05-04:** Variabeloversikt lagt til i kap. 6.4 (12 variabler/symboler dekket: $y_t$, lag-features, rolling_mean, kalenderfeatures, kampanjeflagg, SARIMA-parametre, terskelverdi). Unummerert for å unngå renummerering av Tabell 4–7.
+- **T-08 lukket 2026-05-04:** Tre tolkningsblokker fjernet/komprimert i kap. 8.2, 8.3 og 8.4 (operasjonelle/normative vurderinger, Seiringer-referanse, "viktig resultat"-formuleringer). Strukturforklaring av tidsseriemodellenes systematiske toppdag-underestimering flyttet til kap. 9.3.
+- **T-09 lukket 2026-05-04:** Ny femte begrensning om generaliserbarhet i kap. 9.6: drøfter overføring til andre tørrvarer (sannsynlig), ferskvarer (modellrangering kan endres) og produkter uten lumpy-komponent (segmentert tilnærming mister verdi). Eksisterende kampanjekalender-betraktning renummerert til sjette.
+- **T-10 lukket 2026-05-04:** Mekanismeavsnitt lagt til i kap. 9.2 som eksplisitt binder binær-flagg-svakhet (uniform koding av heterogene kampanjer) til topp-spesifikke residualer.
