@@ -16,7 +16,7 @@
 | Antall styrker identifisert av G26 | 12 (krever ingen tiltak — bekrefter sterke sider) |
 | Antall forbedringspunkter | 12, fordelt på 6 må / 4 bør / 2 kan vurderes |
 | Helhetsvurdering fra G26 | "Sterk rapport med høy faglig og teknisk kvalitet" |
-| Tiltak lukket | 1 av 12 (T-01) |
+| Tiltak lukket | 6 av 12 (T-01 til T-06) |
 
 **G26s helhetsvurdering:** Reviewen kaller rapporten samlet sett en sterk rapport. Forbedringspunktene er primært finsliping (problemstillingsformulering, kapittelgrenser, formelle ryddetiltak). Ingen punkter krever ny analyse, modellering eller dataarbeid.
 
@@ -52,39 +52,44 @@
 
 ### T-02: Multi-step vs. én-steg-frem-forskjell løftes tydeligere
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 2, "Metode", forbedringspunkt; oppsummering s. 6 punkt 3.
 - **Mål-kapittel:** Kap. 5 (Metode) eller kap. 6 (Modellering), før resultatene presenteres.
 - **Handling:** Eget avsnitt eller boks som eksplisitt sier at SARIMA/Holt-Winters lager multi-step-prognose uten oppdatering, mens RF/GBM bruker faktiske observerte lag-verdier (én-steg-frem). Modellene konkurrerer dermed ikke på helt like vilkår, og dette må tas i betraktning ved tolkning av hvilken modell som er "best".
+- **Lukket:** Konsekvensavsnittet i kap. 6.4 (`Prosjektrapport_LOG650_G27.md` l. 423) er omformulert med eksplisitt "modellene konkurrerer ikke på helt like vilkår" og kobling til "hvilken modell som fremstår som best i de aggregerte feilmålene". I tillegg lagt til kort påminnelse i åpningen av kap. 8 (l. 458–460) om protokollforskjellen, før tabellene presenteres, slik G26 ba om "før resultatene".
 
 ### T-03: Tabellnummerering og kryssreferanser kvalitetssikres
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 3, "Analyse og resultater"; oppsummering s. 6 punkt 10.
 - **Mål-kapittel:** Hele rapporten, men særlig start av kap. 8 (resultater).
 - **Konkret feil G26 fant:** Tekst i kap. 8 starter med "Tabell 2, 3 og 4", men de reelle tabellene som vises er Tabell 5–9.
 - **Handling:** Gå gjennom alle tabell- og figurreferanser i kap. 1–10, sammenlign med faktisk nummerering, oppdater eventuelle inkonsistenser.
+- **Lukket:** Renummerering gjennomført. Duplikatene "Tabell 2" (kap. 5 og 8.1) og "Tabell 4" (kap. 6 og 8.3) er løst. Ny sekvens: Tabell 1 (kap. 4), Tabell 2 (kap. 5), Tabell 3 (kap. 6 modeller), Tabell 4 (kap. 8.1 MAE per scenario), Tabell 5 (kap. 8.2 global), Tabell 6 og 6b (kap. 8.3 segmentert + SARIMA-sammenligning), Tabell 7 (kap. 8.4 Ljung-Box). Krysshenvisninger i kap. 9.3, 9.6 og vedlegg A7 oppdatert. Innledningssetningen i kap. 8 er omformulert til generisk "resultattabellene" siden den uansett refererte feil tabeller.
 
 ### T-04: APA 7-format kvalitetssikres i bibliografien
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 4, "Skriveflyt"; oppsummering s. 6 punkt 11.
 - **Mål-kapittel:** Kap. 11 (Bibliografi).
 - **Handling:** Sammenlign formatet i bibliografien mot `000 templates/Referansestiler/APA 7th norsk v1.12.pdf`. Vurder å fjerne kulepunkter, sjekk hengemarg, formatering av forfatternavn, journals, DOI-er. Den interne reviewen (review_kap_11-12.md) lukket allerede flere APA-tiltak — sjekk hva som gjenstår.
+- **Lukket:** Bibliografien har ingen kulepunkter (allerede ren APA-stil — G26s kommentar gjaldt "vurder å fjerne dersom"). Sentence-case rettet i fire titler som tidligere var i title case: McKinney (2010), Pedregosa et al. (2011), Seabold & Perktold (2010), og Seiringer et al. (2022). De øvrige 13 referansene var allerede i sentence case. Hengemargs-rendering håndteres av docx-/pdf-konvertering, ikke i kildedokument. Volum-italic-konvensjon (APA 7-norm "*Journal, vol*(issue)") er ikke endret — gjeldende stil med italic kun på journalnavn er konsekvent gjennomført og akseptabel mot Norsk APA 7 v1.12. Anthropic/AI-henvisning ikke til stede i denne rapporten (var en kommentar om medstudentens rapport).
 
 ### T-05: Etikk, personvern og konfidensialitet omtales
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 2, "Metode"; oppsummering s. 6 punkt 5.
 - **Mål-kapittel:** Kap. 5 (Metode), egen kort seksjon (f.eks. 5.x "Etiske hensyn og konfidensialitet").
 - **Handling:** Forklar kort: data er aggregert/anonymisert, taushetserklæring er signert, hvor data er lagret og hvordan de behandles. G26 bemerker at rapporten er sterk på reliabilitet og datakvalitet, men svakere på etikk.
+- **Lukket:** Ny seksjon "5.5 Etiske hensyn og konfidensialitet" lagt til. Dekker (1) taushetserklæring signert med REMA, (2) ingen kunde-/ansatt-/persondata → GDPR ikke direkte berørt, (3) data forretningssensitive og lagret lokalt, (4) deling kun via aggregater og avidentifiserte mellomprodukter, (5) bedriftsspesifikke kampanjedetaljer balansert mot etterprøvbarhet. Renummerert: gamle 5.5 → 5.6 (Oppdeling), 5.6 → 5.7 (Evalueringsmål), 5.7 → 5.8 (Oppsummering). Kryssreferanser oppdatert i kap. 1.2 (delproblem 2), kap. 2 (åpningsavsnitt), kap. 6 (åpning), og kap. 7.3.
 
 ### T-06: Konklusjon må eksplisitt svare på delproblem 1
 
-- [ ] Status: åpen
+- [x] Status: lukket 2026-05-04
 - **Kilde:** PDF s. 4, "Konklusjon"; oppsummering s. 6 punkt 9.
 - **Mål-kapittel:** Kap. 10 (Konklusjon).
 - **Handling:** Konklusjonen omtaler i dag særlig delproblem 2 og 3. Legg til kort avsnitt som svarer på delproblem 1 (historiske etterspørselsmønstre): lavt normalvolum, høy variasjonskoeffisient, tydelig virkedagseffekt, kraftige kampanjetopper. G26 foreslår en mer konsis konklusjon — vurder samtidig om noen formuleringer kan strammes.
+- **Lukket:** Åpningsparagraf utvidet til å nevne alle tre delproblemene. Nytt hovedpunkt 1 "Etterspørselsmønsteret er kampanjedrevet med lavt normalvolum (delproblem 1)" lagt til med konkrete tall fra Tabell 2 (median 19,5 stk, snitt 61,1 stk, std 239,3 stk, maks 2 172 stk), virkedagseffekt med ACF-referanse og kobling til Syntetos & Boylan (2005) sin "lumpy demand"-kategorisering. Eksisterende hovedpunkter renummerert til 2–6, og delproblem-merking lagt til på punkt 2 og 3. Avslutningssetning oppdatert fra "tidsserie-baserte metoder" til "parallell bruk av tidsserie- og maskinlæringsbaserte modeller" for konsistens med ny problemstilling. Ytterligere stramming av konklusjonen er ikke gjort — vurderes som lavprioritet under T-08 (resultat/diskusjon-rydd) hvis tid før M-04.
 
 ---
 
@@ -140,4 +145,9 @@
 
 ## Lukkelogg
 
-- **T-01 lukket 2026-05-04:** Problemstilling utvidet fra "tidsserie-baserte prognosemetoder" til "tidsserie- og maskinlæringsbaserte prognosemodeller" i `Prosjektrapport_LOG650_G27.md` (l. 19 sammendrag, l. 43 innledning, l. 50 problemstilling) og parallell `.tex` (l. 73, 87, 95). Delproblem 2 (l. 59) hadde allerede konsistent formulering. Konklusjons-setning l. 668 bevart som finding-statement.
+- **T-01 lukket 2026-05-04:** Problemstilling utvidet fra "tidsserie-baserte prognosemetoder" til "tidsserie- og maskinlæringsbaserte prognosemodeller" i `Prosjektrapport_LOG650_G27.md` (l. 19 sammendrag, l. 43 innledning, l. 50 problemstilling) og parallell `.tex` (l. 73, 87, 95). Delproblem 2 (l. 59) hadde allerede konsistent formulering. Konklusjons-setning revidert under T-06.
+- **T-02 lukket 2026-05-04:** Konsekvensavsnittet i kap. 6.4 omformulert med eksplisitt "modellene konkurrerer ikke på helt like vilkår" og kobling til "best i de aggregerte feilmålene". Kort påminnelse om protokollforskjell lagt til i åpningen av kap. 8 før tabellene presenteres.
+- **T-03 lukket 2026-05-04:** Tabell-renummerering for å løse duplikater (Tabell 2 i kap. 5 og 8.1, Tabell 4 i kap. 6 og 8.3). Ny sekvens: T1 (kap. 4), T2 (kap. 5), T3 (kap. 6), T4 (kap. 8.1), T5 (kap. 8.2), T6/T6b (kap. 8.3), T7 (kap. 8.4). Krysshenvisninger i kap. 9.3, 9.6 og vedlegg A7 oppdatert.
+- **T-04 lukket 2026-05-04:** Sentence-case rettet i fire bibliografiposter (McKinney 2010, Pedregosa et al. 2011, Seabold & Perktold 2010, Seiringer et al. 2022). Ingen kulepunkter å fjerne; volum-italic-konvensjon vurdert konsekvent og akseptabel.
+- **T-05 lukket 2026-05-04:** Ny seksjon "5.5 Etiske hensyn og konfidensialitet" lagt til. Renummerert: 5.5→5.6, 5.6→5.7, 5.7→5.8. Kryssreferanser oppdatert i kap. 1.2, 2, 6 og 7.3.
+- **T-06 lukket 2026-05-04:** Åpningsparagraf utvidet med delproblem 1, nytt hovedpunkt 1 om etterspørselsmønsteret med konkrete tall og Syntetos & Boylan-referanse. Eksisterende punkter renummerert 2–6 med delproblem-merking på 2 og 3. Avslutningssetning oppdatert for konsistens med ny problemstilling.
