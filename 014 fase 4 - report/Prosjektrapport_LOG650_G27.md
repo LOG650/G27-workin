@@ -2,18 +2,37 @@
 
 **Forfattere:** Line Lyngsnes Johansen og Amanda Arnesen Almaas  
 **Studium:** Logistikk (Nettbasert), Høgskolen i Molde  
-**Dato:** 15. april 2026  
+**Dato:** 31. mai 2026  
 **Sted:** Trondheim  
 
----
+\newpage
 
-**Obligatorisk egenerklæring / gruppeerklæring**  
-*(Innhold fra mal legges inn her ved endelig innlevering)*
+**Obligatorisk egenerklæring / gruppeerklæring**
 
-**Personvern og Publiseringsavtale**  
-*(Innhold fra mal legges inn her ved endelig innlevering)*
+Den enkelte student er selv ansvarlig for å sette seg inn i hva som er lovlige hjelpemidler, retningslinjer for bruk av disse og regler om kildebruk. Erklæringen skal bevisstgjøre studentene på deres ansvar og hvilke konsekvenser fusk kan medføre. Manglende erklæring fritar ikke studentene fra sitt ansvar.
 
----
+Vi bekrefter at oppgaven er resultatet av eget arbeid, at alle kilder er oppgitt etter APA 7. utgave, og at vi har gjort oss kjent med Høgskolen i Molde sitt regelverk for fusk og plagiat.
+
+**Personvern**
+
+**Personopplysningsloven:** Har oppgaven vært vurdert av NSD? Nei. Vi erklærer at oppgaven ikke omfattes av Personopplysningsloven, fordi den kun benytter aggregerte salgs- og logistikkdata uten identifiserbare personopplysninger.
+
+**Helseforskningsloven:** Har oppgaven vært til behandling hos REK? Nei. Prosjektet faller ikke inn under Helseforskningsloven.
+
+**Publiseringsavtale**
+
+| Felt | Verdi |
+|---|---|
+| Studiepoeng | 15 |
+| Veileder | Bård Inge Austigard Pettersen |
+| Fullmakt til elektronisk publisering i Brage HiM | Ja |
+| Er oppgaven båndlagt (konfidensiell)? | Nei |
+| Dato | 31. mai 2026 |
+| Sted | Trondheim |
+
+Forfatter(ne) har opphavsrett til oppgaven. Det innebærer enerett til å gjøre verket tilgjengelig for allmennheten (Åndsverkloven §2). Alle oppgaver som fyller kriteriene blir registrert og publisert i Brage HiM med forfatter(ne)s godkjennelse. Vi gir herved Høgskolen i Molde en vederlagsfri rett til å gjøre oppgaven tilgjengelig for elektronisk publisering.
+
+\newpage
 
 ## Sammendrag
 Denne rapporten undersøker prognosepresisjon for daglig etterspørsel ved REMA 1000 Distribusjon Trondheim. Formålet er å evaluere i hvilken grad tidsserie- og maskinlæringsbaserte modeller kan predikere etterspørselen for produktet "Lasagne Familiepakning", og hvordan kampanjeinformasjon påvirker nøyaktigheten. Åtte modeller (Seasonal Naive, Holt-Winters, SARIMA, Random Forest, RF uten lag_1, Gradient Boosting, og to hybridvarianter) er estimert i to scenarier på 260 virkedager (mars 2025 – februar 2026) og evaluert med MAE, MAPE, sMAPE, WAPE og Bias. Analysen viser at SARIMA med grid-søkt parametervalg er mest presis i normaldrift (MAE 29,4 stk), mens Random Forest uten lag_1 presterer best på kampanje- og høytidsdager (MAE 290,2 stk). Binært kampanjeflagg gir marginal global forbedring, noe som peker mot behov for rikere kampanjerepresentasjon. En terskelbasert hybridmodell med nesten balansert bias (+6,6 stk) anbefales for operasjonelle beslutninger som krever konsistens over tid.
@@ -203,9 +222,9 @@ En viktig datakildekontroll ble gjennomført underveis. Volumet kan måles på f
 | RELEX virkedager | 20 701 | Aggregert daglig utlevering, kun de 260 virkedagene (analysebasis) |
 | RELEX hele perioden | 20 801 | Aggregert daglig utlevering inkl. 12 helgedager med salg (100 stk) |
 
-</div>
-
 *Datakildekontroll: fire mål for samme volum gjennom flyten butikkordre → DC-leveranse → RELEX-rapport.*
+
+</div>
 
 Flyten leses ovenfra og ned: butikkene bestiller (20 934 stk), DC justerer ordrer ved kanselleringer eller endringer (20 697 stk), DC plukker og leverer (≈ 20 697 stk), og RELEX rapporterer aggregert daglig utlevering (20 701 stk på virkedager, 20 801 stk medregnet helger). Avviket på 4 stk mellom `Justert antall` og `RELEX virkedager` skyldes at ERP bruker opprettelsesdato mens RELEX bruker leveringsdato, slik at noen ordrer havner i ulike dager. Avviket på 100 stk mellom de to RELEX-tallene tilsvarer eksakt summen av helgesalg som filtreres bort. Den samlede kryssjekken bekrefter datakildenes konsistens, og analysen bygger på `RELEX virkedager` (20 701 stk) som primærtall.
 
@@ -367,9 +386,9 @@ Tabell 2 oppsummerer beskrivende statistikk for daglig utlevert volum (stk) i tr
 | Toppdager (>P90 trening) | 22 | 15 |
 | Sum | 13 327 | 7 374 |
 
-</div>
+*Tabell 2: Beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Kilde: `004 data/vasket_salg_daglig.csv`.*
 
-**Tabell 2.** Beskrivende statistikk for daglig utlevert volum (stk) i trenings- og testsettet. Kilde: `004 data/vasket_salg_daglig.csv`.
+</div>
 
 Testsettet inneholder Crazy Days uke 5/2026 og har derfor høyere gjennomsnitt og maksverdi relativt til antall dager enn treningssettet. Forskjellen i 90. persentil (70,6 vs 508,8 stk) illustrerer at testperioden er kampanjedrevet og dermed et krevende, men relevant scenario for å måle modellenes generaliseringsevne mot toppdager.
 
@@ -408,9 +427,9 @@ To **hybridmodeller** er konstruert for å teste om en kombinasjon kan utnytte m
 | 7 | Hybrid (kampanje-router) | Hybrid | arvet fra delmodell | regelbasert ruting | arvet | arvet |
 | 8 | Hybrid (terskelbasert) | Hybrid | arvet fra delmodell | – | arvet | terskel = 70,6 stk (P90 trening, 218 dager) |
 
-</div>
+*Tabell 3: Oversikt over de åtte estimerte modellene. Tabellen tjener som referanse for kap. 7 (gjennomføring) og kap. 8 (resultater).*
 
-**Tabell 3.** Oversikt over de åtte estimerte modellene. Tabellen tjener som referanse for kap. 7 (gjennomføring) og kap. 8 (resultater).
+</div>
 
 ## 6.3 Datastrukturens påvirkning på modellarkitekturen
 Tre strukturelle trekk i datagrunnlaget styrer modellarkitekturen, og argumentene henger sammen som en sammenhengende begrunnelseskjede.
@@ -709,6 +728,8 @@ Samlet viser prosjektet at en parallell bruk av tidsserie- og maskinlæringsbase
 
 Videre arbeid bør prioritere tre områder. For det første anbefales integrasjon av forventet kampanjevolum fra REMA sentralt / regionskontor i prognosemodellene, eventuelt formalisert som en strukturert, flerårig kampanjekalender med forventet volum, varighet og priskontekst per kampanje (jf. kap. 9.6). For det andre vil walk-forward-validering gi mer robust evaluering. For det tredje anbefales ekspansjon til flere produktkategorier, særlig ferskvarer der kort holdbarhet gjør at overprognose direkte oversettes til svinn.
 
+\newpage
+
 # 11. Bibliografi
 Arunraj, N. S., & Ahrens, D. (2015). A hybrid seasonal autoregressive integrated moving average and quantile regression for daily food sales forecasting. *International Journal of Production Economics*, 170, 147-160. https://doi.org/10.1016/j.ijpe.2015.09.014
 
@@ -746,6 +767,8 @@ McKinney, W. (2010). Data structures for statistical computing in Python. *Proce
 Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research*, 12, 2825-2830.
 
 Seabold, S., & Perktold, J. (2010). Statsmodels: Econometric and statistical modeling with Python. *Proceedings of the 9th Python in Science Conference*, 92-96. https://doi.org/10.25080/Majora-92bf1922-011
+
+\newpage
 
 # 12. Vedlegg
 
