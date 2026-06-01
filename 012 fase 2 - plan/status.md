@@ -1,11 +1,18 @@
 # Prosjektstatus: Prognosepresisjon REMA 1000 (G27)
 
-**Statusdato:** 2026-04-30 (intern review av kap. 11 og 12 lukket; mappe for nedlastede artikler opprettet)
-**Nåværende fase:** Fase 3 – Gjennomføring (analyse lukket, rapport ~92 % ferdig)
+**Statusdato:** 2026-05-31 (rapport levert; peer review-tiltak lukket, formalia utfylt, kildeartikler arkivert)
+**Nåværende fase:** Fase 4 – Ferdigstilt og levert (rapport innlevert M-06; gjenstår kun muntlig eksamen M-07)
 
-Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
+Denne statusen bygger på arbeidskopien per 2026-05-31, med planbaselinen i `012 fase 2 - plan/prosjektplan.md`, `schedule.json`, `wbs.md` og `risk.json` som referanse for avvik.
 
 ## Kort status
+
+- **Rapport levert (M-06):** Endelig kvalitetssikret rapport innlevert 2026-05-31, på baseline-fristen. Eksportert til PDF og DOCX (`005 report`), formalia (egenerklæring, personvern, publiseringsavtale) utfylt og datert 31. mai 2026.
+- **Peer review M-05 lukket:** Tilbakemelding fra G26 mottatt 2026-05-03, klassifisert i `013 fase 3 - review/mottatt/peer_review_tiltaksliste.md` (6 må / 4 bør / 2 kan vurderes). Alle 12 tiltak (T-01 til T-12) lukket 2026-05-04: justert problemstilling, ny kap. 5.7 Evalueringsprotokoll (multi-step / én-steg-frem), renummerert tabeller, sentence-case i 4 APA-poster, etikk-seksjon i kap. 5.5, utvidet konklusjon, variabeloversikt i kap. 6.4, kampanjeflagg-mekanisme i kap. 9.2, generaliserbarhet i kap. 9.6, samt skarpere skille kap. 2 (empiri) vs. kap. 3 (formler) og kap. 5 (metode) vs. kap. 6 (modellering).
+- **Kildeartikler arkivert:** 8 av 18 refererte kilder lastet ned automatisk fra åpen tilgang / preprint-arkiver til `003 references/artikler/` (Breiman, Friedman, McKinney, Pedregosa, Seabold, Hyndman & Koehler, Fildes 2009, Fildes 2022). De resterende 10 krever HiMolde institusjonell tilgang (betalingsmur / bok / online-lærebok) og er dokumentert med DOI i mappens `README.md`.
+- **MS Project / plan** oppdatert til faktisk fremdrift.
+
+### Tidligere kort status (per 2026-04-30)
 
 - **Datagrunnlag regenerert:** Oppdaget datafeil i `vask_data.py`-utdata (undertelling ~70 %). Nytt `vask_relex.py` bygger datasett fra RELEX-eksport (260 virkedager, sum 20 701). Dokumentert i rapportens kap. 5.4 og 9.1.
 - **Modellering utvidet:** Åtte modeller estimert (Seasonal Naive, Holt-Winters, SARIMA, RF, RF uten lag_1, Gradient Boosting, to hybridvarianter). SARIMA grid-søk (144 kombinasjoner) med `s=5`, GBM CV-tuning (16 kombinasjoner × 3-fold TimeSeriesSplit), ADF og Ljung-Box-diagnostikk utført. `is_monday` og `days_since_last_order`-features lagt til i RF (`modeller.py`).
@@ -13,7 +20,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 - **Rapporten** er vesentlig revidert: kap. 3 (teori), 4 (case), 5 (metode), 6 (modellering), 7 (analyse), 8 (resultater), 9 (diskusjon), 10 (konklusjon), 11 (bibliografi) og 12 (vedlegg A1–A8) oppdatert til å reflektere korrigert datagrunnlag og utvidet modellering. Sammendrag og abstract oppdatert. Interne reviewer av kap. 6, 8, 9, 10, 11 og 12 lukket 2026-04-30.
 - **Review-tiltak fra 2026-04-14:** Alle 6 høyprioriterte og de viktigste mediumtiltakene er lukket: helgedata/mandagseffekt dokumentert, `s=5`, kampanjekalender som fil (`004 data/kampanjekalender.csv`), Scenario 2 eksplisitt presentert i kap. 8.1, konsistent «Scenario 1/2»-terminologi, Tabell 2/3 introdusert i tekst, kap. 12 Vedlegg utfylt, Pandas/Statsmodels/Scikit-learn sitert i kap. 11. Figur 3 renamed til `fig3_lagerstatus.png`. Rapportdato 2026-04-15.
 - **M-03 Ferdig analyse:** Oppnådd 2026-04-16 (baseline 2026-04-27, 11 dager foran skjema).
-- **Neste steg:** Forberede peer review M-05 (2026-05-01) — eksportere rapport til PDF/DOCX, dele med medstudenter, opprette `requirements.txt` for etterprøvbarhet. Formalia (egenerklæring, publiseringsavtale) fylles ved M-06 (2026-05-31).
+- **Neste steg:** Forberede muntlig eksamen M-07 (2026-06-05) — utarbeide presentasjonsmateriell basert på leverte resultater. Alt faglig arbeid og selve rapportleveransen er fullført.
 
 ## Faktisk fremdrift per arbeidskopi
 
@@ -27,11 +34,11 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 | ACT-06 Datainnhenting fra REMA | 2026-02-16 til 2026-03-19 | Ferdig 2026-03-19 | Inkludert lagerstatus-data og kampanjeinfo fra e-post |
 | ACT-07 Datavask og strukturering | 2026-02-16 til 2026-03-16 | Ferdig 2026-04-15 | `vask_relex.py` → `vasket_salg_daglig.csv` (260 virkedager, sum 20 701) |
 | ACT-08 Analyse og modellering | 2026-03-16 til 2026-04-13 | Ferdig 2026-04-16 | Alle seks høyprioriterte reviewtiltak lukket; M-03 oppnådd |
-| ACT-09 Skriving av metode/resultat | 2026-03-10 til 2026-04-27 | Pågår (~90 %) | Formalia (egenerklæring/publiseringsavtale) fylles ved M-06 |
-| ACT-10 Peer review og kvalitetssikring | 2026-04-27 til 2026-05-01 | Ikke startet | M-05 |
-| ACT-11 Ferdigstillelse av rapportutkast | 2026-05-02 til 2026-05-18 | Ikke startet | M-04 |
-| ACT-12 Endelig revisjon og innlevering | 2026-05-19 til 2026-05-31 | Ikke startet | M-06 |
-| ACT-13 Eksamensforberedelser | 2026-06-01 til 2026-06-05 | Ikke startet | M-07 |
+| ACT-09 Skriving av metode/resultat | 2026-03-10 til 2026-04-27 | Ferdig | Formalia utfylt ved M-06 |
+| ACT-10 Peer review og kvalitetssikring | 2026-04-27 til 2026-05-01 | Ferdig 2026-05-04 | M-05 oppnådd; alle 12 tiltak lukket |
+| ACT-11 Ferdigstillelse av rapportutkast | 2026-05-02 til 2026-05-18 | Ferdig | M-04 oppnådd |
+| ACT-12 Endelig revisjon og innlevering | 2026-05-19 til 2026-05-31 | Ferdig 2026-05-31 | M-06 oppnådd; rapport levert |
+| ACT-13 Eksamensforberedelser | 2026-06-01 til 2026-06-05 | Pågår | M-07; presentasjonsmateriell under arbeid |
 
 ## Avhukingsliste for aktiviteter
 
@@ -103,29 +110,29 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 - [x] Tabell 2 og 3 introdusert i tekst før visning — review §3.4 lukket
 - [x] Kap. 11 Bibliografi: Pandas (McKinney 2010), Statsmodels (Seabold & Perktold 2010), Scikit-learn (Pedregosa et al. 2011) sitert i APA 7 — review §3.5 lukket
 - [x] Kap. 12 Vedlegg A1–A7: ADF-test, SARIMA grid-AIC, GBM-tuning, feature importance, RF-hyperparametere, kampanjekalender, filstruktur — review §3.3 tiltak 5 lukket
-- [ ] Fylle inn egenerklæring og publiseringsavtale (rapport linje 10–14, plassholdere) — utsatt til M-06
-- [ ] Gjennomføre review og lukke aktiviteten
+- [x] Fylle inn egenerklæring og publiseringsavtale (utfylt og datert 31. mai 2026)
+- [x] Gjennomføre review og lukke aktiviteten
 
 #### ACT-10 Peer review og kvalitetssikring
-- [ ] Eksportere rapport til PDF/DOCX for distribusjon (mal i `000 templates/Mal prosjekt LOG650 v2.docx`)
-- [ ] Dele rapport og `scenario_resultater.csv` med medstudenter
+- [x] Eksportere rapport til PDF/DOCX for distribusjon (PDF/DOCX i `005 report`)
+- [x] Dele rapport og `scenario_resultater.csv` med medstudenter
 - [x] Levert peer review av medstudentgruppe (Hovden & Lunde, «Datadrevet kapasitetsvarsling – Motive Offshore Group») 2026-05-03 — utført i isolert mappe utenfor G27
 - [x] Innhente tilbakemelding fra medstudenter (mottatt fra G26 2026-05-03, arkivert i `013 fase 3 - review/mottatt/Peer-review_Rema1000.pdf`)
 - [x] Oppsummere funn og forbedringspunkter (12 styrker / 12 forbedringspunkter klassifisert i `013 fase 3 - review/mottatt/peer_review_tiltaksliste.md` 2026-05-04: 6 må / 4 bør / 2 kan vurderes)
 - [x] Revidere analyse, tekst og figurer — alle 12 tiltak fra G26s peer review lukket 2026-05-04 (6 må + 4 bør + 2 kan-vurderes): justert problemstilling, multi-step/én-steg-frem som ny kap. 5.7 Evalueringsprotokoll, tabellnummerering renummerert konsistent, sentence-case fikset i 4 APA-poster, ny etikk-seksjon i kap. 5.5, konklusjon utvidet med delproblem 1, variabeloversikt i kap. 6.4, kampanjeflagg-mekanisme i kap. 9.2, generaliserbarhet i kap. 9.6, resultat/diskusjon-rydd, kap. 5.2 strammet til ren oversikt, og skarpere skille kap. 2 (empirisk) vs. kap. 3 (formler)
-- [ ] Gjennomføre review og lukke aktiviteten (M-05) — gjenstår: eksportere ny PDF før innlevering
+- [x] Gjennomføre review og lukke aktiviteten (M-05) — ny PDF eksportert og levert
 
 #### ACT-11 Ferdigstillelse av rapportutkast
-- [ ] Sammenstille alle kapitler til komplett hovedutkast
-- [ ] Oppdatere rapportdato til innleveringsdato
-- [ ] Kvalitetssikre innholdsfortegnelse, figur-/tabellister og bibliografi
-- [ ] Gjennomføre review og lukke aktiviteten (M-04)
+- [x] Sammenstille alle kapitler til komplett hovedutkast
+- [x] Oppdatere rapportdato til innleveringsdato (31. mai 2026)
+- [x] Kvalitetssikre innholdsfortegnelse, figur-/tabellister og bibliografi
+- [x] Gjennomføre review og lukke aktiviteten (M-04)
 
 #### ACT-12 Endelig revisjon og innlevering
-- [ ] Fylle inn egenerklæring og publiseringsavtale (mal i `000 templates/`)
-- [ ] Siste korrektur og APA 7-formattering
-- [ ] Kvalitetssikre språk, sporbarhet og konsistens
-- [ ] Levere i Inspera/Canvas (M-06)
+- [x] Fylle inn egenerklæring og publiseringsavtale (mal i `000 templates/`)
+- [x] Siste korrektur og APA 7-formattering
+- [x] Kvalitetssikre språk, sporbarhet og konsistens
+- [x] Levere i Inspera/Canvas (M-06)
 
 #### ACT-13 Eksamensforberedelser og gjennomføring
 - [ ] Utarbeide presentasjonsmateriell
@@ -158,9 +165,9 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 | 9 Diskusjon | Ferdig | 9.1–9.6 inkl. praktiske implikasjoner (9.5) og metodiske begrensninger (9.6 med ærlig dokumentasjon av forkastet leveranse). Avsnitt-etiketter i 9.6 konvertert til prosa-intro. Intern review lukket 2026-04-30 (12 av 13 tiltak gjennomført; P4 vurdert ikke utført pga konsistens med øvrige tallreferanser). |
 | 10 Konklusjon | Ferdig | Fem nummererte hovedkonklusjoner med svar på delproblem 2 og 3, synthesisparagraf og videre arbeid (tre områder, prosa). Åpningsavsnitt resirkulerer hovedproblemstillingen eksplisitt. Intern review lukket 2026-04-30 (alle 8 tiltak). |
 | 11 Bibliografi | Ferdig | APA 7; 18 referanser. Pandas/Statsmodels/Scikit-learn nå med formelle in-tekst-sitater i kap. 5.2. Seiringer-året korrigert fra 2024 til 2022 etter DOI-verifikasjon. Intern review lukket 2026-04-30 (alle 9 tiltak fra felles kap. 11-12-review). |
-| 12 Vedlegg | Ferdig | A1–A8 utfylt. A2 med (P,D,Q)_5-notasjon og presisjonsnote om hovedteksten. A3 med Sklearn-defaults-referanse. A4 med kryssreferanser til kap. 7.2 og 9.3. A5 med random_state-reproduserbarhet-note. A7 med presis scenario_sammendrag.csv-beskrivelse. A8-figuren omdøpt fra fig3_lagerstatus.png til fig_a8_lagerstatus.png. Intern review lukket 2026-04-30. |
-| Egenerklæring | Tom | Plassholder linje 10–11; fylles ved M-06 |
-| Publiseringsavtale | Tom | Plassholder linje 13–14; fylles ved M-06 |
+| 12 Vedlegg | Ferdig | A1–A9 utfylt. A9 «Bruk av KI-verktøy» lagt til etter HiMolde-malen (avkrysningsskjema + detaljert forklaring), datert 31. mai 2026. A2 med (P,D,Q)_5-notasjon og presisjonsnote om hovedteksten. A3 med Sklearn-defaults-referanse. A4 med kryssreferanser til kap. 7.2 og 9.3. A5 med random_state-reproduserbarhet-note. A7 med presis scenario_sammendrag.csv-beskrivelse. A8-figuren omdøpt fra fig3_lagerstatus.png til fig_a8_lagerstatus.png. Intern review lukket 2026-04-30. |
+| Egenerklæring | Ferdig | Utfylt ved M-06; signert og datert 31. mai 2026 |
+| Publiseringsavtale | Ferdig | Utfylt ved M-06; Brage-publisering bekreftet, datert 31. mai 2026 |
 
 ## Milepæler
 
@@ -169,10 +176,10 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 | M-01 Godkjent proposal | 2026-02-23 | Oppnådd | Ingen avvik |
 | M-02 Godkjent prosjektplan | 2026-03-09 | Oppnådd | Ingen avvik |
 | M-03 Ferdig analyse | 2026-04-27 | Oppnådd 2026-04-16 | 11 dager foran baseline |
-| M-05 Peer review gjennomført | 2026-05-01 | Planlagt | På plan (15 dager unna) |
-| M-04 Hovedutkast ferdig | 2026-05-18 | Planlagt (utkast ~90 %) | Ligger foran skjema |
-| M-06 Ferdig kvalitetssikret rapport | 2026-05-31 | Planlagt | Ingen endring |
-| M-07 Gjennomført muntlig eksamen | 2026-06-05 | Planlagt | Ingen endring |
+| M-05 Peer review gjennomført | 2026-05-01 | Oppnådd 2026-05-04 | Alle 12 tiltak fra G26 lukket |
+| M-04 Hovedutkast ferdig | 2026-05-18 | Oppnådd | Komplett utkast sammenstilt foran skjema |
+| M-06 Ferdig kvalitetssikret rapport | 2026-05-31 | Oppnådd 2026-05-31 | Levert på baseline-frist; PDF/DOCX i `005 report` |
+| M-07 Gjennomført muntlig eksamen | 2026-06-05 | Planlagt | Forberedelser pågår (ACT-13) |
 
 ## Avvik mellom arbeidskopi og styringsgrunnlag
 
@@ -198,7 +205,7 @@ Denne statusen bygger på arbeidskopien per 2026-04-16, med planbaselinen i `012
 
 ## Vurdering
 
-Prosjektet er operativt på plan per 2026-04-16 og ligger 11 dager foran baseline for M-03. Analysen er formelt lukket (åtte modeller, to scenarier), alle seks høyprioriterte reviewtiltak og de viktigste mediumtiltakene er adressert og dokumentert i rapporten. Styringsdokumentene (`schedule.json`, `wbs.md`, `risk.json`) er synkronisert. Hovedarbeidet fremover er **kvalitativt** og **logistisk**: eksportere rapporten til delbart format, gjennomføre peer review M-05 (2026-05-01), lukke gjenværende tekstrevideringer etter tilbakemelding, og fylle formalia ved M-06. Ingen av de gjenværende oppgavene krever ny datainnhenting eller ny modellering.
+Prosjektet er fullført og levert. Rapporten ble innlevert 2026-05-31 på baseline-fristen for M-06, etter at peer review M-05 (alle 12 tiltak fra G26) ble lukket 2026-05-04 og hovedutkastet M-04 ble sammenstilt foran skjema. Analysen var formelt lukket 2026-04-16 (åtte modeller, to scenarier) 11 dager foran baseline, og alle review- og kvalitetssikringstiltak er adressert og dokumentert i rapporten. Formalia er utfylt, rapporten eksportert til PDF og DOCX, og 8 av 18 kildeartikler er arkivert i `003 references/artikler/` (resten dokumentert med DOI for institusjonell nedlasting). Eneste gjenstående aktivitet er ACT-13: forberedelse og gjennomføring av muntlig eksamen M-07 (2026-06-05). Ingen faglige oppgaver gjenstår.
 
 ---
-*Oppdatert 2026-04-16 basert på arbeidskopi, `schedule.json`, `wbs.md`, `risk.json`, `review.md` og verifikasjon av rapportens kapittel- og vedleggsinnhold.*
+*Oppdatert 2026-05-31 basert på arbeidskopi, `schedule.json`, `wbs.md`, `risk.json`, `review.md`, peer review-tiltakslisten og verifikasjon av leveranse (PDF/DOCX i `005 report`).*
