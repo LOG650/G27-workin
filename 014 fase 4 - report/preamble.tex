@@ -4,9 +4,15 @@
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.5em}{}
 
-% Bilde- og tabelltekst i kursiv og litt mindre (jf. prosjektets typografiregler)
+% Bilde- og tabelltekst i kursiv og litt mindre, midtstilt (jf. typografireglene)
 \usepackage{caption}
-\captionsetup{font={small,it},labelfont={small,it}}
+\captionsetup{font={small,it},labelfont={small,it},justification=centering}
+
+% Midtstill longtable-tabeller horisontalt på siden.
+\ifdefined\LTleft
+  \setlength{\LTleft}{0pt plus 1fill}
+  \setlength{\LTright}{0pt plus 1fill}
+\fi
 
 % Avsnitt med luft og uten innrykk
 \setlength{\parskip}{0.4em}
@@ -16,3 +22,20 @@
 % allerede har manuelle numre i overskriftene (f.eks. «1. Innledning»).
 % Hindrer dobbel nummerering som «1 1. Innledning».
 \setcounter{secnumdepth}{0}
+
+% Innholdsfortegnelsen viser kapitler og delkapitler (ikke underdelkapitler),
+% slik at den blir oversiktlig.
+\setcounter{tocdepth}{2}
+
+% Lær pdflatex de spesialtegnene rapporten bruker i løpende tekst, slik at
+% kompilering ikke stopper på «Unicode character not set up for use with LaTeX».
+% Beskyttet med \ifdefined slik at det er trygt også under xelatex/lualatex
+% (der tegnene håndteres direkte og \DeclareUnicodeCharacter ikke finnes).
+\ifdefined\DeclareUnicodeCharacter
+  \DeclareUnicodeCharacter{2212}{\textminus}            % − ekte minustegn
+  \DeclareUnicodeCharacter{2192}{\textrightarrow}       % → høyrepil
+  \DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}     % ≤ mindre enn eller lik
+  \DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}  % ≈ omtrent lik
+  \DeclareUnicodeCharacter{00D7}{\texttimes}            % × gangetegn
+  \DeclareUnicodeCharacter{00B2}{\textsuperscript{2}}   % ² opphøyd to (CV²)
+\fi

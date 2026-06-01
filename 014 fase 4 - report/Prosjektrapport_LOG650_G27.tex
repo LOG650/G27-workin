@@ -84,9 +84,15 @@
 \titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
 \titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.5em}{}
 
-% Bilde- og tabelltekst i kursiv og litt mindre (jf. prosjektets typografiregler)
+% Bilde- og tabelltekst i kursiv og litt mindre, midtstilt (jf. typografireglene)
 \usepackage{caption}
-\captionsetup{font={small,it},labelfont={small,it}}
+\captionsetup{font={small,it},labelfont={small,it},justification=centering}
+
+% Midtstill longtable-tabeller horisontalt på siden.
+\ifdefined\LTleft
+  \setlength{\LTleft}{0pt plus 1fill}
+  \setlength{\LTright}{0pt plus 1fill}
+\fi
 
 % Avsnitt med luft og uten innrykk
 \setlength{\parskip}{0.4em}
@@ -96,6 +102,23 @@
 % allerede har manuelle numre i overskriftene (f.eks. «1. Innledning»).
 % Hindrer dobbel nummerering som «1 1. Innledning».
 \setcounter{secnumdepth}{0}
+
+% Innholdsfortegnelsen viser kapitler og delkapitler (ikke underdelkapitler),
+% slik at den blir oversiktlig.
+\setcounter{tocdepth}{2}
+
+% Lær pdflatex de spesialtegnene rapporten bruker i løpende tekst, slik at
+% kompilering ikke stopper på «Unicode character not set up for use with LaTeX».
+% Beskyttet med \ifdefined slik at det er trygt også under xelatex/lualatex
+% (der tegnene håndteres direkte og \DeclareUnicodeCharacter ikke finnes).
+\ifdefined\DeclareUnicodeCharacter
+  \DeclareUnicodeCharacter{2212}{\textminus}            % − ekte minustegn
+  \DeclareUnicodeCharacter{2192}{\textrightarrow}       % → høyrepil
+  \DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}     % ≤ mindre enn eller lik
+  \DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}  % ≈ omtrent lik
+  \DeclareUnicodeCharacter{00D7}{\texttimes}            % × gangetegn
+  \DeclareUnicodeCharacter{00B2}{\textsuperscript{2}}   % ² opphøyd to (CV²)
+\fi
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
@@ -113,16 +136,18 @@
 
 \begin{document}
 
-\section{Prosjektrapport: Prognosepresisjon ved REMA 1000 Distribusjon
-Trondheim
-(LOG650)}\label{prosjektrapport-prognosepresisjon-ved-rema-1000-distribusjon-trondheim-log650}
-
-\textbf{Forfattere:} Line Lyngsnes Johansen og Amanda Arnesen Almaas\\
-\textbf{Studium:} Logistikk (Nettbasert), Høgskolen i Molde\\
-\textbf{Dato:} 31. mai 2026\\
-\textbf{Sted:} Trondheim
-
-\newpage
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\LARGE\bfseries Prosjektrapport: Prognosepresisjon ved REMA 1000 Distribusjon Trondheim (LOG650)\par}
+\vspace{2.5cm}
+{\large Line Lyngsnes Johansen \\ Amanda Arnesen Almaas\par}
+\vspace{1cm}
+{\large Logistikk (Nettbasert), Høgskolen i Molde\par}
+\vspace{0.5cm}
+{\large Trondheim, 31. mai 2026\par}
+\vfill
+\end{titlepage}
 
 \textbf{Obligatorisk egenerklæring / gruppeerklæring}
 
@@ -210,38 +235,9 @@ recommended for operational decisions requiring consistency over time.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\section{Innhold}\label{innhold}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \hyperref[1-innledning]{Innledning}
-\item
-  \hyperref[2-litteratur]{Litteratur}
-\item
-  \hyperref[3-teori]{Teori}
-\item
-  \hyperref[4-casebeskrivelse]{Casebeskrivelse}
-\item
-  \hyperref[5-metode-og-data]{Metode og data}
-\item
-  \hyperref[6-modellering]{Modellering}
-\item
-  \hyperref[7-analyse]{Analyse}
-\item
-  \hyperref[8-resultat]{Resultat}
-\item
-  \hyperref[9-diskusjon]{Diskusjon}
-\item
-  \hyperref[10-konklusjon]{Konklusjon}
-\item
-  \hyperref[11-bibliografi]{Bibliografi}
-\item
-  \hyperref[12-vedlegg]{Vedlegg}
-\end{enumerate}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\newpage
+\tableofcontents
+\newpage
 
 \section{1. Innledning}\label{innledning}
 
@@ -739,8 +735,12 @@ Maksimum (29. okt 2025, pre-Crazy Days) & 2 172 \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 1: Beskrivende statistikk for Lasagne Familiepakning
 (virkedager, mars 2025 -- feb 2026)}
+
+\par}
 
 Standardavviket er over tre ganger så stort som gjennomsnittet. CV =
 3,23 plasserer etterspørselen klart i kategorien \textbf{``Lumpy
@@ -756,31 +756,39 @@ visualisering}\label{etterspuxf8rselsmuxf8nstre-og-visualisering}
 For å få et helhetsbilde av dataenes utvikling over tid, er tidsserien
 visualisert i Figur 1.
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 1: Historisk tidsserie for Lasagne Familiepakning}]{figurer/fig1_tidsserie.png}}
-\caption{Figur 1: Historisk tidsserie for Lasagne Familiepakning}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 1: Historisk tidsserie (mars 2025 -- februar 2026) som viser
 variasjon i utlevert volum. De to største toppene inntreffer i uken før
 Crazy Days høst (uke 44/2025) og i uken etter oppstart av Crazy Days
 vinter (uke 6/2026).}
 
+\par}
+
 Nivået ligger stabilt lavt i normalperioder, men brytes av kortsiktige
 og kraftige topper rundt kampanjeperiodene. Det er ingen tydelig
 langsiktig trend, men en klar sesongvariasjon knyttet til ukedager.
 Dette utdypes i Figur 2.
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 2: Gjennomsnittlig daglig utlevert volum per virkedag}]{figurer/fig2_ukedag.png}}
-\caption{Figur 2: Gjennomsnittlig daglig utlevert volum per virkedag}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 2: Gjennomsnittlig daglig utlevert volum per virkedag
 (plukkdato, n = 52 per dag, mars 2025 -- februar 2026), som dokumenterer
 den systematiske mandagseffekten på distribusjonssenteret.}
+
+\par}
 
 Mandager har det desidert høyeste gjennomsnittet (113,6 stk), etterfulgt
 av tirsdag (97,3), onsdag (82,1), torsdag (67,4) og fredag (37,6). Den
@@ -805,16 +813,20 @@ er derfor holdt utenfor figuren. Bestillinger registreres derimot hele
 uka, også lørdag og søndag, og har et helt annet ukedagsmønster. Dette
 synliggjøres i Figur 3.
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 3: Gjennomsnittlig daglig bestilt volum per ukedag}]{figurer/fig3_bestilling_ukedag.png}}
-\caption{Figur 3: Gjennomsnittlig daglig bestilt volum per ukedag}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 3: Gjennomsnittlig daglig bestilt volum per ukedag
 (opprettelsesdato, alle 7 dager, mars 2025 -- februar 2026). Snitt
 beregnet per kalenderdag i perioden, inkludert dager uten registrerte
 bestillinger.}
+
+\par}
 
 Onsdag er den klart dominerende bestillingsdagen (213,8 stk), etterfulgt
 av torsdag (68,9), fredag (45,6), mandag (41,4) og tirsdag (35,3).
@@ -837,15 +849,19 @@ To Crazy Days-kampanjer er dokumentert av REMA i perioden: uke 45/2025
 ukentlig utlevert volum gjennom hele analyseperioden, med kampanje- og
 hendelsesmarkeringer.
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 4: Ukentlig salg med kampanje- og hendelsesmarkeringer}]{figurer/fig4_kampanjeoversikt.png}}
-\caption{Figur 4: Ukentlig salg med kampanje- og hendelsesmarkeringer}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 4: Ukentlig utlevert volum for Lasagne Familiepakning (mars
 2025 -- februar 2026). Blå bokser markerer Crazy Days-kampanjer; oransje
 bokser markerer hendelser (påske, skolestart, jul).}
+
+\par}
 
 Det mest karakteristiske mønsteret er at \textbf{salgstoppen inntreffer
 i uken før selve kampanjen}, ikke under kampanjen. For Crazy Days høst
@@ -1112,9 +1128,13 @@ Sum & 13 327 & 7 374 \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 2: Beskrivende statistikk for daglig utlevert volum (stk) i
 trenings- og testsettet. Kilde:
 \texttt{004\ data/vasket\_salg\_daglig.csv}.}
+
+\par}
 
 Testsettet inneholder Crazy Days uke 5/2026 og har derfor høyere
 gjennomsnitt og maksverdi relativt til antall dager enn treningssettet.
@@ -1277,8 +1297,12 @@ terskel = 70,6 stk (P90 trening, 218 dager) \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 3: Oversikt over de åtte estimerte modellene. Tabellen
 tjener som referanse for kap. 7 (gjennomføring) og kap. 8 (resultater).}
+
+\par}
 
 \subsection{6.3 Datastrukturens påvirkning på
 modellarkitekturen}\label{datastrukturens-puxe5virkning-puxe5-modellarkitekturen}
@@ -1604,7 +1628,11 @@ Gradient Boosting & 268,23 & 294,28 & +9,7 \% \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 4: MAE (stk) på testsettet per scenario og modell}
+
+\par}
 
 Scenario 2 gir kun marginal global forbedring på SARIMA, som reduseres
 med under 1 stk per dag (174,0 → 173,3 stk, −0,4 \%). RF uten lag\_1
@@ -1616,15 +1644,19 @@ modellene fordeler forbedringer mellom normale dager og toppdager. Figur
 Scenario 1 (rødt), RF uten lag\_1 Scenario 2 (oransje) og Hybrid
 terskelbasert Scenario 2 (grønn) over testperioden.
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 5: Scenario 1 vs Scenario 2 --- modellsammenligning}]{figurer/fig_scenario_sammenligning.png}}
-\caption{Figur 5: Scenario 1 vs Scenario 2 --- modellsammenligning}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 5: Faktisk etterspørsel (sort) sammenlignet med RF Scenario
 1 (rødt, blind), RF uten lag\_1 Scenario 2 (oransje) og Hybrid
 terskelbasert Scenario 2 (grønn) over testperioden.}
+
+\par}
 
 \subsection{8.2 Global modellytelse}\label{global-modellytelse}
 
@@ -1658,10 +1690,14 @@ Hybrid (kampanje) & 177,7 & 371 \% & 159 \% & 101 \% & −118,7 \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 5: Global evaluering --- Scenario 2 (alle testdager).
 MAPE-verdier er gjennomgående svært høye fordi små nevnere på
 lavvolum-dager forsterker prosentfeilen; sMAPE og WAPE er mer robuste
 tolkningsmål for denne typen serier (Hyndman \& Koehler, 2006).}
+
+\par}
 
 MAPE-verdiene er gjennomgående svært høye og skyldes dager med lavt
 faktisk volum (små nevnere). sMAPE og WAPE gir mer tolkbare tall. RF
@@ -1699,8 +1735,12 @@ Segment & Modell & MAE & Bias \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 6: Segmentert evaluering --- MAE og Bias per segment,
 Scenario 2}
+
+\par}
 
 For å vise SARIMAs ulike respons på kampanjeinformasjon i de to
 segmentene, sammenligner Tabell 6b modellen på tvers av Scenario 1 og
@@ -1719,7 +1759,11 @@ Toppdager (n=15) & 404,5 & 432,3 & +7 \% \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 6b: SARIMA segmentert MAE --- Scenario 1 vs Scenario 2}
+
+\par}
 
 Analysen avdekker en klart segmentert modellvinner-struktur. På normale
 dager er SARIMA best (MAE 29,4); kampanjeinformasjon reduserer feilen
@@ -1765,20 +1809,28 @@ Hybrid (terskel) & 13,0 & 0,223 & Nei (hvit støy) \\
 \end{longtable}
 }
 
+{\centering\small
+
 \emph{Tabell 7: Ljung-Box Q-test på testresidualer (10 etterslep,
 Scenario 2)}
 
-\begin{figure}
-\centering
+\par}
+
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Figur 6: ACF-plott av residualene}]{figurer/fig6_residual_acf.png}}
-\caption{Figur 6: ACF-plott av residualene}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Figur 6: ACF-plott av residualene for fem sentrale modeller
 (Seasonal Naive, Holt-Winters, SARIMA, RF uten lag\_1 og Hybrid
 terskel). Blått felt indikerer konfidensintervall for hvit støy;
 residualer som holder seg innenfor feltet betyr at modellen har
 ekstrahert all systematisk informasjon.}
+
+\par}
 
 Tabell 7 og Figur 6 viser et markant skille: tidsseriemodellene (Naive,
 HW, SARIMA) og GBM har signifikant autokorrelasjon i residualene, det
@@ -2404,32 +2456,32 @@ Git-repo:
 
 \begin{verbatim}
 G27-workin/
-├── 004 data/
-│   ├── vasket_salg_daglig.csv            — renset daglig etterspørsel (260 virkedager)
-│   ├── kampanjekalender.csv               — kampanjer og hendelser
-│   ├── sarima_diagnostikk.csv             — grid-search resultater (A2)
-│   ├── gbm_tuning.csv                     — hyperparameter-søk (A3)
-│   ├── rf_feature_importance.csv          — feature importance (A4)
-│   ├── adf_test.csv                       — stasjonaritetstest (A1)
-│   ├── residual_diagnostikk.csv           — Ljung-Box-test (Tabell 7)
-│   ├── modell_sammendrag.csv              — segmenterte feilmål
-│   ├── scenario_sammendrag.csv            — Scenario 1 vs 2, alle modeller og segmenter (kilde for Tabell 4, 5, 6 og 6b)
-│   ├── analyse_resultater_stram.csv       — per-dag prediksjoner
-│   └── scenario_resultater.csv            — per-dag prediksjoner per scenario
-├── 012 fase 2 - plan/
-│   ├── vask_relex.py       — datavask fra RELEX-eksport
-│   ├── metrics.py          — MAE, MAPE, sMAPE, WAPE, Bias
-│   ├── modeller.py         — feature engineering, grid-search, tuning, hybrider
-│   ├── analyse_hoved.py    — hovedanalyse (8 modeller)
-│   └── scenario_analyse.py — Scenario 1 vs 2 (8 modeller)
-└── 014 fase 4 - report/figurer/
-    ├── fig1_tidsserie.png
-    ├── fig2_ukedag.png
-    ├── fig3_bestilling_ukedag.png
-    ├── fig4_kampanjeoversikt.png
-    ├── fig_a8_lagerstatus.png         (RELEX-skjermbilde, Vedlegg A8)
-    ├── fig_scenario_sammenligning.png
-    └── fig6_residual_acf.png
+|-- 004 data/
+|   |-- vasket_salg_daglig.csv            - renset daglig etterspørsel (260 virkedager)
+|   |-- kampanjekalender.csv               - kampanjer og hendelser
+|   |-- sarima_diagnostikk.csv             - grid-search resultater (A2)
+|   |-- gbm_tuning.csv                     - hyperparameter-søk (A3)
+|   |-- rf_feature_importance.csv          - feature importance (A4)
+|   |-- adf_test.csv                       - stasjonaritetstest (A1)
+|   |-- residual_diagnostikk.csv           - Ljung-Box-test (Tabell 7)
+|   |-- modell_sammendrag.csv              - segmenterte feilmål
+|   |-- scenario_sammendrag.csv            - Scenario 1 vs 2, alle modeller og segmenter (kilde for Tabell 4, 5, 6 og 6b)
+|   |-- analyse_resultater_stram.csv       - per-dag prediksjoner
+|   `-- scenario_resultater.csv            - per-dag prediksjoner per scenario
+|-- 012 fase 2 - plan/
+|   |-- vask_relex.py       - datavask fra RELEX-eksport
+|   |-- metrics.py          - MAE, MAPE, sMAPE, WAPE, Bias
+|   |-- modeller.py         - feature engineering, grid-search, tuning, hybrider
+|   |-- analyse_hoved.py    - hovedanalyse (8 modeller)
+|   `-- scenario_analyse.py - Scenario 1 vs 2 (8 modeller)
+`-- 014 fase 4 - report/figurer/
+    |-- fig1_tidsserie.png
+    |-- fig2_ukedag.png
+    |-- fig3_bestilling_ukedag.png
+    |-- fig4_kampanjeoversikt.png
+    |-- fig_a8_lagerstatus.png         (RELEX-skjermbilde, Vedlegg A8)
+    |-- fig_scenario_sammenligning.png
+    `-- fig6_residual_acf.png
 \end{verbatim}
 
 Alle analysene kan reproduseres ved å kjøre
@@ -2450,16 +2502,20 @@ dermed aldri vært utsolgt på denne varen i perioden, og observerte
 salgstall kan tolkes som reell utlevert etterspørsel (se kap. 5.3 og
 kap. 4.5).
 
-\begin{figure}
-\centering
+\begin{center}
+
 \pandocbounded{\includegraphics[keepaspectratio,alt={Vedlegg A8: RELEX-skjermbilde av lagerstatus, salg og prognose}]{figurer/fig_a8_lagerstatus.png}}
-\caption{Vedlegg A8: RELEX-skjermbilde av lagerstatus, salg og prognose}
-\end{figure}
+
+\end{center}
+
+{\centering\small
 
 \emph{Vedlegg A8: Skjermbilde fra RELEX-grensesnittet. Varebeholdning
 (sort strek), faktisk salg (blå strek) og eksisterende RELEX-prognose
 (grønn strek). Markeringer under x-aksen viser kampanjer (blå) og
 hendelser (oransje). Kilde: REMA 1000 RELEX-interface, mars 2026.}
+
+\par}
 
 \subsection{A9 --- Bruk av KI-verktøy (bruk av kunstig
 intelligens)}\label{a9-bruk-av-ki-verktuxf8y-bruk-av-kunstig-intelligens}

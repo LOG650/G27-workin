@@ -873,32 +873,32 @@ Analysekoden og datafiler ligger i følgende mappestruktur i prosjektets Git-rep
 
 ```
 G27-workin/
-├── 004 data/
-│   ├── vasket_salg_daglig.csv            — renset daglig etterspørsel (260 virkedager)
-│   ├── kampanjekalender.csv               — kampanjer og hendelser
-│   ├── sarima_diagnostikk.csv             — grid-search resultater (A2)
-│   ├── gbm_tuning.csv                     — hyperparameter-søk (A3)
-│   ├── rf_feature_importance.csv          — feature importance (A4)
-│   ├── adf_test.csv                       — stasjonaritetstest (A1)
-│   ├── residual_diagnostikk.csv           — Ljung-Box-test (Tabell 7)
-│   ├── modell_sammendrag.csv              — segmenterte feilmål
-│   ├── scenario_sammendrag.csv            — Scenario 1 vs 2, alle modeller og segmenter (kilde for Tabell 4, 5, 6 og 6b)
-│   ├── analyse_resultater_stram.csv       — per-dag prediksjoner
-│   └── scenario_resultater.csv            — per-dag prediksjoner per scenario
-├── 012 fase 2 - plan/
-│   ├── vask_relex.py       — datavask fra RELEX-eksport
-│   ├── metrics.py          — MAE, MAPE, sMAPE, WAPE, Bias
-│   ├── modeller.py         — feature engineering, grid-search, tuning, hybrider
-│   ├── analyse_hoved.py    — hovedanalyse (8 modeller)
-│   └── scenario_analyse.py — Scenario 1 vs 2 (8 modeller)
-└── 014 fase 4 - report/figurer/
-    ├── fig1_tidsserie.png
-    ├── fig2_ukedag.png
-    ├── fig3_bestilling_ukedag.png
-    ├── fig4_kampanjeoversikt.png
-    ├── fig_a8_lagerstatus.png         (RELEX-skjermbilde, Vedlegg A8)
-    ├── fig_scenario_sammenligning.png
-    └── fig6_residual_acf.png
+|-- 004 data/
+|   |-- vasket_salg_daglig.csv            - renset daglig etterspørsel (260 virkedager)
+|   |-- kampanjekalender.csv               - kampanjer og hendelser
+|   |-- sarima_diagnostikk.csv             - grid-search resultater (A2)
+|   |-- gbm_tuning.csv                     - hyperparameter-søk (A3)
+|   |-- rf_feature_importance.csv          - feature importance (A4)
+|   |-- adf_test.csv                       - stasjonaritetstest (A1)
+|   |-- residual_diagnostikk.csv           - Ljung-Box-test (Tabell 7)
+|   |-- modell_sammendrag.csv              - segmenterte feilmål
+|   |-- scenario_sammendrag.csv            - Scenario 1 vs 2, alle modeller og segmenter (kilde for Tabell 4, 5, 6 og 6b)
+|   |-- analyse_resultater_stram.csv       - per-dag prediksjoner
+|   `-- scenario_resultater.csv            - per-dag prediksjoner per scenario
+|-- 012 fase 2 - plan/
+|   |-- vask_relex.py       - datavask fra RELEX-eksport
+|   |-- metrics.py          - MAE, MAPE, sMAPE, WAPE, Bias
+|   |-- modeller.py         - feature engineering, grid-search, tuning, hybrider
+|   |-- analyse_hoved.py    - hovedanalyse (8 modeller)
+|   `-- scenario_analyse.py - Scenario 1 vs 2 (8 modeller)
+`-- 014 fase 4 - report/figurer/
+    |-- fig1_tidsserie.png
+    |-- fig2_ukedag.png
+    |-- fig3_bestilling_ukedag.png
+    |-- fig4_kampanjeoversikt.png
+    |-- fig_a8_lagerstatus.png         (RELEX-skjermbilde, Vedlegg A8)
+    |-- fig_scenario_sammenligning.png
+    `-- fig6_residual_acf.png
 ```
 
 Alle analysene kan reproduseres ved å kjøre `python "012 fase 2 - plan/analyse_hoved.py"` og `python "012 fase 2 - plan/scenario_analyse.py"` fra prosjektroten.
