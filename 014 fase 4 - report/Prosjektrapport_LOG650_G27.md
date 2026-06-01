@@ -929,7 +929,7 @@ Til hvilke formål KI-verktøyet er brukt:
 - [x] Språkvask og korrekturlesing
 - [x] Programmering og kodehjelp
 - [x] Hjelp til å analysere digitale data
-- [x] Lage bilder og figurer
+- [ ] Lage bilder og figurer
 - [x] Annet (strukturering av rapporten og intern kvalitetssikring)
 
 Vi bekrefter at en detaljert forklaring av hvilke KI-verktøy som er brukt, og hvordan de er brukt, er gitt nedenfor. Vi er kjent med retningslinjene for bruk av KI på hjemmeeksamen ved Høgskolen i Molde, og teksten som er levert inn er vår egen, uavhengig av KI-verktøy.
@@ -943,10 +943,9 @@ Verktøyene som er brukt er Claude (Anthropic, benyttet via Claude Code), Gemini
 - Programmering og kodehjelp: utvikling og feilsøking av Python-skriptene for datavask, modellering og scenarioanalyse (blant annet `vask_relex.py`, `modeller.py`, `analyse_hoved.py` og `scenario_analyse.py`).
 - Hjelp til å analysere digitale data: forklaring av statistiske og metodiske begreper, drøfting av modellvalg, og tolkning av diagnostikk (ADF-test, ACF/PACF og Ljung-Box). Selve beregningene er utført av vår egen kode.
 - Skrivehjelp og språkvask: utkast, omskriving, korrekturlesing og konsistenssjekk av rapporttekst.
-- Lage bilder og figurer: hjelp til å utforme og generere figurer og illustrasjoner.
 - Strukturering og kvalitetssikring: forslag til kapittelstruktur og oppbygning, samt intern gjennomgang av tekst, tabeller og figurer.
 
-KI er ikke brukt til å generere data, resultater eller kilder. Alt datagrunnlag stammer fra REMA 1000 (RELEX- og ERP-uttrekk), og alle modellresultater er produsert av vår egen kode. De datadrevne figurene er produsert av vår egen Python- og matplotlib-kode; i tillegg er KI brukt som hjelp til å utforme og generere figurer og illustrasjoner. Alle kilder i bibliografien er funnet, lest og verifisert av oss.
+KI er ikke brukt til å generere data, resultater eller kilder. Alt datagrunnlag stammer fra REMA 1000 (RELEX- og ERP-uttrekk), alle modellresultater er produsert av vår egen kode, og figurene er laget med vår egen matplotlib-kode og er ikke KI-genererte bilder. Alle kilder i bibliografien er funnet, lest og verifisert av oss.
 
 Vurdering og revisjon av KI-forslag: Vi har behandlet KI-genererte forslag som utkast og innspill, ikke som ferdige svar. Kodeforslag ble kjørt, testet og rettet mot faktiske data før de ble tatt i bruk, og tekstforslag ble omskrevet til vårt eget språk og kontrollert mot pensum og kilder. Faktapåstander og litteraturhenvisninger ble verifisert mot primærkildene; et konkret eksempel er korrigeringen av publiseringsåret for Seiringer et al. (fra 2024 til 2022) etter at vi kontrollerte DOI mot forlaget.
 
