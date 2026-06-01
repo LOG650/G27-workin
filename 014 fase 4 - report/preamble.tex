@@ -1,0 +1,18 @@
+% Preamble-tillegg for LaTeX-eksport av prosjektrapporten (inkluderes via pandoc -H)
+% Luftigere kapitteloverskrifter
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.5em}{}
+
+% Bilde- og tabelltekst i kursiv og litt mindre (jf. prosjektets typografiregler)
+\usepackage{caption}
+\captionsetup{font={small,it},labelfont={small,it}}
+
+% Avsnitt med luft og uten innrykk
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0pt}
+
+% Slå av LaTeX sin automatiske seksjonsnummerering, siden kapitlene
+% allerede har manuelle numre i overskriftene (f.eks. «1. Innledning»).
+% Hindrer dobbel nummerering som «1 1. Innledning».
+\setcounter{secnumdepth}{0}
