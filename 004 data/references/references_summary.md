@@ -11,7 +11,7 @@ Dette dokumentet gir en samlet oversikt over alle 18 kildene som er referert i p
 **Journal:** *International Journal of Production Economics*, 170, 147-160  
 **Nøkkelfunn:** Utvikler en hybridmodell (SARIMA kombinert med kvantilregresjon) for daglig matvaresalg som fanger både sesongvariasjon og kampanje-/kalendereffekter, og viser forbedret presisjon for produkter med svingende etterspørsel.  
 **Bruk i prosjektet:** Faglig støtte for å modellere på dagsnivå (kap. 2) og for hybrid routing mellom modellfamilier (kap. 6).  
-**DOI:** [10.1016/j.ijpe.2015.09.014](https://doi.org/10.1016/j.ijpe.2015.09.014)
+**DOI:** [10.1016/j.ijpe.2015.09.039](https://doi.org/10.1016/j.ijpe.2015.09.039)
 
 ### 2. Box, G. E. P., & Jenkins, G. M. (1976)
 **Tittel:** *Time series analysis: Forecasting and control* (rev. utg.)  
@@ -43,10 +43,10 @@ Dette dokumentet gir en samlet oversikt over alle 18 kildene som er referert i p
 
 ### 6. Fildes, R., Ma, S., & Kolassa, S. (2022)
 **Tittel:** *Retail forecasting: Research and practice*  
-**Journal:** *International Journal of Forecasting*, 38(4), 1269-1295  
+**Journal:** *International Journal of Forecasting*, 38(4), 1283-1318  
 **Nøkkelfunn:** Omfattende gjennomgang av gapet mellom akademisk forskning og praksis i varehandelsprognoser, med vekt på volatilitet, kampanjer og store datamengder.  
 **Bruk i prosjektet:** Grunnlag for teorikapitlet om hvorfor varehandelsprognoser er et eget og komplekst fagfelt (kap. 2).  
-**DOI:** [10.1016/j.ijforecast.2021.11.004](https://doi.org/10.1016/j.ijforecast.2021.11.004)
+**DOI:** [10.1016/j.ijforecast.2019.06.004](https://doi.org/10.1016/j.ijforecast.2019.06.004)
 
 ### 7. Friedman, J. H. (2001)
 **Tittel:** *Greedy function approximation: A gradient boosting machine*  
@@ -77,11 +77,11 @@ Dette dokumentet gir en samlet oversikt over alle 18 kildene som er referert i p
 **DOI:** [10.1093/biomet/65.2.297](https://doi.org/10.1093/biomet/65.2.297)
 
 ### 11. Makridakis, S., Spiliotis, E., & Assimakopoulos, V. (2022)
-**Tittel:** *The M5 competition: Background, organization, and results*  
-**Journal:** *International Journal of Forecasting*, 38(4), 1325-1346  
-**Nøkkelfunn:** Dokumenterer bakgrunn, organisering og resultater fra M5-konkurransen (Walmart-data) og viser at maskinlæring og hybridmodeller utkonkurrerer klassiske tidsseriemetoder på dagligvaredata.  
+**Tittel:** *M5 accuracy competition: Results, findings, and conclusions*  
+**Journal:** *International Journal of Forecasting*, 38(4), 1346-1364  
+**Nøkkelfunn:** Presenterer resultatene fra M5-konkurransen (Walmart-data) og viser at maskinlæring og hybridmodeller utkonkurrerer klassiske tidsseriemetoder på dagligvaredata, særlig ved intermittent etterspørsel og mange nullverdier.  
 **Bruk i prosjektet:** Setter prosjektet i en moderne sammenheng og forankrer bruken av maskinlæring og hybridmodeller (kap. 2).  
-**DOI:** [10.1016/j.ijforecast.2021.01.005](https://doi.org/10.1016/j.ijforecast.2021.01.005)
+**DOI:** [10.1016/j.ijforecast.2021.11.013](https://doi.org/10.1016/j.ijforecast.2021.11.013)
 
 ### 12. Seiringer, W., Brockmann, F., Altendorfer, K., & Felberbauer, T. (2022)
 **Tittel:** *Influence of forecast error and forecast bias on safety stock on a MRP system with rolling horizon forecast updates*  
