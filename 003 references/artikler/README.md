@@ -25,12 +25,12 @@ De to resterende kildene er **lest og brukt via HiMolde sin institusjonelle onli
 | `Box_etal_2016_TimeSeriesAnalysis5utg.pdf` | John Wiley & Sons (5. utgave 2016; rapporten siterer 1976-originalen) |
 | `Breiman_2001_RandomForests.pdf` | Åpen tilgang, Berkeley |
 | `Dickey_Fuller_1979_ADFTest.pdf` | JSTOR/Taylor & Francis (HiMolde-tilgang) |
-| `Fildes_etal_2009_JudgmentalAdjustments.pdf` | Postprint, Lancaster EPrints |
-| `Fildes_etal_2022_RetailForecasting.pdf` | Postprint, Lancaster EPrints |
+| `Fildes_etal_2009_JudgmentalAdjustments.pdf` | ScienceDirect (HiMolde-tilgang) |
+| `Fildes_etal_2022_RetailForecasting.pdf` | ScienceDirect (HiMolde-tilgang) |
 | `Friedman_2001_GradientBoosting.pdf` | Åpen kopi, CUHK |
 | `Hyndman_Koehler_2006_MeasuresForecastAccuracy.pdf` | Forfatterens preprint (robjhyndman.com) |
 | `Ljung_Box_1978_LackOfFitTimeSeries.pdf` | Oxford Academic/JSTOR (HiMolde-tilgang) |
-| `Makridakis_etal_2022_M5Competition.pdf` | ScienceDirect (HiMolde-tilgang) |
+| `Makridakis_etal_2022_M5AccuracyResults.pdf` | ScienceDirect (HiMolde-tilgang) |
 | `McKinney_2010_Pandas.pdf` | Åpen tilgang, SciPy Proceedings |
 | `Pedregosa_etal_2011_ScikitLearn.pdf` | Åpen tilgang, JMLR |
 | `Seabold_Perktold_2010_Statsmodels.pdf` | Åpen tilgang, SciPy Proceedings |
